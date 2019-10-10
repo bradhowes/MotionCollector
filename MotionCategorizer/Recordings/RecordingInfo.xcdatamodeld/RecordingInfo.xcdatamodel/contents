@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15400" systemVersion="18G103" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="RecordingInfo" representedClassName=".RecordingInfo" syncable="YES">
+        <attribute name="count" attributeType="Integer 64" usesScalarValueType="YES"/>
+        <attribute name="displayName" attributeType="String" minValueString="1"/>
+        <attribute name="duration" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="fileName" optional="YES" attributeType="String"/>
+        <attribute name="fileType" optional="YES" attributeType="String"/>
+        <attribute name="uploaded" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="uploadProgress" optional="YES" transient="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="valuesBlob" attributeType="Binary"/>
+    </entity>
+    <elements>
+        <element name="RecordingInfo" positionX="-63" positionY="-18" width="128" height="163"/>
+    </elements>
+</model>

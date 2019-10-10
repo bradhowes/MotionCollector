@@ -1,0 +1,72 @@
+// RootViewController.swift
+// Copyright © 2019 Brad Howes. All rights reserved.
+
+import os
+import CoreData
+import UIKit
+
+/**
+ The top-level `root` view controller in the application.
+ */
+public final class RootViewController: UITabBarController {
+
+    private var recordingInfoManagedContextLoaderObserver: NotificationObserver?
+
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Invoke `injectManagedObjectContext` when the CoreData managed object context is available for
+        // `RecordingInfo` instances.
+        recordingInfoManagedContextLoaderObserver = UIApplication.appDelegate.recordingInfoManagedContextLoader.register {
+            self.injectManagedObjectContext($0)
+        }
+    }
+
+    /**
+     Inject an NSManagedObjectContext instance into the `RecordingsViewController` instance.
+
+     - parameter managedObjectContext: the NSManagedObjectContext to inject
+     */
+    public func injectManagedObjectContext(_ managedObjectContext: NSManagedObjectContext) {
+        guard let vcs = self.viewControllers else {
+            fatalError("expected to find collection of UIViewController instances")
+        }
+
+        // Look for the `RecordingsTableViewController` to inject into.
+        for (index, vc) in vcs.enumerated() {
+            if let nc = vc as? UINavigationController {
+                if let rvc = nc.topViewController as? RecordingsTableViewController {
+                    rvc.tabBarItem.isEnabled = true
+                    self.tabBar.items?[index].isEnabled = true
+                    return
+                }
+            }
+        }
+
+        fatalError("expected to find UINavigationController > RecordingsTableViewController chain")
+    }
+}
+
+extension RootViewController {
+
+    /**
+     Show a Share popup sheet that offers ways to share a recording file.
+
+     - parameter recordingInfo: the recording to share
+     - parameter actionFrom: the view where the share request originated from
+     */
+    public func share(recordingInfo: RecordingInfo, actionFrom: UIView, completion: @escaping ()->Void) {
+
+        let objectsToShare = [recordingInfo.localUrl]
+        let controller = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+
+        let vc = self.presentedViewController != nil ? self.presentedViewController! : self
+        controller.modalPresentationStyle = .popover
+        vc.present(controller, animated: true, completion: completion)
+
+        if let presentationController = controller.popoverPresentationController {
+            presentationController.sourceView = actionFrom
+            presentationController.sourceRect = actionFrom.frame
+        }
+    }
+}

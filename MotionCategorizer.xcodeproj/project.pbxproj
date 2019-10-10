@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD489867234F30FC00B78BE1 /* CloudReplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD489866234F30FC00B78BE1 /* CloudReplicator.swift */; };
 		BD7553C5234D252400A457A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7553C4234D252400A457A7 /* AppDelegate.swift */; };
 		BD7553C7234D252400A457A7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7553C6234D252400A457A7 /* SceneDelegate.swift */; };
 		BD7553C9234D252400A457A7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7553C8234D252400A457A7 /* ViewController.swift */; };
@@ -14,6 +15,24 @@
 		BD7553CE234D252500A457A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD7553CD234D252500A457A7 /* Assets.xcassets */; };
 		BD7553D1234D252500A457A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD7553CF234D252500A457A7 /* LaunchScreen.storyboard */; };
 		BD7553DC234D252600A457A7 /* MotionCategorizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7553DB234D252600A457A7 /* MotionCategorizerTests.swift */; };
+		BD96B4A9234E75CD009890A0 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4A5234E75CD009890A0 /* CoreDataStack.swift */; };
+		BD96B4AA234E75CD009890A0 /* Managed.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4A6234E75CD009890A0 /* Managed.swift */; };
+		BD96B4AB234E75CD009890A0 /* NSManagedObjectContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4A7234E75CD009890A0 /* NSManagedObjectContext+Extensions.swift */; };
+		BD96B4AC234E75CD009890A0 /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4A8234E75CD009890A0 /* TableViewDataSource.swift */; };
+		BD96B4AE234E7619009890A0 /* CachedValueTypedNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4AD234E7619009890A0 /* CachedValueTypedNotification.swift */; };
+		BD96B4B0234E762A009890A0 /* TypedNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4AF234E762A009890A0 /* TypedNotification.swift */; };
+		BD96B4B3234E768D009890A0 /* CircularProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4B2234E768D009890A0 /* CircularProgressBar.swift */; };
+		BD96B4B5234E76C1009890A0 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4B4234E76C1009890A0 /* FileManager+Extensions.swift */; };
+		BD96B4B7234E76DC009890A0 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4B6234E76DC009890A0 /* Logging.swift */; };
+		BD96B4BA234E7918009890A0 /* RecordingInfoCellConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4B9234E7918009890A0 /* RecordingInfoCellConfigurator.swift */; };
+		BD96B4BC234E7922009890A0 /* RecordingInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4BB234E7922009890A0 /* RecordingInfoTableViewCell.swift */; };
+		BD96B4BE234E793D009890A0 /* RecordingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4BD234E793D009890A0 /* RecordingsTableViewController.swift */; };
+		BD96B4C0234E799B009890A0 /* SegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4BF234E799B009890A0 /* SegueHandler.swift */; };
+		BD96B4C3234E7B34009890A0 /* RecordingInfo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4C1234E7B34009890A0 /* RecordingInfo.xcdatamodeld */; };
+		BD96B4C9234E7C57009890A0 /* RecordingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4C8234E7C57009890A0 /* RecordingInfo.swift */; };
+		BD96B4CB234E7D82009890A0 /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4CA234E7D82009890A0 /* PersistentContainer.swift */; };
+		BD96B4CD234E7F2C009890A0 /* ParentChildEditingStateCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4CC234E7F2C009890A0 /* ParentChildEditingStateCapture.swift */; };
+		BD96B4CF234E825D009890A0 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4CE234E825D009890A0 /* RootViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BD489866234F30FC00B78BE1 /* CloudReplicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudReplicator.swift; sourceTree = "<group>"; };
 		BD7553C1234D252400A457A7 /* MotionCategorizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MotionCategorizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD7553C4234D252400A457A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BD7553C6234D252400A457A7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -38,6 +58,25 @@
 		BD7553D7234D252600A457A7 /* MotionCategorizerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MotionCategorizerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD7553DB234D252600A457A7 /* MotionCategorizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionCategorizerTests.swift; sourceTree = "<group>"; };
 		BD7553DD234D252600A457A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD96B4A3234E73D6009890A0 /* MotionCategorizer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MotionCategorizer.entitlements; sourceTree = "<group>"; };
+		BD96B4A5234E75CD009890A0 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		BD96B4A6234E75CD009890A0 /* Managed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Managed.swift; sourceTree = "<group>"; };
+		BD96B4A7234E75CD009890A0 /* NSManagedObjectContext+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Extensions.swift"; sourceTree = "<group>"; };
+		BD96B4A8234E75CD009890A0 /* TableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
+		BD96B4AD234E7619009890A0 /* CachedValueTypedNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedValueTypedNotification.swift; sourceTree = "<group>"; };
+		BD96B4AF234E762A009890A0 /* TypedNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedNotification.swift; sourceTree = "<group>"; };
+		BD96B4B2234E768D009890A0 /* CircularProgressBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularProgressBar.swift; sourceTree = "<group>"; };
+		BD96B4B4234E76C1009890A0 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
+		BD96B4B6234E76DC009890A0 /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
+		BD96B4B9234E7918009890A0 /* RecordingInfoCellConfigurator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordingInfoCellConfigurator.swift; sourceTree = "<group>"; };
+		BD96B4BB234E7922009890A0 /* RecordingInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordingInfoTableViewCell.swift; sourceTree = "<group>"; };
+		BD96B4BD234E793D009890A0 /* RecordingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordingsTableViewController.swift; sourceTree = "<group>"; };
+		BD96B4BF234E799B009890A0 /* SegueHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandler.swift; sourceTree = "<group>"; };
+		BD96B4C2234E7B34009890A0 /* RecordingInfo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RecordingInfo.xcdatamodel; sourceTree = "<group>"; };
+		BD96B4C8234E7C57009890A0 /* RecordingInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordingInfo.swift; sourceTree = "<group>"; };
+		BD96B4CA234E7D82009890A0 /* PersistentContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
+		BD96B4CC234E7F2C009890A0 /* ParentChildEditingStateCapture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParentChildEditingStateCapture.swift; sourceTree = "<group>"; };
+		BD96B4CE234E825D009890A0 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,7 +118,12 @@
 		BD7553C3234D252400A457A7 /* MotionCategorizer */ = {
 			isa = PBXGroup;
 			children = (
+				BD96B4B8234E7906009890A0 /* Recordings */,
+				BD96B4B1234E762F009890A0 /* Utils */,
+				BD96B4A4234E75BC009890A0 /* Core Data */,
+				BD96B4A3234E73D6009890A0 /* MotionCategorizer.entitlements */,
 				BD7553C4234D252400A457A7 /* AppDelegate.swift */,
+				BD96B4CE234E825D009890A0 /* RootViewController.swift */,
 				BD7553C6234D252400A457A7 /* SceneDelegate.swift */,
 				BD7553C8234D252400A457A7 /* ViewController.swift */,
 				BD7553CA234D252400A457A7 /* Main.storyboard */,
@@ -97,6 +141,45 @@
 				BD7553DD234D252600A457A7 /* Info.plist */,
 			);
 			path = MotionCategorizerTests;
+			sourceTree = "<group>";
+		};
+		BD96B4A4234E75BC009890A0 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				BD96B4A5234E75CD009890A0 /* CoreDataStack.swift */,
+				BD96B4A6234E75CD009890A0 /* Managed.swift */,
+				BD96B4A7234E75CD009890A0 /* NSManagedObjectContext+Extensions.swift */,
+				BD96B4A8234E75CD009890A0 /* TableViewDataSource.swift */,
+			);
+			path = "Core Data";
+			sourceTree = "<group>";
+		};
+		BD96B4B1234E762F009890A0 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				BD96B4AD234E7619009890A0 /* CachedValueTypedNotification.swift */,
+				BD96B4B2234E768D009890A0 /* CircularProgressBar.swift */,
+				BD489866234F30FC00B78BE1 /* CloudReplicator.swift */,
+				BD96B4B4234E76C1009890A0 /* FileManager+Extensions.swift */,
+				BD96B4B6234E76DC009890A0 /* Logging.swift */,
+				BD96B4CC234E7F2C009890A0 /* ParentChildEditingStateCapture.swift */,
+				BD96B4BF234E799B009890A0 /* SegueHandler.swift */,
+				BD96B4AF234E762A009890A0 /* TypedNotification.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		BD96B4B8234E7906009890A0 /* Recordings */ = {
+			isa = PBXGroup;
+			children = (
+				BD96B4C1234E7B34009890A0 /* RecordingInfo.xcdatamodeld */,
+				BD96B4CA234E7D82009890A0 /* PersistentContainer.swift */,
+				BD96B4C8234E7C57009890A0 /* RecordingInfo.swift */,
+				BD96B4B9234E7918009890A0 /* RecordingInfoCellConfigurator.swift */,
+				BD96B4BB234E7922009890A0 /* RecordingInfoTableViewCell.swift */,
+				BD96B4BD234E793D009890A0 /* RecordingsTableViewController.swift */,
+			);
+			path = Recordings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,7 +283,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD96B4A9234E75CD009890A0 /* CoreDataStack.swift in Sources */,
+				BD96B4B7234E76DC009890A0 /* Logging.swift in Sources */,
+				BD96B4BA234E7918009890A0 /* RecordingInfoCellConfigurator.swift in Sources */,
+				BD96B4AB234E75CD009890A0 /* NSManagedObjectContext+Extensions.swift in Sources */,
+				BD96B4AC234E75CD009890A0 /* TableViewDataSource.swift in Sources */,
+				BD96B4C3234E7B34009890A0 /* RecordingInfo.xcdatamodeld in Sources */,
+				BD96B4B0234E762A009890A0 /* TypedNotification.swift in Sources */,
+				BD96B4BC234E7922009890A0 /* RecordingInfoTableViewCell.swift in Sources */,
+				BD96B4C9234E7C57009890A0 /* RecordingInfo.swift in Sources */,
+				BD96B4CD234E7F2C009890A0 /* ParentChildEditingStateCapture.swift in Sources */,
+				BD96B4AE234E7619009890A0 /* CachedValueTypedNotification.swift in Sources */,
+				BD96B4B5234E76C1009890A0 /* FileManager+Extensions.swift in Sources */,
+				BD96B4B3234E768D009890A0 /* CircularProgressBar.swift in Sources */,
+				BD96B4CB234E7D82009890A0 /* PersistentContainer.swift in Sources */,
+				BD96B4CF234E825D009890A0 /* RootViewController.swift in Sources */,
+				BD96B4AA234E75CD009890A0 /* Managed.swift in Sources */,
 				BD7553C9234D252400A457A7 /* ViewController.swift in Sources */,
+				BD96B4C0234E799B009890A0 /* SegueHandler.swift in Sources */,
+				BD489867234F30FC00B78BE1 /* CloudReplicator.swift in Sources */,
+				BD96B4BE234E793D009890A0 /* RecordingsTableViewController.swift in Sources */,
 				BD7553C5234D252400A457A7 /* AppDelegate.swift in Sources */,
 				BD7553C7234D252400A457A7 /* SceneDelegate.swift in Sources */,
 			);
@@ -362,6 +464,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MotionCategorizer/MotionCategorizer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = MotionCategorizer/Info.plist;
@@ -380,6 +483,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MotionCategorizer/MotionCategorizer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = MotionCategorizer/Info.plist;
@@ -469,6 +573,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		BD96B4C1234E7B34009890A0 /* RecordingInfo.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				BD96B4C2234E7B34009890A0 /* RecordingInfo.xcdatamodel */,
+			);
+			currentVersion = BD96B4C2234E7B34009890A0 /* RecordingInfo.xcdatamodel */;
+			path = RecordingInfo.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = BD7553B9234D252400A457A7 /* Project object */;
 }
