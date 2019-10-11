@@ -9,6 +9,9 @@ import CoreData
  actions per row, and editing of cells to delete past recordings.
  */
 final class RecordingsTableViewController: UITableViewController, SegueHandler {
+
+    @IBOutlet weak var editButton: UIBarButtonItem!
+
     /**
      Enumeration of the segues that can come from this controller.
      */
