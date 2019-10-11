@@ -34,15 +34,10 @@ public extension FileManager {
 
     /// Location of app documents in iCloud (if enabled)
     var cloudDocumentsDirectory: URL? {
-        #if TESTING
-        let uc = self.urls(for: .documentDirectory,
-                           in: .allDomainsMask)[0].appendingPathComponent(ProcessInfo().globallyUniqueString)
-        #else
         guard let uc = self.url(forUbiquityContainerIdentifier: nil) else {
             os_log(.info, log: log, "cloudDocumentsDirectory - nil")
             return nil
         }
-        #endif
         let dir = uc.appendingPathComponent("Documents")
         if !self.fileExists(atPath: dir.path) {
             try? self.createDirectory(at: dir, withIntermediateDirectories: true, attributes: nil)
