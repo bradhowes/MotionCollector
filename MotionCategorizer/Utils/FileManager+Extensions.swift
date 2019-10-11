@@ -32,8 +32,10 @@ public extension FileManager {
         return path
     }
 
-    /// Location of app documents in iCloud (if enabled)
+    /// Location of app documents in iCloud (if enabled). NOTE: this should not be accessed from the main thread as
+    /// it can take some time before it will return a value.
     var cloudDocumentsDirectory: URL? {
+        precondition(Thread.current.isMainThread == false)
         guard let uc = self.url(forUbiquityContainerIdentifier: nil) else {
             os_log(.info, log: log, "cloudDocumentsDirectory - nil")
             return nil
