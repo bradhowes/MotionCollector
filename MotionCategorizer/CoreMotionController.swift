@@ -12,6 +12,7 @@ class CoreMotionController {
                                   target: DispatchQueue.global(qos: .utility))
 
     var data = [String]()
+    var state: Int = 0
 
     init() {
         operationQueue.qualityOfService = .utility
@@ -27,6 +28,7 @@ class CoreMotionController {
 
     func start() {
         data.removeAll(keepingCapacity: true)
+        data.append(Datum.header)
 
         if sensorManager.isAccelerometerAvailable {
             let proc = processGenerator(
@@ -71,7 +73,9 @@ class CoreMotionController {
         self.dataQueue.async { block(self.data.count) }
     }
 
-    private func add(_ datum: Datum) { self.data.append(datum.csv) }
+    private func add(_ datum: Datum) {
+        self.data.append(datum.csv)
+    }
 
     private func processGenerator<DataType>(bad: @escaping (Error)->Void,
                                             good: @escaping (DataType)->Void) -> (DataType?, Error?)->Void {
@@ -80,6 +84,7 @@ class CoreMotionController {
                 good(data)
             }
             else if let err = err {
+                print("*** \(err)")
                 bad(err)
             }
         }

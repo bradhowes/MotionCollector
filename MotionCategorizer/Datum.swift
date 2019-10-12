@@ -12,6 +12,8 @@ enum Datum {
 
     public var csv: String { row.map { "\($0)" }.joined(separator: ",") }
 
+    static let header = "Type, When, X, Y, Z, Pitch, Roll, Yaw"
+
     public var row: [Double] {
         switch self {
         case .acceleration(let data):
@@ -32,4 +34,3 @@ enum Datum {
         }
     }
 }
-

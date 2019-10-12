@@ -114,7 +114,7 @@
         <scene sceneID="HaC-LN-8nd">
             <objects>
                 <tableViewController id="T3p-Py-xOJ" customClass="RecordingsTableViewController" customModule="MotionCategorizer" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="S8X-b9-Fvs">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="S8X-b9-Fvs">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -153,12 +153,7 @@
                             <outlet property="delegate" destination="T3p-Py-xOJ" id="v86-MT-8Ry"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Recordings" id="A0f-oN-ThQ">
-                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="bLz-uw-CkI"/>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="editButton" destination="bLz-uw-CkI" id="4I0-Tf-mJH"/>
-                    </connections>
+                    <navigationItem key="navigationItem" title="Recordings" id="A0f-oN-ThQ"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jaw-Sc-w1K" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

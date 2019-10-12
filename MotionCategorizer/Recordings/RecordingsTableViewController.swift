@@ -1,6 +1,5 @@
 // Copyright © 2019 Brad Howes. All rights reserved.
 
-import os
 import UIKit
 import CoreData
 
@@ -9,8 +8,6 @@ import CoreData
  actions per row, and editing of cells to delete past recordings.
  */
 final class RecordingsTableViewController: UITableViewController, SegueHandler {
-
-    @IBOutlet weak var editButton: UIBarButtonItem!
 
     /**
      Enumeration of the segues that can come from this controller.
@@ -30,16 +27,17 @@ final class RecordingsTableViewController: UITableViewController, SegueHandler {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTableView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        tableView.reloadData()
+        setupTableView()
+        // tableView.reloadData()
         super.viewWillAppear(animated)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        dataSource = nil
     }
 }
 
@@ -82,10 +80,6 @@ extension RecordingsTableViewController: TableViewDataSourceDelegate {
 
 extension RecordingsTableViewController {
 
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-    }
-
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         let recordingInfo = dataSource.object(at: indexPath)
         guard !recordingInfo.isRecording else { return .none }
@@ -95,13 +89,16 @@ extension RecordingsTableViewController {
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard !isEditing else { return nil }
         let recordingInfo = dataSource.object(at: indexPath)
-        return RecordingInfoCellConfigurator.makeLeadingSwipeActions(at: indexPath, with: recordingInfo,
+        return RecordingInfoCellConfigurator.makeLeadingSwipeActions(with: recordingInfo,
                                                                      cell: tableView.cellForRow(at: indexPath))
     }
 
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let recordingInfo = dataSource.object(at: indexPath)
-        return RecordingInfoCellConfigurator.makeTrailingSwipeActions(vc: self, at: indexPath, with: recordingInfo)
+        guard !recordingInfo.isRecording else { return nil }
+        return RecordingInfoCellConfigurator.makeTrailingSwipeActions(vc: self) {
+            recordingInfo.delete()
+        }
     }
 }
 
@@ -121,5 +118,7 @@ extension RecordingsTableViewController {
                                              sectionNameKeyPath: nil, cacheName: nil)
         dataSource = TableViewDataSource(tableView: tableView, cellIdentifier: "RecordingInfo",
                                          fetchedResultsController: frc, delegate: self)
+
+        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 }

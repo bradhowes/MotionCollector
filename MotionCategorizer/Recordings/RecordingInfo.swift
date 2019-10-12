@@ -132,26 +132,9 @@ public final class RecordingInfo: NSManagedObject {
         }
     }
 
-    /// Accessor for the CoreData managed object context for all recordings
-    public static var managedContext: NSManagedObjectContext {
-        return UIApplication.appDelegate.recordingInfoManagedContext!
-    }
-
     /// Class method that creates a new RecordingInfo entry in CoreData and returns a reference to it
     public class func insert() -> RecordingInfo {
-        return insert(into: managedContext)
-    }
-
-    /**
-     Class method that creates a new RecordingInfo entry in the given `NSManagedObjectContext` and returns a
-     reference to it.
-
-     - parameter context: the CoreData context the `owns` the object.
-     - returns: new `RecordingInfo` instance
-
-     */
-    public class func insert(into context: NSManagedObjectContext) -> RecordingInfo {
-        let recording: RecordingInfo = context.insertObject()
+        let recording: RecordingInfo = UIApplication.appDelegate.recordingInfoManagedContext!.insertObject()
         var namer = RecordingNameGenerator()
         recording.begin = namer.date
         recording.state = .recording
@@ -177,8 +160,7 @@ public final class RecordingInfo: NSManagedObject {
     public func update(count: Int) {
         precondition(state == .recording)
         os_log(.info, log: log, "update")
-        self.count = Int64(count)
-        self.managedObjectContext?.saveOrRollback()
+        managedObjectContext?.performChanges { self.count = Int64(count) }
     }
 
     /**
@@ -186,9 +168,7 @@ public final class RecordingInfo: NSManagedObject {
      */
     public func delete() {
         os_log(.info, log: log, "delete")
-        RecordingInfo.managedContext.performChanges {
-            RecordingInfo.managedContext.delete(self)
-        }
+        managedObjectContext?.performChanges { self.managedObjectContext?.delete(self) }
     }
 
     /**
@@ -198,7 +178,7 @@ public final class RecordingInfo: NSManagedObject {
         os_log(.info, log: log, "finishedRecording")
 
         DispatchQueue.global(qos: .background).async {
-            let contents = "Kind, Timestamp, X, Y, Z\n" + rows.joined(separator: "\n") + "\n"
+            let contents = rows.joined(separator: "\n") + "\n"
             os_log(.info, log: self.log, "contents: %s", contents)
             os_log(.info, log: self.log, "path: %s", self.localUrl.path)
             let ok = FileManager.default.createFile(atPath: self.localUrl.path,

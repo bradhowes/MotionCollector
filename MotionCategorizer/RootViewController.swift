@@ -52,12 +52,12 @@ extension RootViewController {
     /**
      Show a Share popup sheet that offers ways to share a recording file.
 
-     - parameter recordingInfo: the recording to share
+     - parameter file: the recording to share
      - parameter actionFrom: the view where the share request originated from
      */
-    public func share(recordingInfo: RecordingInfo, actionFrom: UIView, completion: @escaping ()->Void) {
+    public func share(file: URL, actionFrom: UIView, completion: @escaping ()->Void) {
 
-        let objectsToShare = [recordingInfo.localUrl]
+        let objectsToShare = [file]
         let controller = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
 
         let vc = self.presentedViewController != nil ? self.presentedViewController! : self

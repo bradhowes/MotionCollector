@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD0E370C2351F7AA0048FBC5 /* ContextDidSaveNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E370B2351F7AA0048FBC5 /* ContextDidSaveNotification.swift */; };
 		BD489867234F30FC00B78BE1 /* CloudReplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD489866234F30FC00B78BE1 /* CloudReplicator.swift */; };
 		BD532161234FEE640016D0A9 /* Datum.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD532160234FEE640016D0A9 /* Datum.swift */; };
 		BD532163234FEF7C0016D0A9 /* CoreMotionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD532162234FEF7C0016D0A9 /* CoreMotionController.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BD0E370B2351F7AA0048FBC5 /* ContextDidSaveNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextDidSaveNotification.swift; sourceTree = "<group>"; };
 		BD489866234F30FC00B78BE1 /* CloudReplicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudReplicator.swift; sourceTree = "<group>"; };
 		BD532160234FEE640016D0A9 /* Datum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Datum.swift; sourceTree = "<group>"; };
 		BD532162234FEF7C0016D0A9 /* CoreMotionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreMotionController.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 				BD96B4A6234E75CD009890A0 /* Managed.swift */,
 				BD96B4A7234E75CD009890A0 /* NSManagedObjectContext+Extensions.swift */,
 				BD96B4A8234E75CD009890A0 /* TableViewDataSource.swift */,
+				BD0E370B2351F7AA0048FBC5 /* ContextDidSaveNotification.swift */,
 			);
 			path = "Core Data";
 			sourceTree = "<group>";
@@ -305,6 +308,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD0E370C2351F7AA0048FBC5 /* ContextDidSaveNotification.swift in Sources */,
 				BD96B4A9234E75CD009890A0 /* CoreDataStack.swift in Sources */,
 				BD532161234FEE640016D0A9 /* Datum.swift in Sources */,
 				BD96B4B7234E76DC009890A0 /* Logging.swift in Sources */,

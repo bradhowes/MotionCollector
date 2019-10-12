@@ -44,12 +44,11 @@ struct RecordingInfoCellConfigurator {
     /**
      Create actions for a row when user swipes left-to-right.
 
-     - parameter indexPath: index of the row to work on
      - parameter recordingInfo: the RecordingInfo instance associated with the row
      - parameter cell: the UITableViewCell instance associated with the row
      - returns: optional collection of UIContextualAction instances that describe the actions for the row
      */
-    static public func makeLeadingSwipeActions(at indexPath: IndexPath, with recordingInfo: RecordingInfo,
+    static public func makeLeadingSwipeActions(with recordingInfo: RecordingInfo,
                                                cell: UITableViewCell?) -> UISwipeActionsConfiguration? {
         guard let cell = cell, !recordingInfo.isRecording else { return nil }
 
@@ -58,7 +57,7 @@ struct RecordingInfoCellConfigurator {
             actions.append(makeUploadAction(with: recordingInfo))
         }
 
-        if let shareAction = makeShareAction(at: indexPath, with: recordingInfo, cell: cell) {
+        if let shareAction = makeShareAction(with: recordingInfo, cell: cell) {
             actions.append(shareAction)
         }
 
@@ -72,15 +71,11 @@ struct RecordingInfoCellConfigurator {
      Create actions for a row when user swipes right-to-left.
 
      - parameter vc: the active UIViewController
-     - parameter indexPath: index of the row to work on
      - parameter recordingInfo: the RecordingInfo instance associated with the row
      - returns: optional collection of UIContextualAction instances that describe the actions for the row
      */
-    static public func makeTrailingSwipeActions(vc: UIViewController, at indexPath: IndexPath,
-                                                with recordingInfo: RecordingInfo) -> UISwipeActionsConfiguration? {
-        guard !recordingInfo.isRecording else { return nil }
-
-        let config = UISwipeActionsConfiguration(actions: [makeDeleteAction(vc: vc, with: recordingInfo)])
+    static public func makeTrailingSwipeActions(vc: UIViewController, deleteAction: @escaping ()->Void) -> UISwipeActionsConfiguration? {
+        let config = UISwipeActionsConfiguration(actions: [makeDeleteAction(vc: vc, deleteAction: deleteAction)])
         config.performsFirstActionWithFullSwipe = false
         return config
     }
@@ -94,16 +89,15 @@ struct RecordingInfoCellConfigurator {
         }
     }
 
-    static private func makeShareAction(at indexPath: IndexPath, with recordingInfo: RecordingInfo,
-                                        cell: UITableViewCell) -> UIContextualAction? {
+    static private func makeShareAction(with recordingInfo: RecordingInfo, cell: UITableViewCell) -> UIContextualAction? {
         guard let rvc = mainWindow?.rootViewController as? RootViewController else {
-            fatalError("nil UITabBarControllerl")
+            fatalError("nil RootViewController")
         }
 
         guard !recordingInfo.isRecording else { return nil }
 
         let share = UIContextualAction(style: .normal, title: "Share") { action, view, completion in
-            rvc.share(recordingInfo: recordingInfo, actionFrom: cell) {
+            rvc.share(file: recordingInfo.localUrl, actionFrom: cell) {
                 completion(true)
             }
         }
@@ -126,7 +120,7 @@ struct RecordingInfoCellConfigurator {
         return upload
     }
 
-    static private func makeDeleteAction(vc: UIViewController, with recordingInfo: RecordingInfo) -> UIContextualAction {
+    static private func makeDeleteAction(vc: UIViewController, deleteAction: @escaping ()->Void) -> UIContextualAction {
         let delete = UIContextualAction(style: .destructive, title: "Delete") { action, view, completion in
             let prompt = UIAlertController(title: "Delete Recording?",
                                            message: """
@@ -135,7 +129,7 @@ struct RecordingInfoCellConfigurator {
     """,
                                            preferredStyle: .alert)
             prompt.addAction(UIAlertAction(title: "Delete", style: .destructive) { action in
-                recordingInfo.delete()
+                deleteAction()
                 completion(true)
             })
             prompt.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
