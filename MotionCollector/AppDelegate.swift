@@ -10,21 +10,10 @@ import os
 import UIKit
 import CoreData
 
-/// Notification that recording is to stop.
-let stopRecordingRequest = Notification.Name(rawValue: "StopRecordingRequest")
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     lazy var log = Logging.logger("app")
-
-    /// Loader for the managed context for RecordingInfo instances
-    public lazy var recordingInfoManagedContextLoader = CoreDataStack(container: PersistentContainer(name: "RecordingInfo"))
-
-    /// Obtain the known NSManagedObjectContext for RecordingInfo instances.
-    public var recordingInfoManagedContext: NSManagedObjectContext? {
-        return recordingInfoManagedContextLoader.managedObjectContext
-    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         return true
@@ -64,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         os_log(.info, log: log, "applicationWillTerminate")
-         try? recordingInfoManagedContext?.save()
+         RecordingInfoManagedContext.save()
     }
 }
 
@@ -76,7 +65,7 @@ extension AppDelegate {
      */
     private func movingToBackground() {
         NotificationCenter.default.post(name: stopRecordingRequest, object: nil)
-        try? recordingInfoManagedContext?.save()
+        RecordingInfoManagedContext.save()
     }
 }
 

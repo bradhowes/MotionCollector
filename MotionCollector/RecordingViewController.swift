@@ -11,11 +11,10 @@ import CoreMotion
 
 public let RecordingStateChangeNotification = TypedNotification<Bool>(name: "RecordingStateChange")
 
-extension CMLogItem {
-    public var when: TimeInterval { Date(timeIntervalSinceReferenceDate: self.timestamp).timeIntervalSince1970 }
-}
-
-class ViewController: UIViewController, SegueHandler {
+/**
+ The first, primary view controller that shows the start/stop button and the motion type tap buttons.
+ */
+class RecordingViewController: UIViewController, SegueHandler {
 
     /**
      Enumeration of the segues that can come from this controller.
@@ -39,16 +38,18 @@ class ViewController: UIViewController, SegueHandler {
     }()
 
     let coreMotionController = CoreMotionController()
-
-    var samplesPerSecond: Int {
-        get { coreMotionController.samplesPerSecond }
-        set { coreMotionController.samplesPerSecond = newValue }
-    }
-
     var startTime: Date?
     var timer: Timer?
     var recording: RecordingInfo?
 
+    private var recordingInfoManagedContextLoaderObserver: NotificationObserver?
+
+    /**
+     Properly set up the options view.
+
+     - parameter segue: the seque being executed
+     - parameter sender: the source of the seque event
+     */
     public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .optionsView:
@@ -58,13 +59,19 @@ class ViewController: UIViewController, SegueHandler {
                 fatalError("expected OptionsViewController type")
             }
 
-            vc.mgr = coreMotionController
+            vc.state = coreMotionController
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        recordingInfoManagedContextLoaderObserver = RecordingInfoManagedContext.registerLoadedNotifier { context in
+            self.startStop.isEnabled = true
+        }
+
         setElapsed(0)
+        startStop.isEnabled = false
 
         showRecordCount(0)
         walking.isEnabled = false

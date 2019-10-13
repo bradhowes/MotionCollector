@@ -134,7 +134,7 @@ public final class RecordingInfo: NSManagedObject {
 
     /// Class method that creates a new RecordingInfo entry in CoreData and returns a reference to it
     public class func insert() -> RecordingInfo {
-        let recording: RecordingInfo = UIApplication.appDelegate.recordingInfoManagedContext!.insertObject()
+        let recording: RecordingInfo = RecordingInfoManagedContext.insertObject()
         var namer = RecordingNameGenerator()
         recording.begin = namer.date
         recording.state = .recording

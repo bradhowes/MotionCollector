@@ -122,7 +122,7 @@ extension RecordingsTableViewController {
     private func setupTableView() {
         editButtonItem.isEnabled = false
 
-        guard let managedContext = UIApplication.appDelegate.recordingInfoManagedContext else { fatalError("nil recordingInfoManagedContext") }
+        guard let managedContext = RecordingInfoManagedContext.singleton.context else { fatalError("nil recordingInfoManagedContext") }
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 100
 

@@ -4,7 +4,10 @@
 import UIKit
 
 
-protocol OptionsViewManager {
+/**
+ A source and destination of state for the OptionsViewController.
+ */
+protocol OptionsViewState {
     var samplesPerSecond: Int {get set}
     var useAccelerometer: Bool {get set}
     var useDeviceMotion: Bool {get set}
@@ -12,6 +15,10 @@ protocol OptionsViewManager {
     var useMagnetometer: Bool {get set}
 }
 
+/**
+ Simple modal view that shows the configurable settings for the app. The values are loaded before appearing, and they
+ are applied after it disappears.
+ */
 class OptionsViewController: UIViewController {
     @IBOutlet weak var samplesPerSecond: UITextField!
     @IBOutlet weak var done: UIButton!
@@ -20,28 +27,58 @@ class OptionsViewController: UIViewController {
     @IBOutlet weak var gyro: UISwitch!
     @IBOutlet weak var magnetometer: UISwitch!
 
-    var mgr: OptionsViewManager!
+    var state: OptionsViewState!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        samplesPerSecond.text = "\(mgr.samplesPerSecond)"
-        accelerometer.isOn = mgr.useAccelerometer
-        deviceMotion.isOn = mgr.useDeviceMotion
-        gyro.isOn = mgr.useGyro
-        magnetometer.isOn = mgr.useMagnetometer
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_:))))
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        samplesPerSecond.text = "\(state.samplesPerSecond)"
+        accelerometer.isOn = state.useAccelerometer
+        deviceMotion.isOn = state.useDeviceMotion
+        gyro.isOn = state.useGyro
+        magnetometer.isOn = state.useMagnetometer
+
+
+        super.viewWillAppear(animated)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if let sps = Int(self.samplesPerSecond.text ?? "") {
-            mgr.samplesPerSecond = sps
-            mgr.useAccelerometer = accelerometer.isOn
-            mgr.useDeviceMotion = deviceMotion.isOn
-            mgr.useGyro = gyro.isOn
-            mgr.useMagnetometer = magnetometer.isOn
+        if let sps = validSamplesPerSecond { state.samplesPerSecond = sps }
+        state.useAccelerometer = accelerometer.isOn
+        state.useDeviceMotion = deviceMotion.isOn
+        state.useGyro = gyro.isOn
+        state.useMagnetometer = magnetometer.isOn
+    }
+
+    /**
+     If the samplesPerSecond field is the first responder, then resign it and validate that the contents of the
+     text field is an integer value we can use.
+
+     - parameter sender: gesture recognizer
+     */
+    @IBAction func dismissKeyboard(_ sender: Any) {
+        if samplesPerSecond.isFirstResponder {
+            let sps = validSamplesPerSecond ?? state.samplesPerSecond
+            samplesPerSecond.text = "\(sps)"
+            samplesPerSecond.resignFirstResponder()
         }
     }
 
+    /// Return a valid samplesPerSecond or nil
+    private var validSamplesPerSecond: Int? {
+        if let sps = Int(samplesPerSecond.text ?? ""), sps > 0 { return sps }
+        return nil
+    }
+
+    /**
+     Dismiss the view.
+
+     - parameter sender: sender to the event
+     */
     @IBAction func dismiss(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }

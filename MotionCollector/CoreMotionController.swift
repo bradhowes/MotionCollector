@@ -27,7 +27,7 @@ fileprivate extension UserDefaults {
 /**
  Wrapper around the CMMotionManager to control how it is used.
  */
-class CoreMotionController: OptionsViewManager {
+class CoreMotionController: OptionsViewState {
     lazy var log = Logging.logger("cmc")
 
     /// The source of all of the reports from iOS hardware.

@@ -16,7 +16,7 @@
 		BD67348F23527E8400CB8D94 /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD67348E23527E8400CB8D94 /* OptionsViewController.swift */; };
 		BD7553C5234D252400A457A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7553C4234D252400A457A7 /* AppDelegate.swift */; };
 		BD7553C7234D252400A457A7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7553C6234D252400A457A7 /* SceneDelegate.swift */; };
-		BD7553C9234D252400A457A7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7553C8234D252400A457A7 /* ViewController.swift */; };
+		BD7553C9234D252400A457A7 /* RecordingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7553C8234D252400A457A7 /* RecordingViewController.swift */; };
 		BD7553CC234D252400A457A7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD7553CA234D252400A457A7 /* Main.storyboard */; };
 		BD7553CE234D252500A457A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD7553CD234D252500A457A7 /* Assets.xcassets */; };
 		BD7553D1234D252500A457A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD7553CF234D252500A457A7 /* LaunchScreen.storyboard */; };
@@ -39,6 +39,7 @@
 		BD96B4CB234E7D82009890A0 /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4CA234E7D82009890A0 /* PersistentContainer.swift */; };
 		BD96B4CD234E7F2C009890A0 /* ParentChildEditingStateCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4CC234E7F2C009890A0 /* ParentChildEditingStateCapture.swift */; };
 		BD96B4CF234E825D009890A0 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4CE234E825D009890A0 /* RootViewController.swift */; };
+		BDE50CD82353240A0012AE85 /* RecordingInfoManagedContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE50CD72353240A0012AE85 /* RecordingInfoManagedContext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,7 +63,7 @@
 		BD7553C1234D252400A457A7 /* MotionCollector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MotionCollector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD7553C4234D252400A457A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BD7553C6234D252400A457A7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		BD7553C8234D252400A457A7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BD7553C8234D252400A457A7 /* RecordingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingViewController.swift; sourceTree = "<group>"; };
 		BD7553CB234D252400A457A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BD7553CD234D252500A457A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BD7553D0234D252500A457A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -89,6 +90,7 @@
 		BD96B4CA234E7D82009890A0 /* PersistentContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
 		BD96B4CC234E7F2C009890A0 /* ParentChildEditingStateCapture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParentChildEditingStateCapture.swift; sourceTree = "<group>"; };
 		BD96B4CE234E825D009890A0 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		BDE50CD72353240A0012AE85 /* RecordingInfoManagedContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingInfoManagedContext.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,7 +168,7 @@
 				BD67348E23527E8400CB8D94 /* OptionsViewController.swift */,
 				BD96B4CE234E825D009890A0 /* RootViewController.swift */,
 				BD7553C6234D252400A457A7 /* SceneDelegate.swift */,
-				BD7553C8234D252400A457A7 /* ViewController.swift */,
+				BD7553C8234D252400A457A7 /* RecordingViewController.swift */,
 				BD96B4A4234E75BC009890A0 /* Core Data */,
 				BD96B4B8234E7906009890A0 /* Recordings */,
 				BD53215F234FED3B0016D0A9 /* Resources */,
@@ -219,6 +221,7 @@
 				BD96B4CA234E7D82009890A0 /* PersistentContainer.swift */,
 				BD96B4C8234E7C57009890A0 /* RecordingInfo.swift */,
 				BD96B4B9234E7918009890A0 /* RecordingInfoCellConfigurator.swift */,
+				BDE50CD72353240A0012AE85 /* RecordingInfoManagedContext.swift */,
 				BD96B4BB234E7922009890A0 /* RecordingInfoTableViewCell.swift */,
 				BD96B4BD234E793D009890A0 /* RecordingsTableViewController.swift */,
 			);
@@ -337,6 +340,7 @@
 				BD96B4C3234E7B34009890A0 /* RecordingInfo.xcdatamodeld in Sources */,
 				BD96B4B0234E762A009890A0 /* TypedNotification.swift in Sources */,
 				BD96B4BC234E7922009890A0 /* RecordingInfoTableViewCell.swift in Sources */,
+				BDE50CD82353240A0012AE85 /* RecordingInfoManagedContext.swift in Sources */,
 				BD96B4C9234E7C57009890A0 /* RecordingInfo.swift in Sources */,
 				BD96B4CD234E7F2C009890A0 /* ParentChildEditingStateCapture.swift in Sources */,
 				BD96B4AE234E7619009890A0 /* CachedValueTypedNotification.swift in Sources */,
@@ -346,7 +350,7 @@
 				BD96B4CF234E825D009890A0 /* RootViewController.swift in Sources */,
 				BD532163234FEF7C0016D0A9 /* CoreMotionController.swift in Sources */,
 				BD96B4AA234E75CD009890A0 /* Managed.swift in Sources */,
-				BD7553C9234D252400A457A7 /* ViewController.swift in Sources */,
+				BD7553C9234D252400A457A7 /* RecordingViewController.swift in Sources */,
 				BD96B4C0234E799B009890A0 /* SegueHandler.swift in Sources */,
 				BD67348F23527E8400CB8D94 /* OptionsViewController.swift in Sources */,
 				BD489867234F30FC00B78BE1 /* CloudReplicator.swift in Sources */,

@@ -27,10 +27,10 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="10" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="c3I-1d-0kc">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="10" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="unlessEditing" translatesAutoresizingMaskIntoConstraints="NO" id="c3I-1d-0kc">
                                                 <rect key="frame" x="168.66666666666663" y="-5" width="205.33333333333337" height="34"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                             </textField>
                                         </subviews>
                                     </stackView>
@@ -142,18 +142,18 @@
         <!--ViewController-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" userLabel="ViewController" customClass="ViewController" customModule="MotionCollector" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" userLabel="ViewController" customClass="RecordingViewController" customModule="MotionCollector" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="4qP-ej-hC8" userLabel="Display">
-                                <rect key="frame" x="113.33333333333331" y="333" width="187.66666666666669" height="230"/>
+                                <rect key="frame" x="113.33333333333333" y="333" width="187.66666666666669" height="230"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="6xK-jx-v6W">
                                         <rect key="frame" x="37.666666666666671" y="0.0" width="112.00000000000001" height="123"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OUE-8Z-H2C" userLabel="StartStop">
+                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OUE-8Z-H2C" userLabel="StartStop">
                                                 <rect key="frame" x="20.666666666666657" y="0.0" width="71" height="53"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                                 <state key="normal" title="Start"/>
@@ -183,7 +183,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="hFw-8L-TvY">
                                         <rect key="frame" x="0.0" y="155" width="187.66666666666666" height="75"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CAf-Qa-cND" userLabel="Step">
+                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CAf-Qa-cND" userLabel="Step">
                                                 <rect key="frame" x="0.0" y="0.0" width="70.333333333333329" height="75"/>
                                                 <color key="backgroundColor" red="0.92941176469999998" green="0.062745098040000002" blue="0.98823529409999999" alpha="0.10113441780821918" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
@@ -200,7 +200,7 @@
                                                     <action selector="beginWalking:" destination="BYZ-38-t0r" eventType="touchUpInside" id="43e-ft-Xu6"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YPT-IJ-aSj" userLabel="Turn">
+                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YPT-IJ-aSj" userLabel="Turn">
                                                 <rect key="frame" x="110.33333333333334" y="0.0" width="77.333333333333343" height="75"/>
                                                 <color key="backgroundColor" red="0.92941176469999998" green="0.062745098040000002" blue="0.98823529409999999" alpha="0.099769905821917804" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
@@ -222,7 +222,7 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q5k-3F-hmN">
-                                <rect key="frame" x="113.33333333333331" y="284" width="35.666666666666671" height="41"/>
+                                <rect key="frame" x="113.33333333333333" y="284" width="35.666666666666671" height="41"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                 <state key="normal" image="gear" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="28" scale="default" weight="regular"/>
@@ -327,7 +327,7 @@
         <scene sceneID="TG8-SM-i6b">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="BeR-UX-LTi" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="list.dash" catalog="system" id="tZu-ry-5Re"/>
+                    <tabBarItem key="tabBarItem" enabled="NO" title="" image="list.dash" catalog="system" id="tZu-ry-5Re"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="oOG-4h-Vdq">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>

@@ -17,7 +17,7 @@ public final class RootViewController: UITabBarController {
 
         // Invoke `injectManagedObjectContext` when the CoreData managed object context is available for
         // `RecordingInfo` instances.
-        recordingInfoManagedContextLoaderObserver = UIApplication.appDelegate.recordingInfoManagedContextLoader.register {
+        recordingInfoManagedContextLoaderObserver = RecordingInfoManagedContext.registerLoadedNotifier {
             self.injectManagedObjectContext($0)
         }
     }
@@ -38,12 +38,9 @@ public final class RootViewController: UITabBarController {
                 if let rvc = nc.topViewController as? RecordingsTableViewController {
                     rvc.tabBarItem.isEnabled = true
                     self.tabBar.items?[index].isEnabled = true
-                    return
                 }
             }
         }
-
-        fatalError("expected to find UINavigationController > RecordingsTableViewController chain")
     }
 }
 
@@ -54,6 +51,7 @@ extension RootViewController {
 
      - parameter file: the recording to share
      - parameter actionFrom: the view where the share request originated from
+     - parameter completion: closure to run when the presentation is done
      */
     public func share(file: URL, actionFrom: UIView, completion: @escaping ()->Void) {
         let objectsToShare = [file]
