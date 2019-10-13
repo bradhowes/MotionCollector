@@ -15,13 +15,22 @@ extension CMLogItem {
     public var when: TimeInterval { Date(timeIntervalSinceReferenceDate: self.timestamp).timeIntervalSince1970 }
 }
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, SegueHandler {
+
+    /**
+     Enumeration of the segues that can come from this controller.
+     */
+    enum SegueIdentifier: String {
+        case optionsView = "OptionsView"
+    }
+
     @IBOutlet weak var elapsed: UILabel!
     @IBOutlet weak var startStop: UIButton!
     @IBOutlet weak var walking: UIButton!
     @IBOutlet weak var turning: UIButton!
     @IBOutlet weak var status: UILabel!
-
+    @IBOutlet weak var options: UIButton!
+    
     let elapsedFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.hour, .minute, .second]
@@ -31,9 +40,27 @@ class ViewController: UIViewController {
 
     let coreMotionController = CoreMotionController()
 
+    var samplesPerSecond: Int {
+        get { coreMotionController.samplesPerSecond }
+        set { coreMotionController.samplesPerSecond = newValue }
+    }
+
     var startTime: Date?
     var timer: Timer?
     var recording: RecordingInfo?
+
+    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .optionsView:
+
+            // Inject the held managedObjectContext into the embedded UITableViewController
+            guard let vc = segue.destination as? OptionsViewController else {
+                fatalError("expected OptionsViewController type")
+            }
+
+            vc.mgr = coreMotionController
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

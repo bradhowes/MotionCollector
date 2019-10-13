@@ -8,19 +8,8 @@ import CoreData
  UITableViewController that shows entries for all known RecordingInfo instances. Supports left and right swiping for
  actions per row, and editing of cells to delete past recordings.
  */
-final class RecordingsTableViewController: UITableViewController, SegueHandler {
+final class RecordingsTableViewController: UITableViewController {
     private lazy var log = Logging.logger("rtvc")
-
-    /**
-     Enumeration of the segues that can come from this controller.
-     */
-    enum SegueIdentifier: String {
-
-        /**
-         The embedded segue for the embedded UITableViewController
-         */
-        case embedRecordingsTableView = "embedRecordingsTableView"
-    }
 
     private var dataSource: TableViewDataSource<RecordingsTableViewController>!
 

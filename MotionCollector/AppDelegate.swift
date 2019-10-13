@@ -10,6 +10,7 @@ import os
 import UIKit
 import CoreData
 
+/// Notification that recording is to stop.
 let stopRecordingRequest = Notification.Name(rawValue: "StopRecordingRequest")
 
 @UIApplicationMain

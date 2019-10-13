@@ -12,7 +12,7 @@ enum Datum {
 
     public var csv: String { row.map { "\($0)" }.joined(separator: ",") }
 
-    static let header = "Type, When, X, Y, Z, Pitch, Roll, Yaw"
+    static let header = "Type, When, X, Y, Z, UA_X, UA_Y, UA_Z, Pitch, Roll, Yaw"
 
     public var row: [Double] {
         switch self {
