@@ -68,8 +68,8 @@
 		BD7553D0234D252500A457A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BD7553D2234D252500A457A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD7553D7234D252600A457A7 /* MotionCollectorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MotionCollectorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BD7553DB234D252600A457A7 /* MotionCollectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MotionCollectorTests.swift; path = MotionCollectorTests/MotionCollectorTests.swift; sourceTree = "<group>"; };
-		BD7553DD234D252600A457A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = MotionCollectorTests/Info.plist; sourceTree = "<group>"; };
+		BD7553DB234D252600A457A7 /* MotionCollectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionCollectorTests.swift; sourceTree = "<group>"; };
+		BD7553DD234D252600A457A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD96B4A3234E73D6009890A0 /* MotionCollector.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MotionCollector.entitlements; sourceTree = "<group>"; };
 		BD96B4A5234E75CD009890A0 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		BD96B4A6234E75CD009890A0 /* Managed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Managed.swift; sourceTree = "<group>"; };
@@ -142,7 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				BD7553C3234D252400A457A7 /* MotionCollector */,
-				BD7553DA234D252600A457A7 /* MotionCollectorrTests */,
+				BD7553DA234D252600A457A7 /* MotionCollectorTests */,
 				BD7553C2234D252400A457A7 /* Products */,
 				BD0E370F23526C720048FBC5 /* Frameworks */,
 			);
@@ -176,13 +176,13 @@
 			path = MotionCollector;
 			sourceTree = "<group>";
 		};
-		BD7553DA234D252600A457A7 /* MotionCollectorrTests */ = {
+		BD7553DA234D252600A457A7 /* MotionCollectorTests */ = {
 			isa = PBXGroup;
 			children = (
 				BD7553DB234D252600A457A7 /* MotionCollectorTests.swift */,
 				BD7553DD234D252600A457A7 /* Info.plist */,
 			);
-			path = MotionCollectorrTests;
+			path = MotionCollectorTests;
 			sourceTree = "<group>";
 		};
 		BD96B4A4234E75BC009890A0 /* Core Data */ = {
@@ -557,14 +557,14 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
-				INFOPLIST_FILE = MotionCategorizerTests/Info.plist;
+				INFOPLIST_FILE = MotionCollectorTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.MotionCategorizerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.MotionCollectorTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -579,14 +579,14 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
-				INFOPLIST_FILE = MotionCategorizerTests/Info.plist;
+				INFOPLIST_FILE = MotionCollectorTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.MotionCategorizerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.MotionCollectorTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

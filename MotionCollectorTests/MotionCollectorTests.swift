@@ -7,9 +7,9 @@
 //
 
 import XCTest
-@testable import MotionCategorizer
+@testable import MotionCollector
 
-class MotionCategorizerTests: XCTestCase {
+class MotionCollectorTests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
