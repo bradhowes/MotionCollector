@@ -1,5 +1,7 @@
 # About
 
+![](https://github.com/bradhowes/MotionCollector/blob/master/MotionCollector/Resources/AppIcons/152px.png?raw=true)
+
 This simple application records values coming from an iOS device's CoreMotion sensors (accelerometer, gyroscope,
 and magnetometer) and makes them available in a CSV formatted file in iCloud or iTunes (RIP). My goal in
 creating this app was to allow for quick data collection while moving with the device. After collection, the
