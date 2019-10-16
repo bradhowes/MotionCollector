@@ -21,6 +21,7 @@
 		BD7553CE234D252500A457A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD7553CD234D252500A457A7 /* Assets.xcassets */; };
 		BD7553D1234D252500A457A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD7553CF234D252500A457A7 /* LaunchScreen.storyboard */; };
 		BD7553DC234D252600A457A7 /* MotionCollectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7553DB234D252600A457A7 /* MotionCollectorTests.swift */; };
+		BD7820742356729F00F23652 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BD7820732356729F00F23652 /* README.md */; };
 		BD96B4A9234E75CD009890A0 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4A5234E75CD009890A0 /* CoreDataStack.swift */; };
 		BD96B4AA234E75CD009890A0 /* Managed.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4A6234E75CD009890A0 /* Managed.swift */; };
 		BD96B4AB234E75CD009890A0 /* NSManagedObjectContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4A7234E75CD009890A0 /* NSManagedObjectContext+Extensions.swift */; };
@@ -71,6 +72,7 @@
 		BD7553D7234D252600A457A7 /* MotionCollectorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MotionCollectorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD7553DB234D252600A457A7 /* MotionCollectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionCollectorTests.swift; sourceTree = "<group>"; };
 		BD7553DD234D252600A457A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD7820732356729F00F23652 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		BD96B4A3234E73D6009890A0 /* MotionCollector.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MotionCollector.entitlements; sourceTree = "<group>"; };
 		BD96B4A5234E75CD009890A0 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		BD96B4A6234E75CD009890A0 /* Managed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Managed.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 		BD7553B8234D252400A457A7 = {
 			isa = PBXGroup;
 			children = (
+				BD7820732356729F00F23652 /* README.md */,
 				BD7553C3234D252400A457A7 /* MotionCollector */,
 				BD7553DA234D252600A457A7 /* MotionCollectorTests */,
 				BD7553C2234D252400A457A7 /* Products */,
@@ -311,6 +314,7 @@
 			files = (
 				BD7553D1234D252500A457A7 /* LaunchScreen.storyboard in Resources */,
 				BD0E370E2352669C0048FBC5 /* Localizable.stringsdict in Resources */,
+				BD7820742356729F00F23652 /* README.md in Resources */,
 				BD7553CE234D252500A457A7 /* Assets.xcassets in Resources */,
 				BD7553CC234D252400A457A7 /* Main.storyboard in Resources */,
 			);

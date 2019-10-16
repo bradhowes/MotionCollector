@@ -18,6 +18,18 @@ public final class CircularProgressBar: UIView {
     /// The width of the line used to draw the circle
     public var progressLineWidth: CGFloat = 3.0
 
+    /// The layer that shows the progress amount
+    private let foregroundLayer = CAShapeLayer()
+
+    /// The layer that shows the remaining amount
+    private let backgroundLayer = CAShapeLayer()
+
+    /// The radius of the paths based on the available height/width of the view's frame
+    private var radius: CGFloat { return (self.bounds.width - progressLineWidth) / 2.0 }
+
+    /// Obtain a new UIBezierPath which will render as a circle.
+    private var path: CGPath { return UIBezierPath(roundedRect: self.bounds, cornerRadius: radius).cgPath }
+
     /**
      Set up the view after being restored from an IB definition.
      */
@@ -41,14 +53,10 @@ public final class CircularProgressBar: UIView {
             anim.isRemovedOnCompletion = true
             foregroundLayer.add(anim, forKey: "progress")
         }
-        foregroundLayer.strokeEnd = CGFloat(progress)
+        else {
+            foregroundLayer.strokeEnd = CGFloat(progress)
+        }
     }
-
-    private let foregroundLayer = CAShapeLayer()
-    private let backgroundLayer = CAShapeLayer()
-
-    private var radius: CGFloat { return (min(self.frame.width, self.frame.height) - progressLineWidth) / 2.0 }
-    private var path: CGPath { return UIBezierPath(roundedRect: self.bounds, cornerRadius: radius).cgPath }
 
     private func makeBackgroundLayer(){
         backgroundLayer.path = path
@@ -67,17 +75,13 @@ public final class CircularProgressBar: UIView {
     }
 
     private func setupView() {
-        self.layer.sublayers = nil
-        makeBackgroundLayer()
-        makeForegroundLayer()
+        if self.layer.sublayers?.isEmpty ?? true {
+            makeBackgroundLayer()
+            makeForegroundLayer()
+        }
     }
 
-    private var layoutDone = false
-
     override public func layoutSublayers(of layer: CALayer) {
-        if !layoutDone {
-            setupView()
-            layoutDone = true
-        }
+        setupView()
     }
 }
