@@ -41,6 +41,12 @@ open class TypedNotification<A> {
         return NotificationObserver(notification: self, block: block)
     }
 
+    /**
+     Register for a notification that *only* takes place on the app's main (UI) thread.
+
+     - parameter block: a closure to execute when this kind of notification arrives
+     - returns: a NotificationObserver instance that records the registration.
+     */
     open func registerOnMain(block: @escaping (A) -> Void) -> NotificationObserver {
         return NotificationObserver(notification: self) { arg in
             DispatchQueue.main.async { block(arg) }
@@ -55,7 +61,7 @@ open class TypedNotification<A> {
 public class NotificationObserver {
 
     private let name: Notification.Name
-    private let observer: NSObjectProtocol
+    private var observer: NSObjectProtocol?
 
     /**
      Create a new observer for the given typed notification
@@ -68,8 +74,15 @@ public class NotificationObserver {
         }
     }
 
+    /**
+     Force the observer to forget its observation reference (something that happens automatically if/when the observer
+     is no longer held by another object).
+     */
     public func forget() {
-        NotificationCenter.default.removeObserver(observer)
+        if let obs = observer {
+            NotificationCenter.default.removeObserver(obs)
+            self.observer = nil
+        }
     }
 
     /**

@@ -38,7 +38,6 @@
 		BD96B4C3234E7B34009890A0 /* RecordingInfo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4C1234E7B34009890A0 /* RecordingInfo.xcdatamodeld */; };
 		BD96B4C9234E7C57009890A0 /* RecordingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4C8234E7C57009890A0 /* RecordingInfo.swift */; };
 		BD96B4CB234E7D82009890A0 /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4CA234E7D82009890A0 /* PersistentContainer.swift */; };
-		BD96B4CD234E7F2C009890A0 /* ParentChildEditingStateCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4CC234E7F2C009890A0 /* ParentChildEditingStateCapture.swift */; };
 		BD96B4CF234E825D009890A0 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4CE234E825D009890A0 /* RootViewController.swift */; };
 		BDE50CD82353240A0012AE85 /* RecordingInfoManagedContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE50CD72353240A0012AE85 /* RecordingInfoManagedContext.swift */; };
 /* End PBXBuildFile section */
@@ -90,7 +89,6 @@
 		BD96B4C2234E7B34009890A0 /* RecordingInfo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RecordingInfo.xcdatamodel; sourceTree = "<group>"; };
 		BD96B4C8234E7C57009890A0 /* RecordingInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordingInfo.swift; sourceTree = "<group>"; };
 		BD96B4CA234E7D82009890A0 /* PersistentContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
-		BD96B4CC234E7F2C009890A0 /* ParentChildEditingStateCapture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParentChildEditingStateCapture.swift; sourceTree = "<group>"; };
 		BD96B4CE234E825D009890A0 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		BDE50CD72353240A0012AE85 /* RecordingInfoManagedContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingInfoManagedContext.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -210,7 +208,6 @@
 				BD489866234F30FC00B78BE1 /* CloudReplicator.swift */,
 				BD96B4B4234E76C1009890A0 /* FileManager+Extensions.swift */,
 				BD96B4B6234E76DC009890A0 /* Logging.swift */,
-				BD96B4CC234E7F2C009890A0 /* ParentChildEditingStateCapture.swift */,
 				BD96B4BF234E799B009890A0 /* SegueHandler.swift */,
 				BD96B4AF234E762A009890A0 /* TypedNotification.swift */,
 			);
@@ -346,7 +343,6 @@
 				BD96B4BC234E7922009890A0 /* RecordingInfoTableViewCell.swift in Sources */,
 				BDE50CD82353240A0012AE85 /* RecordingInfoManagedContext.swift in Sources */,
 				BD96B4C9234E7C57009890A0 /* RecordingInfo.swift in Sources */,
-				BD96B4CD234E7F2C009890A0 /* ParentChildEditingStateCapture.swift in Sources */,
 				BD96B4AE234E7619009890A0 /* CachedValueTypedNotification.swift in Sources */,
 				BD96B4B5234E76C1009890A0 /* FileManager+Extensions.swift in Sources */,
 				BD96B4B3234E768D009890A0 /* CircularProgressBar.swift in Sources */,

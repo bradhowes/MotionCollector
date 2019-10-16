@@ -3,8 +3,16 @@
 import os
 
 struct Logging {
+
+    /// The top-level identifier for this app
     static let subsystem = "com.braysoftware.MotionCategorizer"
 
+    /**
+     Create a new logger for a subsystem
+
+     - parameter category: the subsystem to log under
+     - returns: OSLog instance to use for subsystem logging
+     */
     static func logger(_ category: String) -> OSLog {
         return OSLog(subsystem: subsystem, category: category)
     }

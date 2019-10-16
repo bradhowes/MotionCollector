@@ -5,6 +5,8 @@ import UIKit
 /**
  Protocol definiton for objects that know about segues between UIView controllers. The protocol basically defines
  a type-safe way to translate from a UIStoryboardSeque.identifier value into a type-specific value (probably an enum)
+
+ This idea came from the obj.io Core Data book (which itself came from a WWDC presentation I think)
  */
 public protocol SegueHandler {
     associatedtype SegueIdentifier: RawRepresentable
