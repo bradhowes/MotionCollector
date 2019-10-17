@@ -139,10 +139,10 @@
             </objects>
             <point key="canvasLocation" x="1860.8695652173915" y="-523.66071428571422"/>
         </scene>
-        <!--ViewController-->
+        <!--Recording Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" userLabel="ViewController" customClass="RecordingViewController" customModule="MotionCollector" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Recording" id="BYZ-38-t0r" userLabel="Recording Controller" customClass="RecordingViewController" customModule="MotionCollector" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -241,12 +241,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="timer" catalog="system" id="4rI-Hg-W6i"/>
+                    <tabBarItem key="tabBarItem" enabled="NO" title="" image="timer" catalog="system" id="4rI-Hg-W6i"/>
                     <connections>
                         <outlet property="elapsed" destination="2jE-vT-3S4" id="yrd-Mg-lFG"/>
                         <outlet property="options" destination="Q5k-3F-hmN" id="IK8-EM-0dy"/>
                         <outlet property="startStop" destination="OUE-8Z-H2C" id="CGB-es-a0G"/>
                         <outlet property="status" destination="IFT-N7-2vr" id="ovG-P9-NRm"/>
+                        <outlet property="tabBarItem" destination="4rI-Hg-W6i" id="4lp-qX-QB4"/>
                         <outlet property="turning" destination="YPT-IJ-aSj" id="o3F-j6-6RB"/>
                         <outlet property="walking" destination="CAf-Qa-cND" id="Up0-DM-aMO"/>
                     </connections>
@@ -255,10 +256,10 @@
             </objects>
             <point key="canvasLocation" x="1047.8260869565217" y="137.94642857142856"/>
         </scene>
-        <!--Recordings-->
+        <!--Recordings Table-->
         <scene sceneID="HaC-LN-8nd">
             <objects>
-                <tableViewController id="T3p-Py-xOJ" customClass="RecordingsTableViewController" customModule="MotionCollector" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="T3p-Py-xOJ" userLabel="Recordings Table" customClass="RecordingsTableViewController" customModule="MotionCollector" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" allowsSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="S8X-b9-Fvs">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

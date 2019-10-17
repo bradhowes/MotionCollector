@@ -4,7 +4,7 @@ import os
 import UIKit
 
 /**
- A UITableViewCell that shows a recording name, its siae, and optional controls to stop a recording
+ A UITableViewCell that shows a recording name, its size, and optional controls to stop a recording
  or show the progress of an upload to iCloud.
  */
 public final class RecordingInfoTableViewCell: UITableViewCell {

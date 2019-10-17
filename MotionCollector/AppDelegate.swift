@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         os_log(.info, log: log, "applicationWillTerminate")
-         RecordingInfoManagedContext.save()
+        RecordingInfoManagedContext.shared.save()
     }
 }
 
@@ -65,7 +65,7 @@ extension AppDelegate {
      */
     private func movingToBackground() {
         NotificationCenter.default.post(name: stopRecordingRequest, object: nil)
-        RecordingInfoManagedContext.save()
+        RecordingInfoManagedContext.shared.save()
     }
 }
 

@@ -37,11 +37,15 @@ public protocol TableViewDataSourceDelegate: class {
      */
     func delete(_ obj: Object, at: IndexPath)
 
+    /**
+     Notification that the table was updated due to NSFetchResultsController activity
+     */
     func updated()
 }
 
 /**
- A data source for a UITableView that relies on a NSFetchedResultsController for model values.
+ A data source for a UITableView that relies on a NSFetchedResultsController for model values. This design was heavily
+ based on code from obj.io Core Data book.
  */
 public class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     private lazy var log = Logging.logger("tvds")
@@ -85,10 +89,6 @@ public class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObjec
         tableView.reloadData()
     }
 
-    deinit {
-        os_log(.info, log: log, "deinit")
-    }
-
     /// Obtain the number of model instances, or the number of rows in the UITableView.
     public var count: Int { fetchedResultsController.fetchedObjects?.count ?? 0 }
 
@@ -114,11 +114,26 @@ public class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObjec
 
     // MARK: - UITableViewDataSource
 
+    /**
+     Query for the number of rows in a table view section.
+
+     - parameter tableView: the UITableView being asked about
+     - parameter section: the section being asked about
+     - returns: row count in the section
+     */
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let section = fetchedResultsController.sections?[section] else { return 0 }
         return section.numberOfObjects
     }
 
+    /**
+     Obtain a formatted UITableViewCell for a specific row in a table view. The delegate's `configure` method performs
+     the necessary configuration on the cell before it is used.
+
+     - parameter tableView: the UITableView being worked on
+     - parameter indexPath: the index of the row being displayed
+     - returns: the UITableViewCell to use to display the row
+     */
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let obj = object(at: indexPath)
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? Cell else {
@@ -128,10 +143,24 @@ public class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObjec
         return cell
     }
 
+    /**
+     Query to find out if a row in a table view can be edited.
+
+     - parameter tableView: the UITableView being worked on
+     - parameter indexPath: the index of the row being asked about
+     - returns: true if so
+     */
     public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return self.delegate.canDelete(indexPath)
     }
 
+    /**
+     Perform an edit action on a specific row
+
+     - parameter tableView: the UITableView being worked on
+     - parameter editingStyle: the operation being performed. The only one supported is `.delete`
+     - parameter indexPath: the index of the row being edited
+     */
     public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
                           forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
@@ -142,11 +171,25 @@ public class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObjec
 
     // MARK: - NSFetchedResultsControllerDelegate
 
+    /**
+     Notification from NSFetchedResultsController that it is is going to make changes that affect the view
+
+     - parameter controller: the controller performing the work
+     */
     public func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         os_log(.info, log: log, "controllerWillChangeContent - beginUpdates")
         tableView.beginUpdates()
     }
 
+    /**
+     Notification from NSFetchedResultsController about a change at a given index.
+
+     - parameter controller: the controller performing the work
+     - parameter anObject: the object being affected
+     - parameter indexPath: the index of the object being affected
+     - parameter type: the type of change being performed
+     - parameter newIndexPath: the new index of the object after the operation (optional)
+     */
     public func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any,
                            at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
@@ -178,6 +221,12 @@ public class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObjec
         }
     }
 
+    /**
+     Notification from NSFetchedResultsController that all changes are done. Notify the delegate that the view was
+     changed.
+
+     - parameter controller: the controller that performed the work
+     */
     public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         os_log(.info, log: log, "controllerDidChangeContent - endUpdates")
         tableView.endUpdates()

@@ -10,36 +10,16 @@ import UIKit
  */
 public final class RootViewController: UITabBarController {
 
-    private var recordingInfoManagedContextLoaderObserver: NotificationObserver?
-
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Invoke `injectManagedObjectContext` when the CoreData managed object context is available for
-        // `RecordingInfo` instances.
-        recordingInfoManagedContextLoaderObserver = RecordingInfoManagedContext.registerLoadedNotifier {
-            self.injectManagedObjectContext($0)
-        }
-    }
+    private var observer: NotificationObserver?
 
     /**
-     Inject an NSManagedObjectContext instance into the `RecordingsViewController` instance.
-
-     - parameter managedObjectContext: the NSManagedObjectContext to inject
+     Initially, recording and recording manipulation are disabled. Enable these features when there is a valid
+     managed context available.
      */
-    public func injectManagedObjectContext(_ managedObjectContext: NSManagedObjectContext) {
-        guard let vcs = self.viewControllers else {
-            fatalError("expected to find collection of UIViewController instances")
-        }
-
-        // Look for the `RecordingsTableViewController` to inject into.
-        for (index, vc) in vcs.enumerated() {
-            if let nc = vc as? UINavigationController {
-                if let rvc = nc.topViewController as? RecordingsTableViewController {
-                    rvc.tabBarItem.isEnabled = true
-                    self.tabBar.items?[index].isEnabled = true
-                }
-            }
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        observer = RecordingInfoManagedContext.shared.registerLoadedNotifier { _ in
+            self.tabBar.items?.forEach { $0.isEnabled = true }
         }
     }
 }

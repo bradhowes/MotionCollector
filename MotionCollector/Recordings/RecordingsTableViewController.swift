@@ -11,22 +11,29 @@ import CoreData
 final class RecordingsTableViewController: UITableViewController {
     private lazy var log = Logging.logger("rtvc")
 
+    /// The manager of the data for the table view.
     private var dataSource: TableViewDataSource<RecordingsTableViewController>!
 
      /// Obtain the number of rows in the table.
     public var count: Int { return dataSource.count }
 
-    override func viewDidLoad() {
-        os_log(.info, log: log, "viewDidLoad")
-        super.viewDidLoad()
-    }
+    /**
+     View is going to appear. Set up the data source to show the recordings in the table view as well as track their
+     changes.
 
+     - parameter animated: if true the disappearance will be animated
+     */
     override func viewWillAppear(_ animated: Bool) {
         os_log(.info, log: log, "viewWillAppear")
         setupTableView()
         super.viewWillAppear(animated)
     }
 
+    /**
+     View is going to disappear. Disconnect the data source so that it won't be tracking changes to recordings.
+
+     - parameter animated: if true the disappearance will be animated
+     */
     override func viewWillDisappear(_ animated: Bool) {
         os_log(.info, log: log, "viewWilDisappear")
         super.viewWillDisappear(animated)
@@ -70,6 +77,9 @@ extension RecordingsTableViewController: TableViewDataSourceDelegate {
         obj.delete()
     }
 
+    /**
+     Notification from the data source that the table view changed.
+     */
     func updated() {
         updateEditState()
     }
@@ -94,11 +104,26 @@ extension RecordingsTableViewController: TableViewDataSourceDelegate {
 
 extension RecordingsTableViewController {
 
+    /**
+     Query about the kind of editing that can be done on a given row
+
+     - parameter tableView: the UITableView being queried
+     - parameter indexPath: the row being queried
+     - returns: the editing that can take place on the row
+     */
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         let recordingInfo = dataSource.object(at: indexPath)
         return !recordingInfo.isRecording && tableView.isEditing ? .delete : .none
     }
 
+    /**
+     Query about the swipe operations available at the beginning of the cell (eg swipe right for left-to-right text
+     flows.
+
+     - parameter tableView: the UITableView being queried
+     - parameter indexPath: the row being queried
+     - returns: the swipe actions for the row
+     */
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let recordingInfo = dataSource.object(at: indexPath)
         guard !recordingInfo.isRecording else { return nil }
@@ -106,6 +131,14 @@ extension RecordingsTableViewController {
                                                                      cell: tableView.cellForRow(at: indexPath))
     }
 
+    /**
+     Query about the swipe operations available at the end of the cell (eg swipe left for left-to-right text
+     flows.
+
+     - parameter tableView: the UITableView being queried
+     - parameter indexPath: the row being queried
+     - returns: the swipe actions for the row
+     */
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let recordingInfo = dataSource.object(at: indexPath)
         guard !recordingInfo.isRecording else { return nil }
@@ -122,7 +155,7 @@ extension RecordingsTableViewController {
     private func setupTableView() {
         editButtonItem.isEnabled = false
 
-        guard let managedContext = RecordingInfoManagedContext.singleton.context else { fatalError("nil recordingInfoManagedContext") }
+        guard let managedContext = RecordingInfoManagedContext.shared.context else { fatalError("nil recordingInfoManagedContext") }
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 100
 
@@ -134,6 +167,7 @@ extension RecordingsTableViewController {
         dataSource = TableViewDataSource(tableView: tableView, cellIdentifier: "RecordingInfo",
                                          fetchedResultsController: frc, delegate: self)
 
+        // TODO: there are update and state management issue with this button and the delete swipe.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 }

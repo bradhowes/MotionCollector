@@ -37,12 +37,11 @@ class RecordingViewController: UIViewController, SegueHandler {
         return formatter
     }()
 
-    let coreMotionController = CoreMotionController()
-    var startTime: Date?
-    var timer: Timer?
-    var recording: RecordingInfo?
-
-    private var recordingInfoManagedContextLoaderObserver: NotificationObserver?
+    private let coreMotionController = CoreMotionController()
+    private var startTime: Date?
+    private var timer: Timer?
+    private var recording: RecordingInfo?
+    private var kvo: NSKeyValueObservation?
 
     /**
      Properly set up the options view.
@@ -53,12 +52,7 @@ class RecordingViewController: UIViewController, SegueHandler {
     public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .optionsView:
-
-            // Inject the held managedObjectContext into the embedded UITableViewController
-            guard let vc = segue.destination as? OptionsViewController else {
-                fatalError("expected OptionsViewController type")
-            }
-
+            let vc = segue.destination as! OptionsViewController
             vc.state = coreMotionController
         }
     }
@@ -66,12 +60,11 @@ class RecordingViewController: UIViewController, SegueHandler {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        recordingInfoManagedContextLoaderObserver = RecordingInfoManagedContext.registerLoadedNotifier { context in
-            self.startStop.isEnabled = true
-        }
-
         setElapsed(0)
         startStop.isEnabled = false
+
+        // Allow new recordings once there is a managed context available.
+        kvo = tabBarItem.observe(\.isEnabled) { _, _ in self.startStop.isEnabled = self.tabBarItem.isEnabled }
 
         showRecordCount(0)
         walking.isEnabled = false
@@ -111,7 +104,7 @@ class RecordingViewController: UIViewController, SegueHandler {
         precondition(timer == nil)
         setElapsed(0)
         showRecordCount(0)
-        recording = RecordingInfo.insert()
+        recording = RecordingInfo.create()
         startTime = Date()
         startStop.setTitle("Stop", for: .normal)
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in self.updateView() }
