@@ -53,9 +53,8 @@ public final class CircularProgressBar: UIView {
             anim.isRemovedOnCompletion = true
             foregroundLayer.add(anim, forKey: "progress")
         }
-        else {
-            foregroundLayer.strokeEnd = CGFloat(progress)
-        }
+
+        foregroundLayer.strokeEnd = CGFloat(progress)
     }
 
     private func makeBackgroundLayer(){
