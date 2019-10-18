@@ -198,7 +198,11 @@ public final class RecordingInfo: NSManagedObject {
 // MARK: - Uploadable Protocol
 
 extension RecordingInfo: Uploadable {
+
+    /// The location of the recording file on the device.
     public var source: URL { self.localUrl }
+
+    /// The location of the recording file in iCloud. This is only valid when iCloud is enabled on the device.
     public var destination: URL { self.cloudURL! }
 
     /**
@@ -211,10 +215,18 @@ extension RecordingInfo: Uploadable {
         self.uploadProgress = Float(progress) / 100.0
     }
 
+    /**
+     The recording file uploaded successfully.
+
+     */
     public func succeeded() {
         endUploading(true)
     }
 
+    /**
+     There was an issue uploading the recording file.
+
+     */
     public func failed() {
         endUploading(false)
     }

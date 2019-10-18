@@ -197,11 +197,11 @@
 		BD96B4A4234E75BC009890A0 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
+				BD0E370B2351F7AA0048FBC5 /* ContextDidSaveNotification.swift */,
 				BD96B4A5234E75CD009890A0 /* CoreDataStack.swift */,
 				BD96B4A6234E75CD009890A0 /* Managed.swift */,
 				BD96B4A7234E75CD009890A0 /* NSManagedObjectContext+Extensions.swift */,
 				BD96B4A8234E75CD009890A0 /* TableViewDataSource.swift */,
-				BD0E370B2351F7AA0048FBC5 /* ContextDidSaveNotification.swift */,
 			);
 			path = "Core Data";
 			sourceTree = "<group>";

@@ -14,17 +14,28 @@ public protocol Managed: class, NSFetchRequestResult {
     static var defaultSortDescriptors: [NSSortDescriptor] { get }
 }
 
+// MARK: - default implementation
+
 public extension Managed {
+
+    /// Default sort definition
     static var defaultSortDescriptors: [NSSortDescriptor] {
         return []
     }
 
+    /// Obtain a fetch request that is sorted according to defaultSortDescriptors
     static var sortedFetchRequest: NSFetchRequest<Self> {
         let request = NSFetchRequest<Self>(entityName: entityName)
         request.sortDescriptors = defaultSortDescriptors
         return request
     }
 
+    /**
+     Obtain a fetch request that is sorted according according to a given predicate
+
+     - parameter predicate: defines the sorting order
+     - returns: new NSFetchRequest
+     */
     static func sortedFetchRequest(with predicate: NSPredicate) -> NSFetchRequest<Self> {
         let request = sortedFetchRequest
         request.predicate = predicate
@@ -32,8 +43,19 @@ public extension Managed {
     }
 }
 
+// MARK: Specialization when Managed derives from NSManagedObject
+
 public extension Managed where Self: NSManagedObject {
+
     static var entityName: String { return entity().name! }
+
+    /**
+     Create a fetch request and execute it.
+
+     - parameter context: the context where the managed objects live
+     - paramater configurationBlock: a block to run to configure the fetch request before executing it
+     - returns: array of managed objects
+     */
 
     static func fetch(in context: NSManagedObjectContext,
                       configurationBlock: (NSFetchRequest<Self>) -> () = { _ in }) -> [Self] {
@@ -42,6 +64,14 @@ public extension Managed where Self: NSManagedObject {
         return try! context.fetch(request)
     }
 
+    /**
+     Find or create a managed object
+
+     - parameter context: the context where the managed objects live
+     - parameter predicate: the match definition
+     - parameter configure: block to run with a new managed object
+     - returns: found/created managed object
+     */
     static func findOrCreate(in context: NSManagedObjectContext, matching predicate: NSPredicate,
                              configure: (Self) -> ()) -> Self {
         guard let object = findOrFetch(in: context, matching: predicate) else {
