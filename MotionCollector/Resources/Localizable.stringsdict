@@ -2,18 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>recording</key>
-	<dict>
-		<key>New item</key>
-		<string></string>
-		<key>Variable</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>other</key>
-			<string></string>
-		</dict>
-	</dict>
 	<key>records count</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>

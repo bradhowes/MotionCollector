@@ -30,6 +30,7 @@ class Formatters {
     private lazy var waitingLabel = NSLocalizedString("waiting", comment: "waiting to upload file to iCloud")
     private lazy var uploadingLabel = NSLocalizedString("uploading", comment: "actively uploading file to iCloud")
     private lazy var uploadedLabel = NSLocalizedString("uploaded", comment: "previously uploaded to iCloud")
+    private lazy var failedLabel = NSLocalizedString("failed", comment: "last attempt to upload to iCloud failed")
 
     public func formatted(recordingStatus: RecordingInfo.State) -> String {
         switch recordingStatus {
@@ -37,6 +38,7 @@ class Formatters {
         case .done: return FileManager.default.hasCloudDirectory ? waitingLabel : ""
         case .uploading: return uploadingLabel
         case .uploaded: return uploadedLabel
+        case .failed: return failedLabel
         }
     }
 }

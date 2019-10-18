@@ -8,12 +8,14 @@ import CoreData
  locate the CoreData model definition file in the right bundle.
  */
 public class CoreDataStack<T: NSPersistentContainer> {
+    public typealias AvailableNotification = CachedValueTypedNotification<NSManagedObjectContext>
 
-    private let notification: CachedValueTypedNotification<NSManagedObjectContext>
+    public let availableNotification: AvailableNotification
+
     private let persistentContainer: T
 
     /// The context associated with all managed objects from the persistent container
-    public var managedObjectContext: NSManagedObjectContext? { return notification.cachedValue }
+    public var managedObjectContext: NSManagedObjectContext? { return availableNotification.cachedValue }
 
     /**
      Construct a new CoreData stack that will provide values from a given container
@@ -21,8 +23,7 @@ public class CoreDataStack<T: NSPersistentContainer> {
      - parameter container: the container to provide
      */
     public required init(container: T) {
-        self.notification = CachedValueTypedNotification<NSManagedObjectContext>(
-            name: container.name + "ManagedObjectContext")
+        self.availableNotification = AvailableNotification(name: container.name + "ManagedObjectContext")
         self.persistentContainer = container
         self.create()
     }
@@ -32,20 +33,7 @@ public class CoreDataStack<T: NSPersistentContainer> {
             guard let wself = self else { return }
             guard err == nil else { fatalError("Failed to load store: \(err!)") }
             let vc = wself.persistentContainer.viewContext
-
-            DispatchQueue.main.async {
-                wself.notification.post(value: vc)
-            }
+            wself.availableNotification.post(value: vc)
         }
-    }
-
-    /**
-     Register a closure to invoke when the CoreData stack is initialized for the persistent container.
-
-     - parameter block: the closure to invoke
-     - returns: a reference for the registration that will remove the registration when it goes out of scope.
-     */
-    public func register(block: @escaping (NSManagedObjectContext) -> Void) -> NotificationObserver {
-        return self.notification.registerOnAny(block: block)
     }
 }

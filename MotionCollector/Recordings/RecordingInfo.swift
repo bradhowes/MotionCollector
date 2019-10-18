@@ -37,7 +37,6 @@ private struct RecordingNameGenerator {
  */
 public final class RecordingInfo: NSManagedObject {
     private lazy var log: OSLog = Logging.logger("recinf")
-    private var begin: Date = Date()
 
     /**
      The state of the recording instance.
@@ -52,6 +51,7 @@ public final class RecordingInfo: NSManagedObject {
         case done = 1
         case uploading = 2
         case uploaded = 3
+        case failed = 4
     }
 
     /// The name of the recording to show in the UI
@@ -84,15 +84,8 @@ public final class RecordingInfo: NSManagedObject {
     /// The current state of the recording
     public private(set) var state: State = .done
 
-    /**
-     Obtain a text representation of the recording duration.
+    private var begin: Date = Date()
 
-     The format is `[[Hh] Mm] Ss` where the uppercase letters
-     represent numeric values and the lowercase letters represent units. The `h` and `m` units only appear when
-     necessary (eg. a duration of 103 seconds appears as "1m 43s")
-
-     - TODO: localize units
-     */
     public var formattedDuration: String {
         let duration = isRecording ? Date().timeIntervalSince(begin) : TimeInterval(self.duration)
         return Formatters.shared.formatted(duration: duration)
@@ -183,13 +176,11 @@ public final class RecordingInfo: NSManagedObject {
      Begin uploading to the cloud (if supported)
      */
     public func beginUploading() {
-        if FileManager.default.hasCloudDirectory {
-            self.managedObjectContext?.performChanges {
-                self.state = .uploading
-                self.uploadProgress = 0.0
-            }
-
-            CloudReplicator.shared.add(recordingInfo: self)
+        guard FileManager.default.hasCloudDirectory else { return }
+        self.managedObjectContext?.performChanges {
+            self.state = .uploading
+            self.uploadProgress = 0.0
+            UIApplication.appDelegate.uploader.add(recordingInfo: self)
         }
     }
 
@@ -206,9 +197,9 @@ public final class RecordingInfo: NSManagedObject {
     /**
      Uploading finished for this file. Update state.
      */
-    public func endUploading() {
+    public func endUploading(_ uploaded: Bool) {
         self.managedObjectContext?.performChanges {
-            self.state = .uploaded
+            self.state = uploaded ? .uploaded : .failed
             self.uploaded = true
         }
     }
