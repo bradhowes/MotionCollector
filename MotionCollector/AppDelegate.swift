@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     lazy var log = Logging.logger("app")
 
-    public let uploader = CloudUploader<RecordingInfo>()
+    public let uploader = CloudUploader()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         return true

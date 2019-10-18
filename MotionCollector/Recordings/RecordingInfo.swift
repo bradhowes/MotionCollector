@@ -180,9 +180,26 @@ public final class RecordingInfo: NSManagedObject {
         self.managedObjectContext?.performChanges {
             self.state = .uploading
             self.uploadProgress = 0.0
-            UIApplication.appDelegate.uploader.add(recordingInfo: self)
+            UIApplication.appDelegate.uploader.enqueue(self)
         }
     }
+
+    /**
+     Uploading finished for this file. Update state.
+     */
+    public func endUploading(_ uploaded: Bool) {
+        self.managedObjectContext?.performChanges {
+            self.state = uploaded ? .uploaded : .failed
+            self.uploaded = true
+        }
+    }
+}
+
+// MARK: - Uploadable Protocol
+
+extension RecordingInfo: Uploadable {
+    public var source: URL { self.localUrl }
+    public var destination: URL { self.cloudURL! }
 
     /**
      Record the current upload progress. The given value shall be between 0.0 and 100.0
@@ -194,14 +211,12 @@ public final class RecordingInfo: NSManagedObject {
         self.uploadProgress = Float(progress) / 100.0
     }
 
-    /**
-     Uploading finished for this file. Update state.
-     */
-    public func endUploading(_ uploaded: Bool) {
-        self.managedObjectContext?.performChanges {
-            self.state = uploaded ? .uploaded : .failed
-            self.uploaded = true
-        }
+    public func succeeded() {
+        endUploading(true)
+    }
+
+    public func failed() {
+        endUploading(false)
     }
 }
 

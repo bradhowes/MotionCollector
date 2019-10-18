@@ -17,7 +17,7 @@ public protocol Uploadable: class {
  Amir Abbas Mousavian's FileProvider project (https://github.com/amosavian/FileProvider). In particular, the
  code in CloudFileProvider.swift that handles uploading of a file to iCloud with feedback on the progress.
  */
-public final class CloudUploader<Uploadable> {
+public final class CloudUploader {
 
     private lazy var log: OSLog = Logging.logger("cloud")
 
@@ -26,23 +26,21 @@ public final class CloudUploader<Uploadable> {
 
      - parameter recordingInfo: the recording to upload
      */
-    public func add(recordingInfo: RecordingInfo) {
-        os_log(.info, log: log, "add: %@", recordingInfo.localUrl.absoluteString)
+    public func enqueue(_ item: Uploadable) {
+        os_log(.info, log: log, "add: %@", item.source.path)
         guard FileManager.default.hasCloudDirectory else { return }
-        DispatchQueue.global(qos: .background).async {
-            self.copyTo(url: recordingInfo.cloudURL!, recordingInfo: recordingInfo)
-        }
+        DispatchQueue.global(qos: .background).async { self.upload(item) }
         os_log(.info, log: log, "add: END")
     }
 
-    private func copyTo(url: URL, recordingInfo: RecordingInfo) {
-        os_log(.info, log: log, "copyToCloud: %@ -> %@", recordingInfo.localUrl.absoluteString, url.absoluteString)
+    private func upload(_ item: Uploadable) {
+        os_log(.info, log: log, "copyToCloud: %@ -> %@", item.source.path, item.destination.path)
 
         do {
             // Remove anything that might already be at the destination URL. For instance, user can always upload
             // again.
-            os_log(.debug, log: log, "trying FileManager.removeItem - %@", url.absoluteString)
-            try FileManager.default.removeItem(at: url)
+            os_log(.debug, log: log, "trying FileManager.removeItem - %@", item.destination.path)
+            try FileManager.default.removeItem(at: item.destination)
             os_log(.debug, log: log, "ok")
         }
         catch {
@@ -51,13 +49,12 @@ public final class CloudUploader<Uploadable> {
 
         // Create a monitor to report on the progress of the upload. Due to circular reference it will live on after we
         // go out of scope while there is an operation to monitor.
-        let monitor = Monitor(recordingInfo: recordingInfo)
+        let monitor = Monitor(item)
 
         do {
             // Attempt to upload the file
-            os_log(.debug, log: log, "trying FileManager.copyItem %@ -> %@", recordingInfo.localUrl.absoluteString,
-                   url.absoluteString)
-            try FileManager.default.copyItem(at: recordingInfo.localUrl, to: url)
+            os_log(.debug, log: log, "trying FileManager.copyItem %@ -> %@", item.source.path, item.destination.path)
+            try FileManager.default.copyItem(at: item.source, to: item.destination)
             os_log(.debug, log: log, "ok")
         }
         catch {
@@ -76,16 +73,16 @@ public final class CloudUploader<Uploadable> {
     private class Monitor {
         private lazy var log: OSLog = Logging.logger("mon")
 
-        private let recordingInfo: RecordingInfo
+        private let item: Uploadable
         private let query: NSMetadataQuery
         private var observer: NSObjectProtocol?
 
-        init(recordingInfo: RecordingInfo) {
-            self.recordingInfo = recordingInfo
+        init(_ item: Uploadable) {
+            self.item = item
 
             // Build a query that will return periodic updates for the uploading progress.
             let query = NSMetadataQuery()
-            query.predicate = NSPredicate(format: "(%K LIKE[CD] %@)", NSMetadataItemPathKey, recordingInfo.cloudURL!.path)
+            query.predicate = NSPredicate(format: "(%K LIKE[CD] %@)", NSMetadataItemPathKey, item.destination.path)
             query.valueListAttributes = [NSMetadataUbiquitousItemPercentUploadedKey, NSMetadataUbiquitousItemIsUploadedKey]
             query.searchScopes = [NSMetadataQueryUbiquitousDocumentsScope]
             self.query = query
@@ -100,16 +97,16 @@ public final class CloudUploader<Uploadable> {
         private func notification(_ notification: Notification) {
             os_log(.debug, log: self.log, "notification")
             guard let items = notification.userInfo?[NSMetadataQueryUpdateChangedItemsKey] as? NSArray else { return }
-            guard let item = items.firstObject as? NSMetadataItem else { return }
-            for attrName in item.attributes {
+            guard let metadata = items.firstObject as? NSMetadataItem else { return }
+            for attrName in metadata.attributes {
                 switch attrName {
                 case NSMetadataUbiquitousItemPercentUploadedKey:
-                    if let percent = item.value(forAttribute: attrName) as? NSNumber {
+                    if let percent = metadata.value(forAttribute: attrName) as? NSNumber {
                         os_log(.debug, log: self.log, "progress - %f", percent.doubleValue)
-                        recordingInfo.uploaded(progress: percent.doubleValue)
+                        item.uploaded(progress: percent.doubleValue)
                     }
                 case NSMetadataUbiquitousItemIsUploadedKey:
-                    if let value = item.value(forAttribute: attrName) as? NSNumber, value.boolValue {
+                    if let value = metadata.value(forAttribute: attrName) as? NSNumber, value.boolValue {
                         finalize(uploaded: true)
                     }
                 default:
@@ -121,7 +118,13 @@ public final class CloudUploader<Uploadable> {
         internal func finalize(uploaded: Bool) {
             os_log(.debug, log: self.log, "finalize - %d", uploaded)
             guard let observer = self.observer else { return }
-            recordingInfo.endUploading(uploaded)
+            if uploaded {
+                item.succeeded()
+            }
+            else {
+                item.failed()
+            }
+    
             query.stop()
             NotificationCenter.default.removeObserver(observer)
             self.observer = nil
