@@ -37,9 +37,6 @@ private struct RecordingNameGenerator {
  */
 public final class RecordingInfo: NSManagedObject {
     private lazy var log: OSLog = Logging.logger("recinf")
-
-    fileprivate static let elaspedFormatter: DateFormatter = formatterBuilder(format: "mm:ss")
-
     private var begin: Date = Date()
 
     /**
@@ -97,17 +94,8 @@ public final class RecordingInfo: NSManagedObject {
      - TODO: localize units
      */
     public var formattedDuration: String {
-        var elapsed = isRecording ? Date().timeIntervalSince(begin) : TimeInterval(duration)
-
-        let hours = elapsed >= 3600.0 ? Int(elapsed / 3600.0) : 0
-        elapsed -= Double(hours) * 3600.0
-
-        let minutes = elapsed >= 60.0 ? Int(elapsed / 60.0) : 0
-        elapsed -= Double(minutes) * 60.0
-
-        let seconds = Int(elapsed.rounded())
-
-        return (hours > 0 ? "\(hours) hours " : "") + (minutes > 0 ? "\(minutes) minute " : "") + "\(seconds)s"
+        let duration = isRecording ? Date().timeIntervalSince(begin) : TimeInterval(self.duration)
+        return Formatters.shared.formatted(duration: duration)
     }
 
     /// The local (device) location of the recording
@@ -123,14 +111,7 @@ public final class RecordingInfo: NSManagedObject {
     public var uploading: Bool { return state == .uploading }
 
     /// Obtain the current status of the recording
-    public var status: String {
-        switch state {
-        case .recording: return "recording"
-        case .done: return FileManager.default.hasCloudDirectory ? "waiting" : ""
-        case .uploading: return "uploading"
-        case .uploaded: return "uploaded"
-        }
-    }
+    public var status: String { Formatters.shared.formatted(recordingStatus: self.state) }
 
     /// Class method that creates a new RecordingInfo entry in CoreData and returns a reference to it
     public class func create() -> RecordingInfo {

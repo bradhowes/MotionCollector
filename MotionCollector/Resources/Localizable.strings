@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  MotionCollector
+
+  Created by Brad Howes on 10/18/19.
+  Copyright © 2019 Brad Howes. All rights reserved.
+*/
+
+"recording" = "recording";
+"waiting" = "waiting";
+"uploading" = "uploading";
+"uploaded" = "uploaded";

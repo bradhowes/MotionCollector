@@ -18,11 +18,13 @@ struct RecordingInfoCellConfigurator {
 
         cell.name.text = recordingInfo.displayName
 
-        let sizeText = recordingInfo.status.isEmpty
-            ? "\(recordingInfo.formattedDuration) - \(recordingInfo.count)"
-            : "\(recordingInfo.formattedDuration) - \(recordingInfo.count) - \(recordingInfo.status)"
+        var bits = [
+            recordingInfo.formattedDuration,
+            Formatters.shared.formatted(recordCount: Int(recordingInfo.count)),
+        ]
 
-        cell.size.text = sizeText
+        if !recordingInfo.status.isEmpty { bits.append(recordingInfo.status) }
+        cell.size.text = bits.joined(separator: " - ")
 
         if recordingInfo.isRecording {
             let stop = UIButton(frame: CGRect(x: 0, y: 0, width: 10, height: 10))

@@ -30,13 +30,6 @@ class RecordingViewController: UIViewController, SegueHandler {
     @IBOutlet weak var status: UILabel!
     @IBOutlet weak var options: UIButton!
     
-    let elapsedFormatter: DateComponentsFormatter = {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.hour, .minute, .second]
-        formatter.zeroFormattingBehavior = .pad
-        return formatter
-    }()
-
     private let coreMotionController = CoreMotionController()
     private var startTime: Date?
     private var timer: Timer?
@@ -57,6 +50,9 @@ class RecordingViewController: UIViewController, SegueHandler {
         }
     }
 
+    /**
+     Setup of view to known state.
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -70,15 +66,16 @@ class RecordingViewController: UIViewController, SegueHandler {
         walking.isEnabled = false
         turning.isEnabled = false
 
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(beginWalking(_:)))
-        tapGesture.numberOfTapsRequired = 1
-        tapGesture.numberOfTouchesRequired = 1
-
         NotificationCenter.default.addObserver(forName: stopRecordingRequest, object: nil, queue: nil) { _ in
             self.stop()
         }
     }
 
+    /**
+     Toggle recording state.
+
+     - parameter sender: ignored
+     */
     @IBAction func startStop(_ sender: Any) {
         if timer != nil {
             stop()
@@ -88,16 +85,31 @@ class RecordingViewController: UIViewController, SegueHandler {
         }
     }
 
+    /**
+     Emit a record signalling the start of walking
+
+     - parameter sender: ignored
+     */
     @IBAction func beginWalking(_ sender: Any) {
         coreMotionController.setWalking()
     }
 
+    /**
+     Emit a record signalling the start of a turn
+
+     - parameter sender: ignored
+     */
     @IBAction func beginTurning(_ sender: Any) {
         coreMotionController.setTurning()
     }
+}
+
+// MARK: - Private methods
+
+extension RecordingViewController {
 
     private func setElapsed(_ duration: TimeInterval) {
-        self.elapsed.text = self.elapsedFormatter.string(from: duration)
+        self.elapsed.text = Formatters.shared.formatted(duration: duration)
     }
 
     private func start() {
@@ -138,10 +150,7 @@ class RecordingViewController: UIViewController, SegueHandler {
     }
 
     private func showRecordCount(_ count: Int) {
-        let formatString : String = NSLocalizedString("records count",
-                                                      comment: "records count string format in Localized.stringsdict")
-        status.text = String.localizedStringWithFormat(formatString, count)
+        status.text = Formatters.shared.formatted(recordCount: count)
         recording?.update(count: count)
     }
 }
-

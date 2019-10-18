@@ -10,6 +10,8 @@
 		BD0E370C2351F7AA0048FBC5 /* ContextDidSaveNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E370B2351F7AA0048FBC5 /* ContextDidSaveNotification.swift */; };
 		BD0E370E2352669C0048FBC5 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = BD0E370D2352669C0048FBC5 /* Localizable.stringsdict */; };
 		BD0E371123526C720048FBC5 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0E371023526C720048FBC5 /* CloudKit.framework */; };
+		BD3164BD23599F5600A860AA /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3164BC23599F5600A860AA /* Formatters.swift */; };
+		BD3164BF2359AA5E00A860AA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BD3164BE2359AA5E00A860AA /* Localizable.strings */; };
 		BD489867234F30FC00B78BE1 /* CloudReplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD489866234F30FC00B78BE1 /* CloudReplicator.swift */; };
 		BD532161234FEE640016D0A9 /* Datum.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD532160234FEE640016D0A9 /* Datum.swift */; };
 		BD532163234FEF7C0016D0A9 /* CoreMotionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD532162234FEF7C0016D0A9 /* CoreMotionController.swift */; };
@@ -56,6 +58,8 @@
 		BD0E370B2351F7AA0048FBC5 /* ContextDidSaveNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextDidSaveNotification.swift; sourceTree = "<group>"; };
 		BD0E370D2352669C0048FBC5 /* Localizable.stringsdict */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; path = Localizable.stringsdict; sourceTree = "<group>"; };
 		BD0E371023526C720048FBC5 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		BD3164BC23599F5600A860AA /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
+		BD3164BE2359AA5E00A860AA /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		BD489866234F30FC00B78BE1 /* CloudReplicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudReplicator.swift; sourceTree = "<group>"; };
 		BD532160234FEE640016D0A9 /* Datum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Datum.swift; sourceTree = "<group>"; };
 		BD532162234FEF7C0016D0A9 /* CoreMotionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreMotionController.swift; sourceTree = "<group>"; };
@@ -136,6 +140,7 @@
 				BD96B4A3234E73D6009890A0 /* MotionCollector.entitlements */,
 				BD7553CD234D252500A457A7 /* Assets.xcassets */,
 				BD0E370D2352669C0048FBC5 /* Localizable.stringsdict */,
+				BD3164BE2359AA5E00A860AA /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -166,6 +171,7 @@
 				BD7553C4234D252400A457A7 /* AppDelegate.swift */,
 				BD532162234FEF7C0016D0A9 /* CoreMotionController.swift */,
 				BD532160234FEE640016D0A9 /* Datum.swift */,
+				BD3164BC23599F5600A860AA /* Formatters.swift */,
 				BD67348E23527E8400CB8D94 /* OptionsViewController.swift */,
 				BD7553C6234D252400A457A7 /* SceneDelegate.swift */,
 				BD7553C8234D252400A457A7 /* RecordingViewController.swift */,
@@ -310,6 +316,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD7553D1234D252500A457A7 /* LaunchScreen.storyboard in Resources */,
+				BD3164BF2359AA5E00A860AA /* Localizable.strings in Resources */,
 				BD0E370E2352669C0048FBC5 /* Localizable.stringsdict in Resources */,
 				BD7820742356729F00F23652 /* README.md in Resources */,
 				BD7553CE234D252500A457A7 /* Assets.xcassets in Resources */,
@@ -350,6 +357,7 @@
 				BD96B4CF234E825D009890A0 /* RootViewController.swift in Sources */,
 				BD532163234FEF7C0016D0A9 /* CoreMotionController.swift in Sources */,
 				BD96B4AA234E75CD009890A0 /* Managed.swift in Sources */,
+				BD3164BD23599F5600A860AA /* Formatters.swift in Sources */,
 				BD7553C9234D252400A457A7 /* RecordingViewController.swift in Sources */,
 				BD96B4C0234E799B009890A0 /* SegueHandler.swift in Sources */,
 				BD67348F23527E8400CB8D94 /* OptionsViewController.swift in Sources */,
