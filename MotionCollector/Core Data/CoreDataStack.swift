@@ -10,30 +10,31 @@ import CoreData
 public class CoreDataStack<T: NSPersistentContainer> {
     public typealias AvailableNotification = CachedValueTypedNotification<NSManagedObjectContext>
 
+    /// Notification that will be emitted when the persistent container is available to use.
     public let availableNotification: AvailableNotification
-
-    private let persistentContainer: T
 
     /// The context associated with all managed objects from the persistent container
     public var managedObjectContext: NSManagedObjectContext? { return availableNotification.cachedValue }
 
+    private let persistentContainer: T
+
     /**
-     Construct a new CoreData stack that will provide values from a given container
+     Construct a new CoreData stack that will provide values from a given persistent container
 
      - parameter container: the container to provide
      */
     public required init(container: T) {
-        self.availableNotification = AvailableNotification(name: container.name + "ManagedObjectContext")
-        self.persistentContainer = container
-        self.create()
+        availableNotification = AvailableNotification(name: container.name + "ManagedObjectContext")
+        persistentContainer = container
+        create()
     }
 
     private func create() {
         persistentContainer.loadPersistentStores { [weak self] _, err in
-            guard let wself = self else { return }
+            guard let self = self else { return }
             guard err == nil else { fatalError("Failed to load store: \(err!)") }
-            let vc = wself.persistentContainer.viewContext
-            wself.availableNotification.post(value: vc)
+            let vc = self.persistentContainer.viewContext
+            self.availableNotification.post(value: vc)
         }
     }
 }

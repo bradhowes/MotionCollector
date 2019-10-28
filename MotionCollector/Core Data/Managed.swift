@@ -19,9 +19,7 @@ public protocol Managed: class, NSFetchRequestResult {
 public extension Managed {
 
     /// Default sort definition
-    static var defaultSortDescriptors: [NSSortDescriptor] {
-        return []
-    }
+    static var defaultSortDescriptors: [NSSortDescriptor] { [] }
 
     /// Obtain a fetch request that is sorted according to defaultSortDescriptors
     static var sortedFetchRequest: NSFetchRequest<Self> {
@@ -31,7 +29,7 @@ public extension Managed {
     }
 
     /**
-     Obtain a fetch request that is sorted according according to a given predicate
+     Obtain a fetch request that is sorted according to a given predicate
 
      - parameter predicate: defines the sorting order
      - returns: new NSFetchRequest
@@ -47,7 +45,7 @@ public extension Managed {
 
 public extension Managed where Self: NSManagedObject {
 
-    static var entityName: String { return entity().name! }
+    static var entityName: String { entity().name! }
 
     /**
      Create a fetch request and execute it.
@@ -56,9 +54,8 @@ public extension Managed where Self: NSManagedObject {
      - paramater configurationBlock: a block to run to configure the fetch request before executing it
      - returns: array of managed objects
      */
-
     static func fetch(in context: NSManagedObjectContext,
-                      configurationBlock: (NSFetchRequest<Self>) -> () = { _ in }) -> [Self] {
+                      configurationBlock: (NSFetchRequest<Self>) -> Void = { _ in }) -> [Self] {
         let request = NSFetchRequest<Self>(entityName: Self.entityName)
         configurationBlock(request)
         return try! context.fetch(request)
