@@ -13,6 +13,7 @@ protocol OptionsViewState {
     var useDeviceMotion: Bool {get set}
     var useGyro: Bool {get set}
     var useMagnetometer: Bool {get set}
+    var uploadToCloud: Bool {get set}
 }
 
 /**
@@ -26,6 +27,7 @@ class OptionsViewController: UIViewController {
     @IBOutlet weak var deviceMotion: UISwitch!
     @IBOutlet weak var gyro: UISwitch!
     @IBOutlet weak var magnetometer: UISwitch!
+    @IBOutlet weak var uploadToCloud: UISwitch!
 
     var state: OptionsViewState!
 
@@ -40,8 +42,7 @@ class OptionsViewController: UIViewController {
         deviceMotion.isOn = state.useDeviceMotion
         gyro.isOn = state.useGyro
         magnetometer.isOn = state.useMagnetometer
-
-
+        uploadToCloud.isOn = state.uploadToCloud
         super.viewWillAppear(animated)
     }
 
@@ -52,6 +53,7 @@ class OptionsViewController: UIViewController {
         state.useDeviceMotion = deviceMotion.isOn
         state.useGyro = gyro.isOn
         state.useMagnetometer = magnetometer.isOn
+        state.uploadToCloud = uploadToCloud.isOn
     }
 
     /**

@@ -2,14 +2,15 @@
 
 import os
 import UIKit
+import CoreData
 
 public protocol Uploadable: class {
     var source: URL { get }
     var destination: URL { get }
 
-    func uploaded(progress: Double)
-    func succeeded()
-    func failed()
+    func begin()
+    func update(progress: Double)
+    func end(_ uploaded: Bool)
 }
 
 /**
@@ -18,24 +19,63 @@ public protocol Uploadable: class {
  code in CloudFileProvider.swift that handles uploading of a file to iCloud with feedback on the progress.
  */
 public final class CloudUploader {
-    public typealias Notifier = (Uploadable)->Void
-
     private lazy var log: OSLog = Logging.logger("cloud")
 
-    /**
-     Add a RecordingInfo to the upload queue, updating its state as it is uploaded.
+    public typealias Notifier = () -> Void
 
-     - parameter recordingInfo: the recording to upload
+    private var uploading: Bool = false
+    private var availableObserver: NotificationObserver? = nil
+    private var contextSavedObserver: NSObjectProtocol? = nil
+
+    /**
+     Construct new uploader to iCloud.
      */
-    public func enqueue(_ item: Uploadable, notifier: Notifier? = nil) {
-        os_log(.info, log: log, "add: %@", item.source.path)
-        guard FileManager.default.hasCloudDirectory else { return }
-        DispatchQueue.global(qos: .background).async { self.upload(item, notifier: notifier) }
-        os_log(.info, log: log, "add: END")
+    public init(_ available: RecordingInfoManagedContext.Stack.AvailableNotification) {
+        availableObserver = available.registerOnAny { self.contextAvailable($0) }
     }
 
-    private func upload(_ item: Uploadable, notifier: Notifier?) {
-        os_log(.info, log: log, "copyToCloud: %@ -> %@", item.source.path, item.destination.path)
+    private func contextAvailable(_ context: NSManagedObjectContext) {
+
+        // Monitor when the context has been saved. We restart the upload check in case there are any new uploads
+        // to process.
+        contextSavedObserver = context.addContextDidSaveNotificationObserver { _ in self.startUploads() }
+        startUploads()
+    }
+
+    /**
+     Begin uploading documents to iCloud.
+     */
+    public func startUploads() {
+        guard !uploading else { return }
+        os_log(.info, log: log, "startUploads")
+        uploading = true
+        uploadNext()
+    }
+
+    /**
+     Stop uploading documents to iCloud. Anything that is currently being uploaded will continue to do so.
+     */
+    public func stopUploads() {
+        os_log(.info, log: log, "stopUploads")
+        uploading = false
+    }
+
+    private func uploadNext() {
+        os_log(.info, log: log, "uploadNext")
+        guard uploading else { return }
+        DispatchQueue.global(qos: .background).async {
+            guard let item = RecordingInfo.nextToUpload else {
+                self.stopUploads()
+                return
+            }
+
+            item.begin()
+            DispatchQueue.global(qos: .background).async { self.upload(item) { self.uploadNext() } }
+        }
+    }
+
+    private func upload(_ item: Uploadable, notifier: @escaping Notifier) {
+        os_log(.info, log: log, "upload: %@ -> %@", item.source.path, item.destination.path)
 
         do {
             // Remove anything that might already be at the destination URL. For instance, user can always upload
@@ -65,7 +105,7 @@ public final class CloudUploader {
             monitor.finalize(uploaded: false)
         }
 
-        os_log(.info, log: log, "copyToCloud: END")
+        os_log(.info, log: log, "upload: END")
     }
 
     /**
@@ -75,11 +115,11 @@ public final class CloudUploader {
         private lazy var log: OSLog = Logging.logger("mon")
 
         private let item: Uploadable
-        private let notifier: Notifier?
+        private let notifier: Notifier
         private let query: NSMetadataQuery
         private var observer: NSObjectProtocol?
 
-        init(_ item: Uploadable, notifier: Notifier?) {
+        init(_ item: Uploadable, notifier: @escaping Notifier) {
             self.item = item
             self.notifier = notifier
 
@@ -106,7 +146,7 @@ public final class CloudUploader {
                 case NSMetadataUbiquitousItemPercentUploadedKey:
                     if let percent = metadata.value(forAttribute: attrName) as? NSNumber {
                         os_log(.debug, log: self.log, "progress - %f", percent.doubleValue)
-                        item.uploaded(progress: percent.doubleValue)
+                        item.update(progress: percent.doubleValue)
                     }
                 case NSMetadataUbiquitousItemIsUploadedKey:
                     if let value = metadata.value(forAttribute: attrName) as? NSNumber, value.boolValue {
@@ -121,18 +161,13 @@ public final class CloudUploader {
         internal func finalize(uploaded: Bool) {
             os_log(.debug, log: self.log, "finalize - %d", uploaded)
             guard let observer = self.observer else { return }
-            if uploaded {
-                item.succeeded()
-            }
-            else {
-                item.failed()
-            }
-    
+            item.end(uploaded)
+
             query.stop()
             NotificationCenter.default.removeObserver(observer)
             self.observer = nil
 
-            self.notifier?(item)
+            self.notifier()
         }
     }
 }

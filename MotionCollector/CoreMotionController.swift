@@ -10,8 +10,8 @@ private enum SettingName: String {
     case useDeviceMotion
     case useGyro
     case useMagnetometer
+    case uploadToCloud
 }
-
 
 fileprivate extension UserDefaults {
     func enabled(for name: SettingName) -> Bool {
@@ -43,11 +43,11 @@ class CoreMotionController: OptionsViewState {
     /// The number of samples per second emitted by the CMMotionManager. This is per hardware device, so for four
     /// devices (maximum), the number of reports generated would be 4x this number.
     var samplesPerSecond: Int = 10 { didSet { setUpdateIntervals() } }
-
     var useAccelerometer: Bool { didSet { updateSetting(.useAccelerometer, with: useAccelerometer) } }
     var useDeviceMotion: Bool { didSet { updateSetting(.useDeviceMotion, with: useDeviceMotion) } }
     var useGyro: Bool { didSet { updateSetting(.useGyro, with: useGyro) } }
     var useMagnetometer: Bool { didSet { updateSetting(.useMagnetometer, with: useMagnetometer) } }
+    var uploadToCloud: Bool { didSet { updateSetting(.uploadToCloud, with: uploadToCloud) } }
 
     var data = [String]()
     var state: Int = 0
@@ -61,7 +61,8 @@ class CoreMotionController: OptionsViewState {
             .useAccelerometer: true,
             .useDeviceMotion: true,
             .useGyro: true,
-            .useMagnetometer: true
+            .useMagnetometer: true,
+            .uploadToCloud: true
         ]
 
         let defaults = UserDefaults.standard
@@ -72,6 +73,7 @@ class CoreMotionController: OptionsViewState {
         useDeviceMotion = sensorManager.isDeviceMotionAvailable && defaults.enabled(for: .useDeviceMotion)
         useGyro = sensorManager.isGyroAvailable && defaults.enabled(for: .useGyro)
         useMagnetometer = sensorManager.isMagnetometerAvailable && defaults.enabled(for: .useMagnetometer)
+        uploadToCloud = defaults.enabled(for: .uploadToCloud)
         setUpdateIntervals()
     }
 

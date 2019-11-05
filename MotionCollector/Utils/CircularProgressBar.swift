@@ -9,14 +9,14 @@ import UIKit
 public final class CircularProgressBar: UIView {
 
     /// The color of the progress bar
-    public var progressTintColor: UIColor? = .cyan
+    public var progressTintColor: UIColor? = .orange
 
     /// The color of the 'channel' or untinted area, or the remaining part of the circle that is not covered by the
     /// `progressTintColor`
-    public var progressChannelColor: UIColor? = .darkGray
+    public var progressChannelColor: UIColor? = .lightGray
 
     /// The width of the line used to draw the circle
-    public var progressLineWidth: CGFloat = 3.0
+    public var progressLineWidth: CGFloat = 8.0
 
     /// The layer that shows the progress amount
     private let foregroundLayer = CAShapeLayer()
@@ -59,7 +59,7 @@ public final class CircularProgressBar: UIView {
 
     private func makeBackgroundLayer(){
         backgroundLayer.path = path
-        backgroundLayer.lineWidth = progressLineWidth
+        backgroundLayer.lineWidth = progressLineWidth - 2.0
         backgroundLayer.strokeColor = progressChannelColor?.cgColor
         backgroundLayer.strokeEnd = 1.0
         backgroundLayer.fillColor = nil

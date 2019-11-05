@@ -3,7 +3,7 @@
 import CoreData
 
 /**
- Useful extension to NSManagedObjectContext
+ Useful extensions to NSManagedObjectContext
  */
 public extension NSManagedObjectContext {
 

@@ -36,8 +36,7 @@ private struct RecordingNameGenerator {
  Representation of a CoreData entry for a past or in-progress audio recording.
  */
 public final class RecordingInfo: NSManagedObject {
-    private static let log: OSLog = Logging.logger("recinf")
-    private var log: OSLog { Self.log }
+    private lazy var log: OSLog = Logging.logger("recinf")
 
     /**
      The state of the recording instance.
@@ -89,10 +88,10 @@ public final class RecordingInfo: NSManagedObject {
         }
     }
 
-    private var begin: Date = Date()
+    private var beginTimestamp: Date = Date()
 
     public var formattedDuration: String {
-        let duration = isRecording ? Date().timeIntervalSince(begin) : TimeInterval(self.duration)
+        let duration = isRecording ? Date().timeIntervalSince(beginTimestamp) : TimeInterval(self.duration)
         return Formatters.shared.formatted(duration: duration)
     }
 
@@ -115,7 +114,7 @@ public final class RecordingInfo: NSManagedObject {
     public class func create() -> RecordingInfo {
         let recording: RecordingInfo = RecordingInfoManagedContext.shared.newObject
         var namer = RecordingNameGenerator()
-        recording.begin = namer.date
+        recording.beginTimestamp = namer.date
         recording.state = .recording
         recording.displayName = namer.displayName
         recording.fileName = namer.fileName
@@ -170,7 +169,7 @@ public final class RecordingInfo: NSManagedObject {
                 self.uploaded = false
                 self.count = Int64(rows.count)
                 self.valuesBlob = try! NSKeyedArchiver.archivedData(withRootObject: rows, requiringSecureCoding: false)
-                self.duration = Int64(Date().timeIntervalSince(self.begin).rounded())
+                self.duration = Int64(Date().timeIntervalSince(self.beginTimestamp).rounded())
             }
         }
     }
@@ -179,29 +178,6 @@ public final class RecordingInfo: NSManagedObject {
         self.managedObjectContext?.performChanges {
             self.state = .done
             self.uploaded = false
-        }
-    }
-
-    /**
-     Begin uploading to the cloud (if supported)
-     */
-    public func beginUploading(notifier: CloudUploader.Notifier? = nil) {
-        precondition(state == .done)
-        guard FileManager.default.hasCloudDirectory else { return }
-        self.managedObjectContext?.performChanges {
-            self.state = .uploading
-            self.uploadProgress = 0.0
-            UIApplication.appDelegate.uploader.enqueue(self, notifier: notifier)
-        }
-    }
-
-    /**
-     Uploading finished for this file. Update state.
-     */
-    public func endUploading(_ uploaded: Bool) {
-        self.managedObjectContext?.performChanges {
-            self.state = uploaded ? .uploaded : .failed
-            self.uploaded = uploaded
         }
     }
 }
@@ -217,28 +193,35 @@ extension RecordingInfo: Uploadable {
     public var destination: URL { self.cloudURL! }
 
     /**
+     Begin uploading to the cloud
+     */
+    public func begin() {
+        precondition(state == .done)
+        guard FileManager.default.hasCloudDirectory else { return }
+        self.managedObjectContext?.performChanges {
+            self.state = .uploading
+            self.uploadProgress = 0.0
+        }
+    }
+
+    /**
+     Uploading finished for this file. Update state.
+     */
+    public func end(_ uploaded: Bool) {
+        self.managedObjectContext?.performChanges {
+            self.state = uploaded ? .uploaded : .failed
+            self.uploaded = uploaded
+        }
+    }
+
+    /**
      Record the current upload progress. The given value shall be between 0.0 and 100.0
 
      - parameter progress: percentage of the file that has been uploaded
      */
-    public func uploaded(progress: Double) {
+    public func update(progress: Double) {
         guard state == .uploading else { return }
         self.uploadProgress = Float(progress) / 100.0
-    }
-
-    /**
-     The recording file uploaded successfully.
-
-     */
-    public func succeeded() {
-        endUploading(true)
-    }
-
-    /**
-     There was an issue uploading the recording file.
-     */
-    public func failed() {
-        endUploading(false)
     }
 }
 
@@ -246,49 +229,13 @@ extension RecordingInfo: Uploadable {
 
 extension RecordingInfo: Managed {
 
-    private static var uploadCheckTimer: Timer? = nil
-
-    public static func startUploader() {
-        if uploadCheckTimer == nil {
-            DispatchQueue.main.async {
-                uploadCheckTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { _ in uploadNext() }
-            }
-        }
-    }
-
-    public static func stopUploader() {
-        uploadCheckTimer?.invalidate()
-        uploadCheckTimer = nil
-    }
-
     public static var defaultSortDescriptors: [NSSortDescriptor] {
         return [NSSortDescriptor(key: #keyPath(displayName), ascending: false)]
     }
 
-    private static var nextToUpload: RecordingInfo? {
+    public static var nextToUpload: Uploadable? {
         guard let context = RecordingInfoManagedContext.shared.context else { return nil }
         let predicate = NSPredicate(format: "uploaded == false && rawState == \(State.done.rawValue)")
-        while true {
-            guard let item = findOrFetch(in: context, matching: predicate) else { return nil }
-            if item.uploaded == false && (item.state == .done || item.state == .failed) {
-                return item
-            }
-            else {
-                os_log(.info, log: self.log, "skipping invalid item - %d %d %d", item.uploaded, item.state.rawValue,
-                       item.rawState)
-            }
-        }
-    }
-
-    private static func uploadNext() {
-        DispatchQueue.global(qos: .background).async {
-            guard let item = RecordingInfo.nextToUpload else {
-                uploadCheckTimer = nil
-                startUploader()
-                return
-            }
-
-            item.beginUploading { _ in uploadNext() }
-        }
+        return findOrFetch(in: context, matching: predicate)
     }
 }
