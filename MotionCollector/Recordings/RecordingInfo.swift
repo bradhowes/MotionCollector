@@ -36,7 +36,8 @@ private struct RecordingNameGenerator {
  Representation of a CoreData entry for a past or in-progress audio recording.
  */
 public final class RecordingInfo: NSManagedObject {
-    private lazy var log: OSLog = Logging.logger("recinf")
+    private static let log: OSLog = Logging.logger("recinf")
+    private var log: OSLog { Self.log }
 
     /**
      The state of the recording instance.
@@ -53,6 +54,13 @@ public final class RecordingInfo: NSManagedObject {
         case uploaded = 3
         case failed = 4
     }
+
+    /// The current state of the recording
+    public private(set) var state: State = .done {
+        didSet { self.rawState = state.rawValue }
+    }
+
+    @NSManaged private var rawState: Int64
 
     /// The name of the recording to show in the UI
     @NSManaged public private(set) var displayName: String
@@ -80,9 +88,6 @@ public final class RecordingInfo: NSManagedObject {
             return obj as! [String]
         }
     }
-
-    /// The current state of the recording
-    public private(set) var state: State = .done
 
     private var begin: Date = Date()
 
@@ -159,28 +164,34 @@ public final class RecordingInfo: NSManagedObject {
                                                     contents: contents.data(using: .ascii),
                                                     attributes: nil)
             os_log(.info, log: self.log, "ok: %d", ok)
-            if ok {
-                self.beginUploading()
+
+            self.managedObjectContext?.performChanges {
+                self.state = ok ? .done : .failed
+                self.uploaded = false
+                self.count = Int64(rows.count)
+                self.valuesBlob = try! NSKeyedArchiver.archivedData(withRootObject: rows, requiringSecureCoding: false)
+                self.duration = Int64(Date().timeIntervalSince(self.begin).rounded())
             }
         }
+    }
 
+    public func clearUploaded() {
         self.managedObjectContext?.performChanges {
-            self.count = Int64(rows.count)
-            self.valuesBlob = try! NSKeyedArchiver.archivedData(withRootObject: rows, requiringSecureCoding: false)
             self.state = .done
-            self.duration = Int64(Date().timeIntervalSince(self.begin).rounded())
+            self.uploaded = false
         }
     }
 
     /**
      Begin uploading to the cloud (if supported)
      */
-    public func beginUploading() {
+    public func beginUploading(notifier: CloudUploader.Notifier? = nil) {
+        precondition(state == .done)
         guard FileManager.default.hasCloudDirectory else { return }
         self.managedObjectContext?.performChanges {
             self.state = .uploading
             self.uploadProgress = 0.0
-            UIApplication.appDelegate.uploader.enqueue(self)
+            UIApplication.appDelegate.uploader.enqueue(self, notifier: notifier)
         }
     }
 
@@ -190,7 +201,7 @@ public final class RecordingInfo: NSManagedObject {
     public func endUploading(_ uploaded: Bool) {
         self.managedObjectContext?.performChanges {
             self.state = uploaded ? .uploaded : .failed
-            self.uploaded = true
+            self.uploaded = uploaded
         }
     }
 }
@@ -225,15 +236,59 @@ extension RecordingInfo: Uploadable {
 
     /**
      There was an issue uploading the recording file.
-
      */
     public func failed() {
         endUploading(false)
     }
 }
 
+// MARK: - Managed Protocol
+
 extension RecordingInfo: Managed {
+
+    private static var uploadCheckTimer: Timer? = nil
+
+    public static func startUploader() {
+        if uploadCheckTimer == nil {
+            DispatchQueue.main.async {
+                uploadCheckTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { _ in uploadNext() }
+            }
+        }
+    }
+
+    public static func stopUploader() {
+        uploadCheckTimer?.invalidate()
+        uploadCheckTimer = nil
+    }
+
     public static var defaultSortDescriptors: [NSSortDescriptor] {
         return [NSSortDescriptor(key: #keyPath(displayName), ascending: false)]
+    }
+
+    private static var nextToUpload: RecordingInfo? {
+        guard let context = RecordingInfoManagedContext.shared.context else { return nil }
+        let predicate = NSPredicate(format: "uploaded == false && rawState == \(State.done.rawValue)")
+        while true {
+            guard let item = findOrFetch(in: context, matching: predicate) else { return nil }
+            if item.uploaded == false && (item.state == .done || item.state == .failed) {
+                return item
+            }
+            else {
+                os_log(.info, log: self.log, "skipping invalid item - %d %d %d", item.uploaded, item.state.rawValue,
+                       item.rawState)
+            }
+        }
+    }
+
+    private static func uploadNext() {
+        DispatchQueue.global(qos: .background).async {
+            guard let item = RecordingInfo.nextToUpload else {
+                uploadCheckTimer = nil
+                startUploader()
+                return
+            }
+
+            item.beginUploading { _ in uploadNext() }
+        }
     }
 }

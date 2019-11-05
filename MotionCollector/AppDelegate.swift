@@ -47,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         os_log(.info, log: log, "applicationWillEnterForeground")
+        RecordingInfo.startUploader()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -55,19 +56,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         os_log(.info, log: log, "applicationWillTerminate")
-        RecordingInfoManagedContext.shared.save()
+        movingToBackground()
     }
 }
 
 extension AppDelegate {
 
-    /**
-     If the application is *not* recording then stop receiving samples from the microphone. Ask CoreData to save to disk
-     any outstanding changes.
-     */
     private func movingToBackground() {
         NotificationCenter.default.post(name: stopRecordingRequest, object: nil)
         RecordingInfoManagedContext.shared.save()
+        RecordingInfo.stopUploader()
     }
 }
 

@@ -18,6 +18,7 @@ public protocol Uploadable: class {
  code in CloudFileProvider.swift that handles uploading of a file to iCloud with feedback on the progress.
  */
 public final class CloudUploader {
+    public typealias Notifier = (Uploadable)->Void
 
     private lazy var log: OSLog = Logging.logger("cloud")
 
@@ -26,14 +27,14 @@ public final class CloudUploader {
 
      - parameter recordingInfo: the recording to upload
      */
-    public func enqueue(_ item: Uploadable) {
+    public func enqueue(_ item: Uploadable, notifier: Notifier? = nil) {
         os_log(.info, log: log, "add: %@", item.source.path)
         guard FileManager.default.hasCloudDirectory else { return }
-        DispatchQueue.global(qos: .background).async { self.upload(item) }
+        DispatchQueue.global(qos: .background).async { self.upload(item, notifier: notifier) }
         os_log(.info, log: log, "add: END")
     }
 
-    private func upload(_ item: Uploadable) {
+    private func upload(_ item: Uploadable, notifier: Notifier?) {
         os_log(.info, log: log, "copyToCloud: %@ -> %@", item.source.path, item.destination.path)
 
         do {
@@ -49,7 +50,7 @@ public final class CloudUploader {
 
         // Create a monitor to report on the progress of the upload. Due to circular reference it will live on after we
         // go out of scope while there is an operation to monitor.
-        let monitor = Monitor(item)
+        let monitor = Monitor(item, notifier: notifier)
 
         do {
             // Attempt to upload the file
@@ -74,11 +75,13 @@ public final class CloudUploader {
         private lazy var log: OSLog = Logging.logger("mon")
 
         private let item: Uploadable
+        private let notifier: Notifier?
         private let query: NSMetadataQuery
         private var observer: NSObjectProtocol?
 
-        init(_ item: Uploadable) {
+        init(_ item: Uploadable, notifier: Notifier?) {
             self.item = item
+            self.notifier = notifier
 
             // Build a query that will return periodic updates for the uploading progress.
             let query = NSMetadataQuery()
@@ -128,6 +131,8 @@ public final class CloudUploader {
             query.stop()
             NotificationCenter.default.removeObserver(observer)
             self.observer = nil
+
+            self.notifier?(item)
         }
     }
 }

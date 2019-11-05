@@ -112,7 +112,7 @@ struct RecordingInfoCellConfigurator {
 
     static private func makeUploadAction(with recordingInfo: RecordingInfo) -> UIContextualAction {
         let upload = UIContextualAction(style: .normal, title: "Upload") { action, view, completion in
-            recordingInfo.beginUploading()
+            recordingInfo.clearUploaded()
             completion(true)
         }
 

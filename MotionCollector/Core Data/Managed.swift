@@ -79,6 +79,13 @@ public extension Managed where Self: NSManagedObject {
         return object
     }
 
+    /**
+     Create a fetch request that returns the first item that matches a given predicate.
+
+     - parameter context: the context where the managed objects live
+     - parameter predicate: the match definition
+     - returns: optional found object
+     */
     static func findOrFetch(in context: NSManagedObjectContext, matching predicate: NSPredicate) -> Self? {
         guard let object = materializedObject(in: context, matching: predicate) else {
             return fetch(in: context) { request in
@@ -90,6 +97,13 @@ public extension Managed where Self: NSManagedObject {
         return object
     }
 
+    /**
+     Obtain the first registered object in the context that matches a given predicate.
+
+     - parameter context: the context where the managed objects live
+     - parameter predicate: the match definition
+     - returns: optional found object
+     */
     static func materializedObject(in context: NSManagedObjectContext, matching predicate: NSPredicate) -> Self? {
         for object in context.registeredObjects where !object.isFault {
             guard let result = object as? Self, predicate.evaluate(with: result) else { continue }

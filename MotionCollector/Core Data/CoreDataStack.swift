@@ -32,7 +32,7 @@ public class CoreDataStack<T: NSPersistentContainer> {
     private func create() {
         persistentContainer.loadPersistentStores { [weak self] _, err in
             guard let self = self else { return }
-            guard err == nil else { fatalError("Failed to load store: \(err!)") }
+//            guard err == nil else { fatalError("Failed to load store: \(err!)") }
             let vc = self.persistentContainer.viewContext
             self.availableNotification.post(value: vc)
         }

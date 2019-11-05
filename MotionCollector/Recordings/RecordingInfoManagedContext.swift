@@ -27,6 +27,7 @@ public struct RecordingInfoManagedContext {
     /// Obtain the known NSManagedObjectContext for RecordingInfo instances.
     public var context: NSManagedObjectContext? { return stack.managedObjectContext }
 
+    /// Obtain the CoreData stack notification for when it is available
     public var availableNotification: Stack.AvailableNotification { return stack.availableNotification }
 
     private init() {}

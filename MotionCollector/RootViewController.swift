@@ -18,8 +18,9 @@ public final class RootViewController: UITabBarController {
      */
     public override func viewDidLoad() {
         super.viewDidLoad()
-        observer = RecordingInfoManagedContext.shared.availableNotification.registerOnMain { _ in
+        observer = RecordingInfoManagedContext.shared.availableNotification.registerOnMain { context in
             self.tabBar.items?.forEach { $0.isEnabled = true }
+            RecordingInfo.startUploader()
         }
     }
 }
