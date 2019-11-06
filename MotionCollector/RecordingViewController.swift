@@ -30,7 +30,10 @@ class RecordingViewController: UIViewController, SegueHandler {
     @IBOutlet weak var status: UILabel!
     @IBOutlet weak var options: UIButton!
 
-    private let coreMotionController = CoreMotionController()
+    private let cmm = CMMotionManager()
+    private lazy var settings = Settings(cmm)
+    private lazy var coreMotionController = CoreMotionController(settings)
+
     private var startTime: Date?
     private var timer: Timer?
     private var recording: RecordingInfo?
@@ -46,7 +49,14 @@ class RecordingViewController: UIViewController, SegueHandler {
         switch segueIdentifier(for: segue) {
         case .optionsView:
             let vc = segue.destination as! OptionsViewController
-            vc.state = coreMotionController
+            vc.state = settings
+        }
+    }
+
+    public override func unwind(for unwindSegue: UIStoryboardSegue, towards subsequentVC: UIViewController) {
+        switch segueIdentifier(for: unwindSegue) {
+        case .optionsView:
+            coreMotionController.updateSettings()
         }
     }
 
@@ -64,6 +74,7 @@ class RecordingViewController: UIViewController, SegueHandler {
 
         showRecordCount(0)
         turning.isEnabled = false
+        turning.isHidden = true
 
         NotificationCenter.default.addObserver(forName: stopRecordingRequest, object: nil, queue: nil) { _ in
             self.stop()
@@ -124,7 +135,11 @@ extension RecordingViewController {
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in self.updateView() }
         coreMotionController.start()
         RecordingStateChangeNotification.post(value: true)
-        turning.isEnabled = true
+        UIView.animate(withDuration: 0.2) {
+            self.turning.alpha = 1.0
+            self.turning.isHidden = false
+            self.turning.isEnabled = true
+        }
     }
 
     private func stop() {
@@ -140,7 +155,12 @@ extension RecordingViewController {
         }
 
         startStop.setTitle("Start", for: .normal)
-        turning.isEnabled = false
+
+        UIView.animate(withDuration: 0.2) {
+            self.turning.isEnabled = false
+            self.turning.isHidden = true
+            self.turning.alpha = 0.0
+        }
     }
 
     private func updateView() {

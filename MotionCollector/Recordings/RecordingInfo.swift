@@ -99,7 +99,8 @@ public final class RecordingInfo: NSManagedObject {
     public lazy var localUrl: URL = RecordingNameGenerator.recordingUrl(fileName: fileName)
 
     /// The (optional) location of the recording in the cloud
-    public lazy var cloudURL: URL? = FileManager.default.cloudDocumentsDirectory?.appendingPathComponent(fileName)
+    public lazy var cloudURL: URL? = FileManager.default.hasCloudDirectory ?
+        FileManager.default.cloudDocumentsDirectory?.appendingPathComponent(fileName) : nil
 
     /// True if this instance is actively being recorded
     public var isRecording: Bool { return state == .recording }
@@ -234,6 +235,7 @@ extension RecordingInfo: Managed {
     }
 
     public static var nextToUpload: Uploadable? {
+        guard CloudUploader.shared.enabled else { return nil }
         guard let context = RecordingInfoManagedContext.shared.context else { return nil }
         let predicate = NSPredicate(format: "uploaded == false && count > 0 && rawState == \(State.done.rawValue)")
         return findOrFetch(in: context, matching: predicate)

@@ -14,7 +14,6 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     lazy var log = Logging.logger("app")
-    private let uploader = CloudUploader(RecordingInfoManagedContext.shared.availableNotification)
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         return true
@@ -46,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         os_log(.info, log: log, "applicationWillEnterForeground")
-        uploader.startUploads()
+        CloudUploader.shared.startUploads()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -62,14 +61,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
 
     public var uploadsEnabled: Bool {
-        get { return uploader.enabled }
-        set { uploader.enabled = newValue }
+        get { return CloudUploader.shared.enabled && FileManager.default.hasCloudDirectory }
+        set { CloudUploader.shared.enabled = newValue }
     }
 
     private func movingToBackground() {
         NotificationCenter.default.post(name: stopRecordingRequest, object: nil)
         RecordingInfoManagedContext.shared.save()
-        uploader.stopUploads()
+        CloudUploader.shared.stopUploads()
     }
 }
 

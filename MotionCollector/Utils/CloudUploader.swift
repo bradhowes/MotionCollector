@@ -22,19 +22,24 @@ public final class CloudUploader {
     private lazy var log: OSLog = Logging.logger("cloud")
 
     public typealias Notifier = () -> Void
-    public var enabled: Bool = FileManager.default.hasCloudDirectory {
-        didSet { if (enabled) { startUploads() } }
+
+    public var enabled: Bool {
+        get { return _enabled && FileManager.default.hasCloudDirectory }
+        set { _enabled = newValue }
     }
 
+    private var _enabled: Bool = FileManager.default.hasCloudDirectory
     private var uploading: Bool = false
     private var availableObserver: NotificationObserver? = nil
     private var contextSavedObserver: NSObjectProtocol? = nil
 
+    public static let shared = CloudUploader()
+
     /**
      Construct new uploader to iCloud.
      */
-    public init(_ available: RecordingInfoManagedContext.Stack.AvailableNotification) {
-        availableObserver = available.registerOnAny { self.contextAvailable($0) }
+    private init() {
+        availableObserver = RecordingInfoManagedContext.shared.availableNotification.registerOnAny { self.contextAvailable($0) }
     }
 
     private func contextAvailable(_ context: NSManagedObjectContext) {

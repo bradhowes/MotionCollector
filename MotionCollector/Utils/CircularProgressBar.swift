@@ -12,14 +12,14 @@ private extension CGRect {
 public final class CircularProgressBar: UIView {
 
     /// The color of the progress bar
-    public var progressTintColor: UIColor? = .orange
+    public var progressTintColor: UIColor? = .systemBlue
 
     /// The color of the 'channel' or untinted area, or the remaining part of the circle that is not covered by the
     /// `progressTintColor`
     public var progressChannelColor: UIColor? = UIColor.lightGray.withAlphaComponent(0.5)
 
     /// The width of the line used to draw the circle
-    public var progressLineWidth: CGFloat = 5.0
+    public var progressLineWidth: CGFloat = 2.0
 
     /// The layer that shows the progress amount
     private let foregroundLayer = CAShapeLayer()

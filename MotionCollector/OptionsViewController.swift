@@ -3,7 +3,6 @@
 
 import UIKit
 
-
 /**
  A source and destination of state for the OptionsViewController.
  */

@@ -5,30 +5,10 @@ import os
 import CoreMotion
 import UIKit
 
-public enum SettingName: String {
-    case samplesPerSecond
-    case useAccelerometer
-    case useDeviceMotion
-    case useGyro
-    case useMagnetometer
-    case uploadToCloud
-}
-
-fileprivate extension UserDefaults {
-    func enabled(for name: SettingName) -> Bool {
-        let exists = self.object(forKey: name.rawValue) != nil
-        return exists ? self.bool(forKey: name.rawValue) : true
-    }
-
-    func integer(for name: SettingName) -> Int {
-        return self.integer(forKey: name.rawValue)
-    }
-}
-
 /**
  Wrapper around the CMMotionManager to control how it is used.
  */
-class CoreMotionController: OptionsViewState {
+class CoreMotionController {
     lazy var log = Logging.logger("cmc")
 
     /// The source of all of the reports from iOS hardware.
@@ -37,55 +17,27 @@ class CoreMotionController: OptionsViewState {
     /// Holds the blocks being used to record different hardware reports
     private let operationQueue = OperationQueue()
 
+    private let settings: Settings
+
     /// Custom _serialized_ queue. The work is done using threads from the global _utlility_ queue.
     let dataQueue = DispatchQueue(label: "dataQueue", qos: .utility, attributes: [], autoreleaseFrequency: .inherit,
                                   target: DispatchQueue.global(qos: .utility))
 
-    var hasAccelerometer: Bool { sensorManager.isAccelerometerAvailable }
-    var hasDeviceMotion: Bool { sensorManager.isDeviceMotionAvailable }
-    var hasGyro: Bool { sensorManager.isGyroAvailable }
-    var hasMagnetometer: Bool { sensorManager.isMagnetometerAvailable }
-
-    /// The number of samples per second emitted by the CMMotionManager. This is per hardware device, so for four
-    /// devices (maximum), the number of reports generated would be 4x this number.
-    var samplesPerSecond: Int = 10 { didSet { setUpdateIntervals() } }
-    var useAccelerometer: Bool { didSet { updateSetting(.useAccelerometer, with: useAccelerometer) } }
-    var useDeviceMotion: Bool { didSet { updateSetting(.useDeviceMotion, with: useDeviceMotion) } }
-    var useGyro: Bool { didSet { updateSetting(.useGyro, with: useGyro) } }
-    var useMagnetometer: Bool { didSet { updateSetting(.useMagnetometer, with: useMagnetometer) } }
-    var uploadToCloud: Bool {
-        didSet {
-            updateSetting(.uploadToCloud, with: uploadToCloud)
-            UIApplication.appDelegate.uploadsEnabled = uploadToCloud
-        }
-    }
-
     var data = [String]()
     var state: Int = 0
 
-    private var updateInterval: TimeInterval { 1.0 / TimeInterval(samplesPerSecond) }
+    private var updateInterval: TimeInterval { 1.0 / TimeInterval(settings.samplesPerSecond) }
 
-    init() {
+    init(_ settings: Settings) {
+        self.settings = settings
         operationQueue.qualityOfService = .utility
-        let defaultSettings: [SettingName: Any] = [
-            .samplesPerSecond: 10,
-            .useAccelerometer: true,
-            .useDeviceMotion: true,
-            .useGyro: true,
-            .useMagnetometer: true,
-            .uploadToCloud: true
-        ]
-
-        let defaults = UserDefaults.standard
-        defaults.register(defaults: Dictionary<String,Any>(uniqueKeysWithValues: defaultSettings.map { ($0.0.rawValue, $0.1) }))
-
-        samplesPerSecond = defaults.integer(for: .samplesPerSecond)
-        useAccelerometer = sensorManager.isAccelerometerAvailable && defaults.enabled(for: .useAccelerometer)
-        useDeviceMotion = sensorManager.isDeviceMotionAvailable && defaults.enabled(for: .useDeviceMotion)
-        useGyro = sensorManager.isGyroAvailable && defaults.enabled(for: .useGyro)
-        useMagnetometer = sensorManager.isMagnetometerAvailable && defaults.enabled(for: .useMagnetometer)
-        uploadToCloud = defaults.enabled(for: .uploadToCloud)
         setUpdateIntervals()
+    }
+
+    func updateSettings() {
+        pause()
+        setUpdateIntervals()
+        resume()
     }
 
     func setWalking() { dataQueue.async { Datum.label = .walk } }
@@ -97,7 +49,12 @@ class CoreMotionController: OptionsViewState {
         data.removeAll(keepingCapacity: true)
         setUpdateIntervals()
 
-        if useAccelerometer && sensorManager.isAccelerometerAvailable {
+        resume()
+    }
+
+    func resume() {
+        os_log(.info, log: log, "resume")
+        if settings.useAccelerometer {
             os_log(.info, log: log, "using accelerometer")
             let proc = processGenerator(
                 bad: { _ in self.sensorManager.stopAccelerometerUpdates() },
@@ -105,7 +62,7 @@ class CoreMotionController: OptionsViewState {
             sensorManager.startAccelerometerUpdates(to: operationQueue, withHandler: proc)
         }
 
-        if useDeviceMotion && sensorManager.isDeviceMotionAvailable {
+        if settings.useDeviceMotion {
             os_log(.info, log: log, "using deviceMotion")
             let proc = processGenerator(
                 bad: { _ in self.sensorManager.stopDeviceMotionUpdates() },
@@ -113,7 +70,7 @@ class CoreMotionController: OptionsViewState {
             sensorManager.startDeviceMotionUpdates(to: operationQueue, withHandler: proc)
         }
 
-        if useGyro && sensorManager.isGyroAvailable {
+        if settings.useGyro {
             os_log(.info, log: log, "using gyro")
             let proc = processGenerator(
                 bad: { _ in self.sensorManager.stopGyroUpdates() },
@@ -121,7 +78,7 @@ class CoreMotionController: OptionsViewState {
             sensorManager.startGyroUpdates(to: operationQueue, withHandler: proc)
         }
 
-        if useMagnetometer && sensorManager.isMagnetometerAvailable {
+        if settings.useMagnetometer {
             os_log(.info, log: log, "using magnetometer")
             let proc = processGenerator(
                 bad: { _ in self.sensorManager.stopMagnetometerUpdates() },
@@ -134,11 +91,16 @@ class CoreMotionController: OptionsViewState {
 
     func stop(_ block: ([String])->Void) {
         os_log(.info, log: log, "stop")
+        pause()
+        block([Datum.header] + data)
+    }
+
+    func pause() {
+        os_log(.info, log: log, "pause")
         if sensorManager.isAccelerometerActive { sensorManager.stopAccelerometerUpdates() }
         if sensorManager.isDeviceMotionActive { sensorManager.stopDeviceMotionUpdates() }
         if sensorManager.isGyroActive { sensorManager.stopGyroUpdates() }
         if sensorManager.isMagnetometerActive { sensorManager.stopMagnetometerUpdates() }
-        block([Datum.header] + data)
     }
 
     func update(_ block: @escaping (Int)->Void) {
@@ -152,15 +114,10 @@ class CoreMotionController: OptionsViewState {
         if sensorManager.isDeviceMotionAvailable { sensorManager.deviceMotionUpdateInterval = rate }
         if sensorManager.isGyroAvailable { sensorManager.gyroUpdateInterval = rate }
         if sensorManager.isMagnetometerAvailable { sensorManager.magnetometerUpdateInterval = rate }
-        updateSetting(.samplesPerSecond, with: samplesPerSecond)
     }
 
     private func add(_ datum: Datum) {
         self.data.append(datum.csv)
-    }
-
-    private func updateSetting<T>(_ name: SettingName, with value: T) {
-        UserDefaults.standard.set(value, forKey: name.rawValue)
     }
 
     private func processGenerator<DataType>(bad: @escaping (Error)->Void,

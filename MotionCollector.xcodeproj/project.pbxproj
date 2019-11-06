@@ -13,6 +13,7 @@
 		BD3164BD23599F5600A860AA /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3164BC23599F5600A860AA /* Formatters.swift */; };
 		BD3164BF2359AA5E00A860AA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BD3164BE2359AA5E00A860AA /* Localizable.strings */; };
 		BD489867234F30FC00B78BE1 /* CloudUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD489866234F30FC00B78BE1 /* CloudUploader.swift */; };
+		BD50FB48237383B60060FE34 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD50FB47237383B60060FE34 /* Settings.swift */; };
 		BD532161234FEE640016D0A9 /* Datum.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD532160234FEE640016D0A9 /* Datum.swift */; };
 		BD532163234FEF7C0016D0A9 /* CoreMotionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD532162234FEF7C0016D0A9 /* CoreMotionController.swift */; };
 		BD67348F23527E8400CB8D94 /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD67348E23527E8400CB8D94 /* OptionsViewController.swift */; };
@@ -61,6 +62,7 @@
 		BD3164BC23599F5600A860AA /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
 		BD3164BE2359AA5E00A860AA /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		BD489866234F30FC00B78BE1 /* CloudUploader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudUploader.swift; sourceTree = "<group>"; };
+		BD50FB47237383B60060FE34 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		BD532160234FEE640016D0A9 /* Datum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Datum.swift; sourceTree = "<group>"; };
 		BD532162234FEF7C0016D0A9 /* CoreMotionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreMotionController.swift; sourceTree = "<group>"; };
 		BD67348E23527E8400CB8D94 /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				BD7553C6234D252400A457A7 /* SceneDelegate.swift */,
 				BD7553C8234D252400A457A7 /* RecordingViewController.swift */,
 				BD96B4CE234E825D009890A0 /* RootViewController.swift */,
+				BD50FB47237383B60060FE34 /* Settings.swift */,
 				BD96B4A4234E75BC009890A0 /* Core Data */,
 				BD96B4B8234E7906009890A0 /* Recordings */,
 				BD53215F234FED3B0016D0A9 /* Resources */,
@@ -356,6 +359,7 @@
 				BD96B4CB234E7D82009890A0 /* PersistentContainer.swift in Sources */,
 				BD96B4CF234E825D009890A0 /* RootViewController.swift in Sources */,
 				BD532163234FEF7C0016D0A9 /* CoreMotionController.swift in Sources */,
+				BD50FB48237383B60060FE34 /* Settings.swift in Sources */,
 				BD96B4AA234E75CD009890A0 /* Managed.swift in Sources */,
 				BD3164BD23599F5600A860AA /* Formatters.swift in Sources */,
 				BD7553C9234D252400A457A7 /* RecordingViewController.swift in Sources */,
