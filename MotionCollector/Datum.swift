@@ -3,6 +3,17 @@
 import CoreMotion
 
 /**
+ The activity labels that can appear in the CSV files
+ */
+enum Label: Int {
+    case walk   // User is currently walking
+    case turn   // User is currently turning
+
+    /// Obtain the label as a Double
+    public var value: Double { return Double(self.rawValue) }
+}
+
+/**
  Definition of the different reports that will be emitted by the application to a CSV recording file.
  */
 enum Datum {
@@ -10,34 +21,32 @@ enum Datum {
     case deviceMotion(CMDeviceMotion)
     case gyro(CMGyroData)
     case magnetometer(CMMagnetometerData)
-    case walkingMarker(Date)
-    case turningMarker(Date)
+
+    public static var label: Label = .walk
 
     /// Obtain a string of comma-separated values
     public var csv: String { row.map { "\($0)" }.joined(separator: ",") }
 
     /// Obtain a header for the CSV file
-    static let header = "Type, When, X, Y, Z, UA_X, UA_Y, UA_Z, Pitch, Roll, Yaw"
+    static let header = "Source, Label, When, X, Y, Z, UA_X, UA_Y, UA_Z, Pitch, Roll, Yaw"
 
     /// Obtain an array of numbers for an event. The first is a numerical indication of the event type, followed by
-    /// the time of the event in 
+    /// the time of the event in
     public var row: [Double] {
         switch self {
         case .acceleration(let data):
-            return [0, data.when, data.acceleration.x, data.acceleration.y, data.acceleration.z]
+            return [0, Self.label.value, data.when, data.acceleration.x, data.acceleration.y, data.acceleration.z]
         case .deviceMotion(let data):
-            return [1, data.when, data.rotationRate.x, data.rotationRate.y, data.rotationRate.z,
+            return [1, Self.label.value, data.when, data.rotationRate.x, data.rotationRate.y, data.rotationRate.z,
                     data.userAcceleration.x, data.userAcceleration.y, data.userAcceleration.z,
                     data.attitude.pitch, data.attitude.roll, data.attitude.yaw
             ]
         case .gyro(let data):
-            return [2, data.when, data.rotationRate.x, data.rotationRate.y, data.rotationRate.z]
+            return [2, Self.label.value, data.when, data.rotationRate.x, data.rotationRate.y,
+                    data.rotationRate.z]
         case .magnetometer(let data):
-            return [3, data.when, data.magneticField.x, data.magneticField.y, data.magneticField.z]
-        case .walkingMarker(let when):
-            return [4, when.timeIntervalSince1970]
-        case .turningMarker(let when):
-            return [5, when.timeIntervalSince1970]
+            return [3, Self.label.value, data.when, data.magneticField.x, data.magneticField.y,
+                    data.magneticField.z]
         }
     }
 }

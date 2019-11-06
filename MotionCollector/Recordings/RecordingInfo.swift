@@ -235,7 +235,7 @@ extension RecordingInfo: Managed {
 
     public static var nextToUpload: Uploadable? {
         guard let context = RecordingInfoManagedContext.shared.context else { return nil }
-        let predicate = NSPredicate(format: "uploaded == false && rawState == \(State.done.rawValue)")
+        let predicate = NSPredicate(format: "uploaded == false && count > 0 && rawState == \(State.done.rawValue)")
         return findOrFetch(in: context, matching: predicate)
     }
 }

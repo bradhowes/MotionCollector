@@ -34,9 +34,9 @@ struct RecordingInfoCellConfigurator {
             stop.addTarget(cell, action: #selector(RecordingInfoTableViewCell.stopRecording), for: .touchUpInside)
             cell.accessoryView = stop
         }
-        else if recordingInfo.uploading == true {
+        else if recordingInfo.uploading {
             let percentage = recordingInfo.uploadProgress
-            cell.uploadProgressIndicator.setProgress(percentage, animated: true)
+            cell.setProgress(percentage)
         }
         else {
             cell.accessoryView = nil

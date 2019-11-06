@@ -61,6 +61,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
 
+    public var uploadsEnabled: Bool {
+        get { return uploader.enabled }
+        set { uploader.enabled = newValue }
+    }
+
     private func movingToBackground() {
         NotificationCenter.default.post(name: stopRecordingRequest, object: nil)
         RecordingInfoManagedContext.shared.save()

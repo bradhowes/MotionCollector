@@ -22,6 +22,9 @@ public final class CloudUploader {
     private lazy var log: OSLog = Logging.logger("cloud")
 
     public typealias Notifier = () -> Void
+    public var enabled: Bool = FileManager.default.hasCloudDirectory {
+        didSet { if (enabled) { startUploads() } }
+    }
 
     private var uploading: Bool = false
     private var availableObserver: NotificationObserver? = nil
@@ -46,7 +49,7 @@ public final class CloudUploader {
      Begin uploading documents to iCloud.
      */
     public func startUploads() {
-        guard !uploading else { return }
+        guard enabled && !uploading else { return }
         os_log(.info, log: log, "startUploads")
         uploading = true
         uploadNext()

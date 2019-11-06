@@ -35,7 +35,7 @@ class Formatters {
     public func formatted(recordingStatus: RecordingInfo.State) -> String {
         switch recordingStatus {
         case .recording: return recordingLabel
-        case .done: return FileManager.default.hasCloudDirectory ? waitingLabel : ""
+        case .done: return (FileManager.default.hasCloudDirectory && UIApplication.appDelegate.uploadsEnabled) ? waitingLabel : ""
         case .uploading: return uploadingLabel
         case .uploaded: return uploadedLabel
         case .failed: return failedLabel

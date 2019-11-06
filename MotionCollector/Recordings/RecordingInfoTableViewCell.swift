@@ -21,16 +21,15 @@ public final class RecordingInfoTableViewCell: UITableViewCell {
     /// The color of the text when entry is recording
     @IBInspectable var recordingTextColor: UIColor?
 
-    /// An CircularProgressBar associated with the cell. Creates and installs a new one when necessary
-    public var uploadProgressIndicator: CircularProgressBar {
+    public func setProgress(_ percentage: Float) {
         if let av = self.accessoryView as? CircularProgressBar {
-            return av
+            av.setProgress(percentage, animated: true)
         }
-
-        let av = CircularProgressBar(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        av.setProgress(0.0, animated: false)
-        self.accessoryView = av
-        return av
+        else {
+            let av = CircularProgressBar(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            av.setProgress(percentage, animated: false)
+            self.accessoryView = av
+        }
     }
 
     /**

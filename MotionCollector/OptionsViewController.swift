@@ -8,6 +8,11 @@ import UIKit
  A source and destination of state for the OptionsViewController.
  */
 protocol OptionsViewState {
+    var hasAccelerometer: Bool {get}
+    var hasDeviceMotion: Bool {get}
+    var hasGyro: Bool {get}
+    var hasMagnetometer: Bool {get}
+
     var samplesPerSecond: Int {get set}
     var useAccelerometer: Bool {get set}
     var useDeviceMotion: Bool {get set}
@@ -23,10 +28,15 @@ protocol OptionsViewState {
 class OptionsViewController: UIViewController {
     @IBOutlet weak var samplesPerSecond: UITextField!
     @IBOutlet weak var done: UIButton!
+    @IBOutlet weak var accelerometerLabel: UILabel!
     @IBOutlet weak var accelerometer: UISwitch!
+    @IBOutlet weak var deviceMotionLabel: UILabel!
     @IBOutlet weak var deviceMotion: UISwitch!
+    @IBOutlet weak var gyroLabel: UILabel!
     @IBOutlet weak var gyro: UISwitch!
+    @IBOutlet weak var magnetometerLabel: UILabel!
     @IBOutlet weak var magnetometer: UISwitch!
+    @IBOutlet weak var uploadToCloudLabel: UILabel!
     @IBOutlet weak var uploadToCloud: UISwitch!
 
     var state: OptionsViewState!
@@ -38,11 +48,27 @@ class OptionsViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         samplesPerSecond.text = "\(state.samplesPerSecond)"
+
+        accelerometerLabel.isEnabled = state.hasAccelerometer
+        accelerometer.isEnabled = state.hasAccelerometer
         accelerometer.isOn = state.useAccelerometer
+
+        deviceMotionLabel.isEnabled = state.hasDeviceMotion
+        deviceMotion.isEnabled = state.hasDeviceMotion
         deviceMotion.isOn = state.useDeviceMotion
+
+        gyroLabel.isEnabled = state.hasGyro
+        gyro.isEnabled = state.hasGyro
         gyro.isOn = state.useGyro
+
+        magnetometerLabel.isEnabled = state.hasMagnetometer
+        magnetometer.isEnabled = state.hasMagnetometer
         magnetometer.isOn = state.useMagnetometer
+
+        uploadToCloudLabel.isEnabled = FileManager.default.hasCloudDirectory
+        uploadToCloud.isEnabled = FileManager.default.hasCloudDirectory
         uploadToCloud.isOn = state.uploadToCloud
+
         super.viewWillAppear(animated)
     }
 

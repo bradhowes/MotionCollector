@@ -3,8 +3,9 @@
 
 import os
 import CoreMotion
+import UIKit
 
-private enum SettingName: String {
+public enum SettingName: String {
     case samplesPerSecond
     case useAccelerometer
     case useDeviceMotion
@@ -40,6 +41,11 @@ class CoreMotionController: OptionsViewState {
     let dataQueue = DispatchQueue(label: "dataQueue", qos: .utility, attributes: [], autoreleaseFrequency: .inherit,
                                   target: DispatchQueue.global(qos: .utility))
 
+    var hasAccelerometer: Bool { sensorManager.isAccelerometerAvailable }
+    var hasDeviceMotion: Bool { sensorManager.isDeviceMotionAvailable }
+    var hasGyro: Bool { sensorManager.isGyroAvailable }
+    var hasMagnetometer: Bool { sensorManager.isMagnetometerAvailable }
+
     /// The number of samples per second emitted by the CMMotionManager. This is per hardware device, so for four
     /// devices (maximum), the number of reports generated would be 4x this number.
     var samplesPerSecond: Int = 10 { didSet { setUpdateIntervals() } }
@@ -47,7 +53,12 @@ class CoreMotionController: OptionsViewState {
     var useDeviceMotion: Bool { didSet { updateSetting(.useDeviceMotion, with: useDeviceMotion) } }
     var useGyro: Bool { didSet { updateSetting(.useGyro, with: useGyro) } }
     var useMagnetometer: Bool { didSet { updateSetting(.useMagnetometer, with: useMagnetometer) } }
-    var uploadToCloud: Bool { didSet { updateSetting(.uploadToCloud, with: uploadToCloud) } }
+    var uploadToCloud: Bool {
+        didSet {
+            updateSetting(.uploadToCloud, with: uploadToCloud)
+            UIApplication.appDelegate.uploadsEnabled = uploadToCloud
+        }
+    }
 
     var data = [String]()
     var state: Int = 0
@@ -77,9 +88,9 @@ class CoreMotionController: OptionsViewState {
         setUpdateIntervals()
     }
 
-    func setWalking() { dataQueue.async { self.add(.walkingMarker(Date())) } }
+    func setWalking() { dataQueue.async { Datum.label = .walk } }
 
-    func setTurning() { dataQueue.async { self.add(.turningMarker(Date())) } }
+    func setTurning() { dataQueue.async { Datum.label = .turn } }
 
     func start() {
         os_log(.info, log: log, "start")

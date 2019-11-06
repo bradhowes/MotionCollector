@@ -2,6 +2,9 @@
 
 import UIKit
 
+private extension CGRect {
+    var center: CGPoint { CGPoint(x: self.midX, y: self.midY) }
+}
 /**
  Bare minimum CoreGraphics representation of a circular progress bar. The start/end part of the cirle is "north".
  Progress is represented between 0.0 and 1.0, and changes to it are through the `setProgress` method.
@@ -13,10 +16,10 @@ public final class CircularProgressBar: UIView {
 
     /// The color of the 'channel' or untinted area, or the remaining part of the circle that is not covered by the
     /// `progressTintColor`
-    public var progressChannelColor: UIColor? = .lightGray
+    public var progressChannelColor: UIColor? = UIColor.lightGray.withAlphaComponent(0.5)
 
     /// The width of the line used to draw the circle
-    public var progressLineWidth: CGFloat = 8.0
+    public var progressLineWidth: CGFloat = 5.0
 
     /// The layer that shows the progress amount
     private let foregroundLayer = CAShapeLayer()
@@ -28,7 +31,17 @@ public final class CircularProgressBar: UIView {
     private var radius: CGFloat { return (self.bounds.width - progressLineWidth) / 2.0 }
 
     /// Obtain a new UIBezierPath which will render as a circle.
-    private var path: CGPath { return UIBezierPath(roundedRect: self.bounds, cornerRadius: radius).cgPath }
+    private var path: CGPath { UIBezierPath(roundedRect: self.bounds, cornerRadius: radius).cgPath }
+
+    private func wedge(_ progress: Float) {
+        let path = UIBezierPath()
+        path.move(to: bounds.center)
+        path.addArc(withCenter: bounds.center, radius: radius, startAngle: 0.0,
+                    endAngle: CGFloat(progress * 2.0 * .pi), clockwise: true)
+        path.addLine(to: bounds.center)
+        path.close()
+        foregroundLayer.path = path.cgPath
+    }
 
     /**
      Set up the view after being restored from an IB definition.
@@ -45,21 +58,12 @@ public final class CircularProgressBar: UIView {
      - parameter animated: if true, animate the drawing state changes
      */
     public func setProgress(_ progress: Float, animated: Bool) {
-        if animated {
-            let anim = CABasicAnimation(keyPath: "strokeEnd")
-            anim.fromValue = NSNumber(value: Float(foregroundLayer.strokeEnd))
-            anim.toValue = NSNumber(value: progress)
-            anim.duration = 0.20
-            anim.isRemovedOnCompletion = true
-            foregroundLayer.add(anim, forKey: "progress")
-        }
-
-        foregroundLayer.strokeEnd = CGFloat(progress)
+        wedge(progress)
     }
 
     private func makeBackgroundLayer(){
         backgroundLayer.path = path
-        backgroundLayer.lineWidth = progressLineWidth - 2.0
+        backgroundLayer.lineWidth = progressLineWidth
         backgroundLayer.strokeColor = progressChannelColor?.cgColor
         backgroundLayer.strokeEnd = 1.0
         backgroundLayer.fillColor = nil
@@ -67,11 +71,11 @@ public final class CircularProgressBar: UIView {
     }
 
     private func makeForegroundLayer(){
-        foregroundLayer.path = path
-        foregroundLayer.lineWidth = progressLineWidth
+        foregroundLayer.path = nil
+        foregroundLayer.lineWidth = 1.0
         foregroundLayer.strokeColor = progressTintColor?.cgColor
         foregroundLayer.strokeEnd = 0.0
-        foregroundLayer.fillColor = nil
+        foregroundLayer.fillColor = foregroundLayer.strokeColor
         self.layer.addSublayer(foregroundLayer)
     }
 

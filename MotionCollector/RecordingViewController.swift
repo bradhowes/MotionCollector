@@ -6,6 +6,7 @@
 //  Copyright © 2019 Brad Howes. All rights reserved.
 //
 
+import os
 import UIKit
 import CoreMotion
 
@@ -15,7 +16,7 @@ public let RecordingStateChangeNotification = TypedNotification<Bool>(name: "Rec
  The first, primary view controller that shows the start/stop button and the motion type tap buttons.
  */
 class RecordingViewController: UIViewController, SegueHandler {
-
+    private lazy var log = Logging.logger("main")
     /**
      Enumeration of the segues that can come from this controller.
      */
@@ -25,11 +26,10 @@ class RecordingViewController: UIViewController, SegueHandler {
 
     @IBOutlet weak var elapsed: UILabel!
     @IBOutlet weak var startStop: UIButton!
-    @IBOutlet weak var walking: UIButton!
     @IBOutlet weak var turning: UIButton!
     @IBOutlet weak var status: UILabel!
     @IBOutlet weak var options: UIButton!
-    
+
     private let coreMotionController = CoreMotionController()
     private var startTime: Date?
     private var timer: Timer?
@@ -63,7 +63,6 @@ class RecordingViewController: UIViewController, SegueHandler {
         kvo = tabBarItem.observe(\.isEnabled) { _, _ in self.startStop.isEnabled = self.tabBarItem.isEnabled }
 
         showRecordCount(0)
-        walking.isEnabled = false
         turning.isEnabled = false
 
         NotificationCenter.default.addObserver(forName: stopRecordingRequest, object: nil, queue: nil) { _ in
@@ -77,6 +76,7 @@ class RecordingViewController: UIViewController, SegueHandler {
      - parameter sender: ignored
      */
     @IBAction func startStop(_ sender: Any) {
+        os_log(.info, log: log, "startStop")
         if timer != nil {
             stop()
         }
@@ -86,20 +86,22 @@ class RecordingViewController: UIViewController, SegueHandler {
     }
 
     /**
-     Emit a record signalling the start of walking
+     Set label to indicate we are walking.
 
      - parameter sender: ignored
      */
     @IBAction func beginWalking(_ sender: Any) {
+        os_log(.info, log: log, "beginWalking")
         coreMotionController.setWalking()
     }
 
     /**
-     Emit a record signalling the start of a turn
+     Set label to indicate we are turning.
 
      - parameter sender: ignored
      */
     @IBAction func beginTurning(_ sender: Any) {
+        os_log(.info, log: log, "beginTurning")
         coreMotionController.setTurning()
     }
 }
@@ -122,7 +124,6 @@ extension RecordingViewController {
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in self.updateView() }
         coreMotionController.start()
         RecordingStateChangeNotification.post(value: true)
-        walking.isEnabled = true
         turning.isEnabled = true
     }
 
@@ -139,7 +140,6 @@ extension RecordingViewController {
         }
 
         startStop.setTitle("Start", for: .normal)
-        walking.isEnabled = false
         turning.isEnabled = false
     }
 
