@@ -21,6 +21,8 @@ public protocol Uploadable: class {
 public final class CloudUploader {
     private lazy var log: OSLog = Logging.logger("cloud")
 
+    static let shared: CloudUploader = CloudUploader()
+
     public typealias Notifier = () -> Void
 
     public var enabled: Bool {
@@ -32,8 +34,6 @@ public final class CloudUploader {
     private var uploading: Bool = false
     private var availableObserver: NotificationObserver? = nil
     private var contextSavedObserver: NSObjectProtocol? = nil
-
-    public static let shared = CloudUploader()
 
     /**
      Construct new uploader to iCloud.
