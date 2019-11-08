@@ -43,14 +43,14 @@ of the rows.
 * When -- timestamp of the record. These are given as number of seconds since 00:00:00 UTC 1 January, 1970 or
   the Unix epoch, though the resolution of the values is much finer than a second.
 
-All sensors emit three values, one for each of the 3 axis that define the orientation of the device in the real
-world.
+All sensors emit at minimum three values, one for each of the 3 axis that define the orientation of the device
+in the real world.
 
 * X -- X axis sensor value
 * Y -- Y axis sensor value
 * Z -- Z axis sensor value
 
-For the _device motion_ records (Source == 1), there are 9 values instead of 3.
+For the _device motion_ records (Source == 'D'), there are 9 values instead of 3.
 
 * X -- X axis rotation rate
 * Y -- Y axis rotation rate
@@ -65,3 +65,5 @@ For the _device motion_ records (Source == 1), there are 9 values instead of 3.
 See [this
 page](https://developer.apple.com/documentation/coremotion/getting_processed_device-motion_data/understanding_reference_frames_and_device_attitude)
 for a discussion of the _pitch_, _roll_, and _yaw_ values and how they relate to the device.
+
+![](https://github.com/bradhowes/MotionCollector/blob/master/images/csv.gif?raw=true)
