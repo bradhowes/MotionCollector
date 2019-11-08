@@ -9,6 +9,14 @@
         <attribute name="rawState" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="uploaded" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="uploadProgress" optional="YES" transient="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <fetchIndex name="uploadable">
+            <fetchIndexElement property="uploaded" type="Binary" order="ascending"/>
+            <fetchIndexElement property="count" type="Binary" order="ascending"/>
+            <fetchIndexElement property="rawState" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="name">
+            <fetchIndexElement property="displayName" type="Binary" order="ascending"/>
+        </fetchIndex>
     </entity>
     <elements>
         <element name="RecordingInfo" positionX="-63" positionY="-18" width="128" height="163"/>

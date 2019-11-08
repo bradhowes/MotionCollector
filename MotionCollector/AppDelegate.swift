@@ -15,7 +15,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     lazy var log = Logging.logger("app")
 
-    private let cloudUploader = CloudUploader.shared // Do this to force creation of instance
+    private let cloudUploader = CloudUploader.shared // Do this to force creation of instance ASAP
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         return true
