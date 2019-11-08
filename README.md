@@ -66,4 +66,4 @@ See [this
 page](https://developer.apple.com/documentation/coremotion/getting_processed_device-motion_data/understanding_reference_frames_and_device_attitude)
 for a discussion of the _pitch_, _roll_, and _yaw_ values and how they relate to the device.
 
-![](https://github.com/bradhowes/MotionCollector/blob/master/images/csv.gif?raw=true)
+![](https://github.com/bradhowes/MotionCollector/blob/master/images/csv.png?raw=true)
