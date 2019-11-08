@@ -8,7 +8,7 @@ import UIKit
 /**
  The top-level `root` view controller in the application.
  */
-public final class RootViewController: UITabBarController {
+final class RootViewController: UITabBarController {
 
     private var observer: NotificationObserver?
     private var ready: Bool = false

@@ -3,27 +3,16 @@
 import UIKit
 import CoreMotion
 
-public enum SettingName: String {
-    case samplesPerSecond
-    case useAccelerometer
-    case useDeviceMotion
-    case useGyro
-    case useMagnetometer
-    case uploadToCloud
-}
+final class Settings: OptionsViewState {
 
-fileprivate extension UserDefaults {
-    func enabled(for name: SettingName) -> Bool {
-        let exists = self.object(forKey: name.rawValue) != nil
-        return exists ? self.bool(forKey: name.rawValue) : true
+    public enum Name: String {
+        case samplesPerSecond
+        case useAccelerometer
+        case useDeviceMotion
+        case useGyro
+        case useMagnetometer
+        case uploadToCloud
     }
-
-    func integer(for name: SettingName) -> Int {
-        return self.integer(forKey: name.rawValue)
-    }
-}
-
-class Settings: OptionsViewState {
 
     let hasAccelerometer: Bool
     let hasDeviceMotion: Bool
@@ -66,7 +55,7 @@ class Settings: OptionsViewState {
 
     init(_ cmm: CMMotionManager) {
 
-        let defaultSettings: [SettingName: Any] = [
+        let defaultSettings: [Name: Any] = [
             .samplesPerSecond: 10,
             .useAccelerometer: true,
             .useDeviceMotion: true,
@@ -92,8 +81,23 @@ class Settings: OptionsViewState {
 
         uploadToCloud = defaults.enabled(for: .uploadToCloud)
     }
+}
 
-    private func updateSetting<T>(_ name: SettingName, with value: T) {
+private extension Settings {
+
+    func updateSetting<T>(_ name: Name, with value: T) {
         UserDefaults.standard.set(value, forKey: name.rawValue)
     }
 }
+
+private extension UserDefaults {
+    func enabled(for name: Settings.Name) -> Bool {
+        let exists = self.object(forKey: name.rawValue) != nil
+        return exists ? self.bool(forKey: name.rawValue) : true
+    }
+
+    func integer(for name: Settings.Name) -> Int {
+        return self.integer(forKey: name.rawValue)
+    }
+}
+

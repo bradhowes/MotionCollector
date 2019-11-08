@@ -119,7 +119,7 @@ public final class CloudUploader {
     /**
      Monitors the uploading progress from local device to iCloud.
      */
-    private class Monitor {
+    private final class Monitor {
         private lazy var log: OSLog = Logging.logger("mon")
 
         private let item: Uploadable

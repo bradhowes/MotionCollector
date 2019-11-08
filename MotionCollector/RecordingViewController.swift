@@ -1,9 +1,4 @@
-//
-//  ViewController.swift
-//  MotionCategorizer
-//
-//  Created by Brad Howes on 10/8/19.
-//  Copyright © 2019 Brad Howes. All rights reserved.
+// Copyright © 2019 Brad Howes. All rights reserved.
 //
 
 import os
@@ -15,15 +10,8 @@ public let RecordingStateChangeNotification = TypedNotification<Bool>(name: "Rec
 /**
  The first, primary view controller that shows the start/stop button and the motion type tap buttons.
  */
-class RecordingViewController: UIViewController, SegueHandler {
+final class RecordingViewController: UIViewController {
     private lazy var log = Logging.logger("main")
-    /**
-     Enumeration of the segues that can come from this controller.
-     */
-    enum SegueIdentifier: String {
-        case optionsView = "OptionsView"
-    }
-
     @IBOutlet weak var elapsed: UILabel!
     @IBOutlet weak var startStop: UIButton!
     @IBOutlet weak var turning: UIButton!
@@ -32,7 +20,7 @@ class RecordingViewController: UIViewController, SegueHandler {
 
     private let cmm = CMMotionManager()
     private lazy var settings = Settings(cmm)
-    private lazy var coreMotionController = CoreMotionController(settings)
+    private lazy var coreMotionController = CoreMotionController(settings, sensorManager: cmm)
 
     private var startTime: Date?
     private var timer: Timer?
@@ -40,28 +28,7 @@ class RecordingViewController: UIViewController, SegueHandler {
     private var kvo: NSKeyValueObservation?
 
     /**
-     Properly set up the options view.
-
-     - parameter segue: the seque being executed
-     - parameter sender: the source of the seque event
-     */
-    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segueIdentifier(for: segue) {
-        case .optionsView:
-            let vc = segue.destination as! OptionsViewController
-            vc.state = settings
-        }
-    }
-
-    public override func unwind(for unwindSegue: UIStoryboardSegue, towards subsequentVC: UIViewController) {
-        switch segueIdentifier(for: unwindSegue) {
-        case .optionsView:
-            coreMotionController.updateSettings()
-        }
-    }
-
-    /**
-     Setup of view to known state.
+     Set view to known state.
      */
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,7 +64,7 @@ class RecordingViewController: UIViewController, SegueHandler {
     }
 
     /**
-     Set label to indicate we are walking.
+     Set label to indicate we are walking. This is triggered when the user stops pressing on the `turn` button.
 
      - parameter sender: ignored
      */
@@ -107,7 +74,7 @@ class RecordingViewController: UIViewController, SegueHandler {
     }
 
     /**
-     Set label to indicate we are turning.
+     Set label to indicate we are walking. This is triggered when the user starts pressing on the `turn` button.
 
      - parameter sender: ignored
      */
@@ -117,15 +84,51 @@ class RecordingViewController: UIViewController, SegueHandler {
     }
 }
 
-// MARK: - Private methods
+// MARK: - Option View Presentation
 
-extension RecordingViewController {
+extension RecordingViewController: UIAdaptivePresentationControllerDelegate, SegueHandler {
 
-    private func setElapsed(_ duration: TimeInterval) {
-        self.elapsed.text = Formatters.shared.formatted(duration: duration)
+    /**
+     Enumeration of the segues that can come from this controller.
+     */
+    enum SegueIdentifier: String {
+        case optionsView = "OptionsView"
     }
 
-    private func start() {
+    /**
+     Properly set up the options view.
+
+     - parameter segue: the seque being executed
+     - parameter sender: the source of the seque event
+     */
+    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .optionsView:
+            let vc = segue.destination as! OptionsViewController
+            vc.state = settings
+            vc.presentationController?.delegate = self
+        }
+    }
+
+    /**
+     Event handler when seque is unwound.
+
+     - parameter unwindSegue: the segue being unwound
+     */
+    @IBAction func unwindToHere(_ unwindSegue: UIStoryboardSegue) {
+        coreMotionController.updateCollector()
+    }
+}
+
+// MARK: - Private methods
+
+private extension RecordingViewController {
+
+    func setElapsed(_ duration: TimeInterval) {
+        self.elapsed.text = Formatters.formatted(duration: duration)
+    }
+
+    func start() {
         precondition(timer == nil)
         setElapsed(0)
         showRecordCount(0)
@@ -142,7 +145,7 @@ extension RecordingViewController {
         }
     }
 
-    private func stop() {
+    func stop() {
         guard let timer = timer else { return }
         RecordingStateChangeNotification.post(value: false)
 
@@ -163,14 +166,14 @@ extension RecordingViewController {
         }
     }
 
-    private func updateView() {
+    func updateView() {
         let duration = Date().timeIntervalSince(startTime!)
         setElapsed(duration)
         coreMotionController.update() { count in DispatchQueue.main.async { self.showRecordCount(count) } }
     }
 
-    private func showRecordCount(_ count: Int) {
-        status.text = Formatters.shared.formatted(recordCount: count)
+    func showRecordCount(_ count: Int) {
+        status.text = Formatters.formatted(recordCount: count)
         recording?.update(count: count)
     }
 }

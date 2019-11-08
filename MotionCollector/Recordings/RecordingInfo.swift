@@ -4,34 +4,6 @@ import os
 import CoreData
 import UIKit
 
-private func formatterBuilder(format: String) -> DateFormatter {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = format
-    return dateFormatter
-}
-
-private struct RecordingNameGenerator {
-
-    fileprivate static let displayNameFormatter: DateFormatter = formatterBuilder(format: "yyyy-MM-dd HH:mm:ss")
-    fileprivate static let fileNameFormatter: DateFormatter = formatterBuilder(format: "yyyyMMddHHmmss")
-
-    fileprivate static let recordingsDir: URL = {
-        let fileManager = FileManager.default
-        let docDir = fileManager.localDocumentsDirectory
-        try? fileManager.createDirectory(at: docDir, withIntermediateDirectories: true, attributes: nil)
-        return docDir
-    }()
-
-    fileprivate static func recordingUrl(fileName: String) -> URL {
-        return recordingsDir.appendingPathComponent(fileName)
-    }
-
-    let date = Date()
-    lazy var fileType: String = "csv"
-    lazy var displayName: String = RecordingNameGenerator.displayNameFormatter.string(from: date)
-    lazy var fileName: String = "\(RecordingNameGenerator.fileNameFormatter.string(from: date)).\(fileType)"
-}
-
 /**
  Representation of a CoreData entry for a past or in-progress audio recording.
  */
@@ -59,8 +31,6 @@ public final class RecordingInfo: NSManagedObject {
         didSet { self.rawState = state.rawValue }
     }
 
-    @NSManaged private var rawState: Int64
-
     /// The name of the recording to show in the UI
     @NSManaged public private(set) var displayName: String
 
@@ -79,8 +49,7 @@ public final class RecordingInfo: NSManagedObject {
     /// The amount of the file that has been uploaded (0.0 - 1.0)
     @NSManaged public private(set) var uploadProgress: Float
 
-    @NSManaged private var valuesBlob: Data
-
+    /// The CSV strings from the recording
     public var values: [String] {
         get {
             let obj = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(valuesBlob)
@@ -88,11 +57,10 @@ public final class RecordingInfo: NSManagedObject {
         }
     }
 
-    private var beginTimestamp: Date = Date()
-
+    /// The duration of the recording formatted as HH:MM:SS
     public var formattedDuration: String {
         let duration = isRecording ? Date().timeIntervalSince(beginTimestamp) : TimeInterval(self.duration)
-        return Formatters.shared.formatted(duration: duration)
+        return Formatters.formatted(duration: duration)
     }
 
     /// The local (device) location of the recording
@@ -109,7 +77,11 @@ public final class RecordingInfo: NSManagedObject {
     public var uploading: Bool { return state == .uploading }
 
     /// Obtain the current status of the recording
-    public var status: String { Formatters.shared.formatted(recordingStatus: self.state) }
+    public var status: String { Formatters.formatted(recordingStatus: self.state) }
+
+    @NSManaged private var rawState: Int64
+    @NSManaged private var valuesBlob: Data
+    private var beginTimestamp: Date = Date()
 
     /// Class method that creates a new RecordingInfo entry in CoreData and returns a reference to it
     public class func create() -> RecordingInfo {
@@ -126,8 +98,12 @@ public final class RecordingInfo: NSManagedObject {
         return recording
     }
 
+    /**
+     Instance is being reconstituted from Core Data storage. Make it have a valid `state` value.
+     */
     override public func awakeFromFetch() {
         os_log(.info, log: log, "awakeFromFetch")
+        super.awakeFromFetch()
         self.state = self.uploaded ? .uploaded : .done
     }
 
@@ -175,6 +151,9 @@ public final class RecordingInfo: NSManagedObject {
         }
     }
 
+    /**
+     Reset the `uploaded` state of this instance so that it will be uploaded again.
+     */
     public func clearUploaded() {
         self.managedObjectContext?.performChanges {
             self.state = .done
@@ -234,6 +213,7 @@ extension RecordingInfo: Managed {
         return [NSSortDescriptor(key: #keyPath(displayName), ascending: false)]
     }
 
+    /// Obtain the next instance that is ready to be uploaded to iCloud
     public static var nextToUpload: Uploadable? {
         guard CloudUploader.shared.enabled else { return nil }
         guard let context = RecordingInfoManagedContext.shared.context else { return nil }

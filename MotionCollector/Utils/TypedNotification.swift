@@ -38,7 +38,7 @@ open class TypedNotification<A> {
      - returns: a NotificationObserver instance that records the registration.
      */
     open func registerOnAny(block: @escaping (A) -> Void) -> NotificationObserver {
-        return NotificationObserver(notification: self, block: block)
+        NotificationObserver(notification: self, block: block)
     }
 
     /**
@@ -48,9 +48,7 @@ open class TypedNotification<A> {
      - returns: a NotificationObserver instance that records the registration.
      */
     open func registerOnMain(block: @escaping (A) -> Void) -> NotificationObserver {
-        return NotificationObserver(notification: self) { arg in
-            DispatchQueue.main.async { block(arg) }
-        }
+        NotificationObserver(notification: self) { arg in DispatchQueue.main.async { block(arg) } }
     }
 }
 

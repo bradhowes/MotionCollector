@@ -2,7 +2,7 @@
 
 import UIKit
 
-struct RecordingInfoCellConfigurator {
+public struct RecordingInfoCellConfigurator {
 
     /**
      Business logic for showing the contents of a RecordingInfo instance in a RecordingInfoTableViewCell
@@ -10,7 +10,7 @@ struct RecordingInfoCellConfigurator {
      - parameter cell: the RecordingInfoTableViewCell to render into
      - parameter recordingInfo: the RecordingInfo model to render
      */
-    static func configure(cell: RecordingInfoTableViewCell, with recordingInfo: RecordingInfo) {
+    public static func configure(cell: RecordingInfoTableViewCell, with recordingInfo: RecordingInfo) {
 
         let bgColorView = UIView()
         bgColorView.backgroundColor = .darkGray
@@ -20,7 +20,7 @@ struct RecordingInfoCellConfigurator {
 
         var bits = [
             recordingInfo.formattedDuration,
-            Formatters.shared.formatted(recordCount: Int(recordingInfo.count)),
+            Formatters.formatted(recordCount: Int(recordingInfo.count)),
         ]
 
         if !recordingInfo.status.isEmpty { bits.append(recordingInfo.status) }
@@ -50,7 +50,7 @@ struct RecordingInfoCellConfigurator {
      - parameter cell: the UITableViewCell instance associated with the row
      - returns: optional collection of UIContextualAction instances that describe the actions for the row
      */
-    static public func makeLeadingSwipeActions(with recordingInfo: RecordingInfo,
+    public static func makeLeadingSwipeActions(with recordingInfo: RecordingInfo,
                                                cell: UITableViewCell?) -> UISwipeActionsConfiguration? {
         guard let cell = cell, !recordingInfo.isRecording else { return nil }
 
@@ -76,13 +76,16 @@ struct RecordingInfoCellConfigurator {
      - parameter recordingInfo: the RecordingInfo instance associated with the row
      - returns: optional collection of UIContextualAction instances that describe the actions for the row
      */
-    static public func makeTrailingSwipeActions(vc: UIViewController, deleteAction: @escaping ()->Void) -> UISwipeActionsConfiguration? {
+    public static func makeTrailingSwipeActions(vc: UIViewController, deleteAction: @escaping ()->Void) -> UISwipeActionsConfiguration? {
         let config = UISwipeActionsConfiguration(actions: [makeDeleteAction(vc: vc, deleteAction: deleteAction)])
         config.performsFirstActionWithFullSwipe = true
         return config
     }
+}
 
-    static private var mainWindow: UIWindow? {
+private extension RecordingInfoCellConfigurator {
+
+    static var mainWindow: UIWindow? {
         if #available(iOS 13.0, *) {
             return UIApplication.shared.windows.first { $0.isKeyWindow }
         }
@@ -91,7 +94,7 @@ struct RecordingInfoCellConfigurator {
         }
     }
 
-    static private func makeShareAction(with recordingInfo: RecordingInfo, cell: UITableViewCell) -> UIContextualAction? {
+    static func makeShareAction(with recordingInfo: RecordingInfo, cell: UITableViewCell) -> UIContextualAction? {
         guard let rvc = mainWindow?.rootViewController as? RootViewController else {
             fatalError("nil RootViewController")
         }
@@ -105,24 +108,24 @@ struct RecordingInfoCellConfigurator {
         }
 
         share.image = UIImage(named: "share")
-        share.backgroundColor = UIColor.blue
+        share.backgroundColor = UIColor.white
 
         return share
     }
 
-    static private func makeUploadAction(with recordingInfo: RecordingInfo) -> UIContextualAction {
+    static func makeUploadAction(with recordingInfo: RecordingInfo) -> UIContextualAction {
         let upload = UIContextualAction(style: .normal, title: "Upload") { action, view, completion in
             recordingInfo.clearUploaded()
             completion(true)
         }
 
         upload.image = UIImage(named: "upload")
-        upload.backgroundColor = UIColor.orange
+        upload.backgroundColor = UIColor.systemBlue
 
         return upload
     }
 
-    static private func makeDeleteAction(vc: UIViewController, deleteAction: @escaping ()->Void) -> UIContextualAction {
+    static func makeDeleteAction(vc: UIViewController, deleteAction: @escaping ()->Void) -> UIContextualAction {
         let delete = UIContextualAction(style: .destructive, title: "Delete") { action, view, completion in
             let prompt = UIAlertController(title: "Delete Recording?",
                                            message: """
@@ -141,7 +144,7 @@ struct RecordingInfoCellConfigurator {
             vc.present(prompt, animated: true, completion: nil)
         }
 
-        delete.backgroundColor = UIColor.red
+        delete.backgroundColor = UIColor.systemRed
         delete.image = UIImage(named: "trash")
 
         return delete

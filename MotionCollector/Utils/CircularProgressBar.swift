@@ -33,16 +33,6 @@ public final class CircularProgressBar: UIView {
     /// Obtain a new UIBezierPath which will render as a circle.
     private var path: CGPath { UIBezierPath(roundedRect: self.bounds, cornerRadius: radius).cgPath }
 
-    private func wedge(_ progress: Float) {
-        let path = UIBezierPath()
-        path.move(to: bounds.center)
-        path.addArc(withCenter: bounds.center, radius: radius, startAngle: 0.0,
-                    endAngle: CGFloat(progress * 2.0 * .pi), clockwise: true)
-        path.addLine(to: bounds.center)
-        path.close()
-        foregroundLayer.path = path.cgPath
-    }
-
     /**
      Set up the view after being restored from an IB definition.
      */
@@ -61,7 +51,24 @@ public final class CircularProgressBar: UIView {
         wedge(progress)
     }
 
-    private func makeBackgroundLayer(){
+    override public func layoutSublayers(of layer: CALayer) {
+        setupView()
+    }
+}
+
+private extension CircularProgressBar {
+
+    func wedge(_ progress: Float) {
+        let path = UIBezierPath()
+        path.move(to: bounds.center)
+        path.addArc(withCenter: bounds.center, radius: radius, startAngle: 0.0,
+                    endAngle: CGFloat(progress * 2.0 * .pi), clockwise: true)
+        path.addLine(to: bounds.center)
+        path.close()
+        foregroundLayer.path = path.cgPath
+    }
+
+    func makeBackgroundLayer(){
         backgroundLayer.path = path
         backgroundLayer.lineWidth = progressLineWidth
         backgroundLayer.strokeColor = progressChannelColor?.cgColor
@@ -70,7 +77,7 @@ public final class CircularProgressBar: UIView {
         layer.addSublayer(backgroundLayer)
     }
 
-    private func makeForegroundLayer(){
+    func makeForegroundLayer(){
         foregroundLayer.path = nil
         foregroundLayer.lineWidth = 1.0
         foregroundLayer.strokeColor = progressTintColor?.cgColor
@@ -79,14 +86,10 @@ public final class CircularProgressBar: UIView {
         self.layer.addSublayer(foregroundLayer)
     }
 
-    private func setupView() {
+    func setupView() {
         if self.layer.sublayers?.isEmpty ?? true {
             makeBackgroundLayer()
             makeForegroundLayer()
         }
-    }
-
-    override public func layoutSublayers(of layer: CALayer) {
-        setupView()
     }
 }

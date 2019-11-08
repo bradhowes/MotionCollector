@@ -6,7 +6,7 @@ import UIKit
 /**
  A source and destination of state for the OptionsViewController.
  */
-protocol OptionsViewState {
+public protocol OptionsViewState {
     var hasAccelerometer: Bool {get}
     var hasDeviceMotion: Bool {get}
     var hasGyro: Bool {get}
@@ -24,7 +24,7 @@ protocol OptionsViewState {
  Simple modal view that shows the configurable settings for the app. The values are loaded before appearing, and they
  are applied after it disappears.
  */
-class OptionsViewController: UIViewController {
+final class OptionsViewController: UIViewController {
     @IBOutlet weak var samplesPerSecond: UITextField!
     @IBOutlet weak var done: UIButton!
     @IBOutlet weak var accelerometerLabel: UILabel!
@@ -38,36 +38,24 @@ class OptionsViewController: UIViewController {
     @IBOutlet weak var uploadToCloudLabel: UILabel!
     @IBOutlet weak var uploadToCloud: UISwitch!
 
-    var state: OptionsViewState!
+    public var state: OptionsViewState!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Use a tap gesture on the view to dismiss any keyboard that is present due to the seconds text input field.
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard(_:))))
+        samplesPerSecond.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
         samplesPerSecond.text = "\(state.samplesPerSecond)"
-
-        accelerometerLabel.isEnabled = state.hasAccelerometer
-        accelerometer.isEnabled = state.hasAccelerometer
-        accelerometer.isOn = state.useAccelerometer
-
-        deviceMotionLabel.isEnabled = state.hasDeviceMotion
-        deviceMotion.isEnabled = state.hasDeviceMotion
-        deviceMotion.isOn = state.useDeviceMotion
-
-        gyroLabel.isEnabled = state.hasGyro
-        gyro.isEnabled = state.hasGyro
-        gyro.isOn = state.useGyro
-
-        magnetometerLabel.isEnabled = state.hasMagnetometer
-        magnetometer.isEnabled = state.hasMagnetometer
-        magnetometer.isOn = state.useMagnetometer
-
-        uploadToCloudLabel.isEnabled = FileManager.default.hasCloudDirectory
-        uploadToCloud.isEnabled = FileManager.default.hasCloudDirectory
-        uploadToCloud.isOn = state.uploadToCloud
-
+        setSwitch(accelerometerLabel, accelerometer, enabled: state.hasAccelerometer, value: state.useAccelerometer)
+        setSwitch(deviceMotionLabel, deviceMotion, enabled: state.hasDeviceMotion, value: state.useDeviceMotion)
+        setSwitch(gyroLabel, gyro, enabled: state.hasGyro, value: state.useGyro)
+        setSwitch(magnetometerLabel, magnetometer, enabled: state.hasMagnetometer, value: state.useMagnetometer)
+        setSwitch(uploadToCloudLabel, uploadToCloud, enabled: FileManager.default.hasCloudDirectory,
+                  value: state.uploadToCloud)
         super.viewWillAppear(animated)
     }
 
@@ -80,6 +68,16 @@ class OptionsViewController: UIViewController {
         state.useMagnetometer = magnetometer.isOn
         state.uploadToCloud = uploadToCloud.isOn
     }
+}
+
+extension OptionsViewController: UITextFieldDelegate {
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return textField.endEditing(false)
+    }
+}
+
+extension OptionsViewController {
 
     /**
      If the samplesPerSecond field is the first responder, then resign it and validate that the contents of the
@@ -87,18 +85,14 @@ class OptionsViewController: UIViewController {
 
      - parameter sender: gesture recognizer
      */
-    @IBAction func dismissKeyboard(_ sender: Any) {
+    @objc func dismissKeyboard(_ sender: Any) {
         if samplesPerSecond.isFirstResponder {
-            let sps = validSamplesPerSecond ?? state.samplesPerSecond
-            samplesPerSecond.text = "\(sps)"
+            if let sps = validSamplesPerSecond {
+                state.samplesPerSecond = sps
+                samplesPerSecond.text = "\(sps)"
+            }
             samplesPerSecond.resignFirstResponder()
         }
-    }
-
-    /// Return a valid samplesPerSecond or nil
-    private var validSamplesPerSecond: Int? {
-        if let sps = Int(samplesPerSecond.text ?? ""), sps > 0 { return sps }
-        return nil
     }
 
     /**
@@ -108,5 +102,19 @@ class OptionsViewController: UIViewController {
      */
     @IBAction func dismiss(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+    }
+}
+
+private extension OptionsViewController {
+
+    var validSamplesPerSecond: Int? {
+        if let sps = Int(samplesPerSecond.text ?? ""), sps > 0 { return sps }
+        return nil
+    }
+
+    func setSwitch(_ label: UILabel, _ control: UISwitch, enabled: Bool, value: Bool) {
+        label.isEnabled = enabled
+        control.isEnabled = enabled
+        control.isOn = value
     }
 }

@@ -11,7 +11,7 @@ import UIKit
 import CoreData
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     lazy var log = Logging.logger("app")
 
@@ -60,6 +60,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
 
+    /// Controls uploading to iCloud. Note that although it is a settable value, the value returned will depend on
+    /// whether the device can access iCloud. If it cannot, this will always return `false`
     public var uploadsEnabled: Bool {
         get { return CloudUploader.shared.enabled && FileManager.default.hasCloudDirectory }
         set { CloudUploader.shared.enabled = newValue }
@@ -73,5 +75,7 @@ extension AppDelegate {
 }
 
 extension UIApplication {
+
+    /// Short-hand for accessing the our delegate
     static var appDelegate: AppDelegate { return UIApplication.shared.delegate as! AppDelegate }
 }

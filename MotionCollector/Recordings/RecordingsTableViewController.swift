@@ -150,9 +150,9 @@ extension RecordingsTableViewController {
 
 // MARK: - Private
 
-extension RecordingsTableViewController {
+private extension RecordingsTableViewController {
 
-    private func setupTableView() {
+    func setupTableView() {
         editButtonItem.isEnabled = false
 
         guard let managedContext = RecordingInfoManagedContext.shared.context else { fatalError("nil recordingInfoManagedContext") }

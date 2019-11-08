@@ -10,7 +10,6 @@
 		BD0E370C2351F7AA0048FBC5 /* ContextDidSaveNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E370B2351F7AA0048FBC5 /* ContextDidSaveNotification.swift */; };
 		BD0E370E2352669C0048FBC5 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = BD0E370D2352669C0048FBC5 /* Localizable.stringsdict */; };
 		BD0E371123526C720048FBC5 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0E371023526C720048FBC5 /* CloudKit.framework */; };
-		BD3164BD23599F5600A860AA /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3164BC23599F5600A860AA /* Formatters.swift */; };
 		BD3164BF2359AA5E00A860AA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BD3164BE2359AA5E00A860AA /* Localizable.strings */; };
 		BD489867234F30FC00B78BE1 /* CloudUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD489866234F30FC00B78BE1 /* CloudUploader.swift */; };
 		BD50FB48237383B60060FE34 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD50FB47237383B60060FE34 /* Settings.swift */; };
@@ -42,6 +41,8 @@
 		BD96B4C9234E7C57009890A0 /* RecordingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4C8234E7C57009890A0 /* RecordingInfo.swift */; };
 		BD96B4CB234E7D82009890A0 /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4CA234E7D82009890A0 /* PersistentContainer.swift */; };
 		BD96B4CF234E825D009890A0 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4CE234E825D009890A0 /* RootViewController.swift */; };
+		BDE29BC023755A5D00EC6500 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3164BC23599F5600A860AA /* Formatters.swift */; };
+		BDE29BC223755CE400EC6500 /* RecordingNameGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE29BC123755CE400EC6500 /* RecordingNameGenerator.swift */; };
 		BDE50CD82353240A0012AE85 /* RecordingInfoManagedContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE50CD72353240A0012AE85 /* RecordingInfoManagedContext.swift */; };
 /* End PBXBuildFile section */
 
@@ -96,6 +97,7 @@
 		BD96B4C8234E7C57009890A0 /* RecordingInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordingInfo.swift; sourceTree = "<group>"; };
 		BD96B4CA234E7D82009890A0 /* PersistentContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
 		BD96B4CE234E825D009890A0 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		BDE29BC123755CE400EC6500 /* RecordingNameGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingNameGenerator.swift; sourceTree = "<group>"; };
 		BDE50CD72353240A0012AE85 /* RecordingInfoManagedContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingInfoManagedContext.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -173,7 +175,6 @@
 				BD7553C4234D252400A457A7 /* AppDelegate.swift */,
 				BD532162234FEF7C0016D0A9 /* CoreMotionController.swift */,
 				BD532160234FEE640016D0A9 /* Datum.swift */,
-				BD3164BC23599F5600A860AA /* Formatters.swift */,
 				BD67348E23527E8400CB8D94 /* OptionsViewController.swift */,
 				BD7553C6234D252400A457A7 /* SceneDelegate.swift */,
 				BD7553C8234D252400A457A7 /* RecordingViewController.swift */,
@@ -216,7 +217,9 @@
 				BD96B4B2234E768D009890A0 /* CircularProgressBar.swift */,
 				BD489866234F30FC00B78BE1 /* CloudUploader.swift */,
 				BD96B4B4234E76C1009890A0 /* FileManager+Extensions.swift */,
+				BD3164BC23599F5600A860AA /* Formatters.swift */,
 				BD96B4B6234E76DC009890A0 /* Logging.swift */,
+				BDE29BC123755CE400EC6500 /* RecordingNameGenerator.swift */,
 				BD96B4BF234E799B009890A0 /* SegueHandler.swift */,
 				BD96B4AF234E762A009890A0 /* TypedNotification.swift */,
 			);
@@ -347,6 +350,7 @@
 				BD96B4B7234E76DC009890A0 /* Logging.swift in Sources */,
 				BD96B4BA234E7918009890A0 /* RecordingInfoCellConfigurator.swift in Sources */,
 				BD96B4AB234E75CD009890A0 /* NSManagedObjectContext+Extensions.swift in Sources */,
+				BDE29BC023755A5D00EC6500 /* Formatters.swift in Sources */,
 				BD96B4AC234E75CD009890A0 /* TableViewDataSource.swift in Sources */,
 				BD96B4C3234E7B34009890A0 /* RecordingInfo.xcdatamodeld in Sources */,
 				BD96B4B0234E762A009890A0 /* TypedNotification.swift in Sources */,
@@ -359,9 +363,9 @@
 				BD96B4CB234E7D82009890A0 /* PersistentContainer.swift in Sources */,
 				BD96B4CF234E825D009890A0 /* RootViewController.swift in Sources */,
 				BD532163234FEF7C0016D0A9 /* CoreMotionController.swift in Sources */,
+				BDE29BC223755CE400EC6500 /* RecordingNameGenerator.swift in Sources */,
 				BD50FB48237383B60060FE34 /* Settings.swift in Sources */,
 				BD96B4AA234E75CD009890A0 /* Managed.swift in Sources */,
-				BD3164BD23599F5600A860AA /* Formatters.swift in Sources */,
 				BD7553C9234D252400A457A7 /* RecordingViewController.swift in Sources */,
 				BD96B4C0234E799B009890A0 /* SegueHandler.swift in Sources */,
 				BD67348F23527E8400CB8D94 /* OptionsViewController.swift in Sources */,

@@ -18,7 +18,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="aqd-oK-nvA">
                                 <rect key="frame" x="195.5" y="57" width="321.5" height="350.5"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="firstBaseline" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="U7v-4K-QrV" userLabel="Samples per second">
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="firstBaseline" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="U7v-4K-QrV" userLabel="Samples per second">
                                         <rect key="frame" x="0.0" y="0.0" width="321.5" height="27.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Samples per second" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SJc-3y-gbP">
@@ -28,9 +28,9 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="10" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="unlessEditing" translatesAutoresizingMaskIntoConstraints="NO" id="c3I-1d-0kc">
-                                                <rect key="frame" x="248.5" y="-6.5" width="73" height="34"/>
+                                                <rect key="frame" x="164" y="-6.5" width="157.5" height="34"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                             </textField>
                                         </subviews>
                                     </stackView>
@@ -128,6 +128,7 @@
                                 </state>
                                 <connections>
                                     <action selector="dismiss:" destination="hef-sB-ivJ" eventType="touchUpInside" id="5wJ-Hf-73e"/>
+                                    <segue destination="1Vt-vY-Lti" kind="unwind" identifier="OptionsView" unwindAction="unwindToHere:" id="tx3-ID-1dv"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -158,6 +159,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KPS-6M-0Kw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="1Vt-vY-Lti" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1860" y="-523.75"/>
         </scene>
