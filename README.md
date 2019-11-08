@@ -34,12 +34,12 @@ The file consists of lines of comma-separated values (CSV). The first line conta
 of the rows.
 
 * Source -- indicates which sensor emitted the data.
-> * 0 = accelerometer
-> * 1 = device motion
-> * 2 = gyroscope
-> * 3 = magnetometer (compass)
+> * A = accelerometer
+> * D = device motion
+> * G = gyroscope
+> * M = magnetometer (compass)
 
-* Label -- indicates the current user activity, 0 = walking, 1 = turning
+* Label -- indicates the current user activity, W = walking, T = turning
 * When -- timestamp of the record. These are given as number of seconds since 00:00:00 UTC 1 January, 1970 or
   the Unix epoch, though the resolution of the values is much finer than a second.
 
