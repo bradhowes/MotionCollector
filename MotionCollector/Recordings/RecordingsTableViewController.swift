@@ -154,10 +154,12 @@ private extension RecordingsTableViewController {
 
     func setupTableView() {
         editButtonItem.isEnabled = false
-
-        guard let managedContext = RecordingInfoManagedContext.shared.context else { fatalError("nil recordingInfoManagedContext") }
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 100
+
+        guard let managedContext = RecordingInfoManagedContext.shared.context else {
+            fatalError("nil recordingInfoManagedContext")
+        }
 
         let request = RecordingInfo.sortedFetchRequest
         request.fetchBatchSize = 40
