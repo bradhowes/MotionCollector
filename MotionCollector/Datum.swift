@@ -68,6 +68,7 @@ private extension Datum {
 
 private extension CMLogItem {
 
-    /// Obtain an absolute timestamp for an event
+    /// Obtain an delta from starting timestamp. This is mostly aesthetic since the timestamp for any CMLogItem is just
+    /// the time from the last boot of the device. It just makes the values smaller.
     func delta( _ start: TimeInterval) -> TimeInterval { self.timestamp - start }
 }
