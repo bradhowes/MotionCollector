@@ -18,7 +18,7 @@ final class RootViewController: UITabBarController {
      managed context available.
      */
     public override func viewDidLoad() {
-        self.delegate = self
+        self.delegate = self // !!! Yuck! But it is the root so...
         super.viewDidLoad()
         observer = RecordingInfoManagedContext.shared.availableNotification.registerOnMain { _ in
             self.tabBar.items?.forEach { $0.isEnabled = true }
