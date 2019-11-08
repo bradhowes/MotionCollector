@@ -2,9 +2,6 @@
 
 import UIKit
 
-private extension CGRect {
-    var center: CGPoint { CGPoint(x: self.midX, y: self.midY) }
-}
 /**
  Bare minimum CoreGraphics representation of a circular progress bar. The start/end part of the cirle is "north".
  Progress is represented between 0.0 and 1.0, and changes to it are through the `setProgress` method.
@@ -28,10 +25,12 @@ public final class CircularProgressBar: UIView {
     private let backgroundLayer = CAShapeLayer()
 
     /// The radius of the paths based on the available height/width of the view's frame
-    private var radius: CGFloat { return (self.bounds.width - progressLineWidth) / 2.0 }
+    private lazy var radius: CGFloat = (self.bounds.height - progressLineWidth) / 2.0
+    private lazy var ctr: CGPoint = CGPoint(x: self.bounds.maxX - radius, y: self.bounds.minY + radius)
+    private lazy var square: CGRect = CGRect(x: ctr.x - radius, y: ctr.y - radius, width: radius * 2, height: radius * 2)
 
     /// Obtain a new UIBezierPath which will render as a circle.
-    private var path: CGPath { UIBezierPath(roundedRect: self.bounds, cornerRadius: radius).cgPath }
+    private var path: CGPath { UIBezierPath(roundedRect: square, cornerRadius: radius).cgPath }
 
     /**
      Set up the view after being restored from an IB definition.
@@ -60,10 +59,10 @@ private extension CircularProgressBar {
 
     func wedge(_ progress: Float) {
         let path = UIBezierPath()
-        path.move(to: bounds.center)
-        path.addArc(withCenter: bounds.center, radius: radius, startAngle: 0.0,
-                    endAngle: CGFloat(progress * 2.0 * .pi), clockwise: true)
-        path.addLine(to: bounds.center)
+        path.move(to: ctr)
+        path.addArc(withCenter: ctr, radius: radius, startAngle: 0.0, endAngle: CGFloat(progress * 2.0 * .pi),
+                    clockwise: true)
+        path.addLine(to: ctr)
         path.close()
         foregroundLayer.path = path.cgPath
     }
