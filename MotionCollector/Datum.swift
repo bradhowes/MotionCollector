@@ -6,11 +6,8 @@ import CoreMotion
  The activity labels that can appear in the CSV files
  */
 public enum Label: String {
-    case walk   // User is currently walking
-    case turn   // User is currently turning
-
-    /// Obtain the label as a Double
-    public var tag: Character { return self.rawValue.uppercased().first! }
+    case walk = "W"
+    case turn = "T"
 }
 
 /**
@@ -29,33 +26,48 @@ public extension Datum {
     /// Obtain a header for the CSV file
     static let header = "Source, Label, When, X, Y, Z, UA_X, UA_Y, UA_Z, Pitch, Roll, Yaw"
 
-    /// Transform event record into a String of comma-separated values.
-    var csv: String {
+    var when: TimeInterval {
+        switch self {
+        case .acceleration(let data, _): return data.timestamp
+        case .deviceMotion(let data, _): return data.timestamp
+        case .gyro(let data, _): return data.timestamp
+        case .magnetometer(let data, _): return data.timestamp
+        }
+    }
+
+    func csv(_ start: TimeInterval) -> String {
         switch self {
         case let .acceleration(data, label):
-            return fmt("A", label, data.when, data.acceleration.x, data.acceleration.y, data.acceleration.z)
+            return fmt("A", label, data.delta(start), data.acceleration.x, data.acceleration.y, data.acceleration.z)
         case let .deviceMotion(data, label):
-            return fmt("D", label, data.when, data.rotationRate.x, data.rotationRate.y, data.rotationRate.z,
+            return fmt("D", label, data.delta(start), data.rotationRate.x, data.rotationRate.y, data.rotationRate.z,
                        data.userAcceleration.x, data.userAcceleration.y, data.userAcceleration.z,
                        data.attitude.pitch, data.attitude.roll, data.attitude.yaw)
         case let .gyro(data, label):
-            return fmt("G", label, data.when, data.rotationRate.x, data.rotationRate.y, data.rotationRate.z)
+            return fmt("G", label, data.delta(start), data.rotationRate.x, data.rotationRate.y, data.rotationRate.z)
         case let .magnetometer(data, label):
-            return fmt("M", label, data.when, data.magneticField.x, data.magneticField.y, data.magneticField.z)
+            return fmt("M", label, data.delta(start), data.magneticField.x, data.magneticField.y, data.magneticField.z)
         }
+    }
+}
+
+public extension Array where Element == Datum {
+
+    /// Convenience property that transforms array of Datum into a String containing CSV rows separated by linefeeds
+    var text: String {
+        ([Datum.header] + self.map({ $0.csv(self.first?.when ?? 0.0) })).joined(separator: "\n") + "\n"
     }
 }
 
 private extension Datum {
     func fmt(_ d: Double) -> String { "\(d)" }
-    func fmt(_ c: Character) -> String { "\(c)" }
-    func fmt(_ tag: Character, _ label: Label, _ ds: Double...) -> String {
-        ([tag, label.tag].map(fmt) + ds.map(fmt)).joined(separator: ",")
+    func fmt(_ tag: String, _ label: Label, _ ds: Double...) -> String {
+        ([tag, label.rawValue] + ds.map(fmt)).joined(separator: ",")
     }
 }
 
 private extension CMLogItem {
 
     /// Obtain an absolute timestamp for an event
-    var when: TimeInterval { Date(timeIntervalSinceReferenceDate: self.timestamp).timeIntervalSince1970 }
+    func delta( _ start: TimeInterval) -> TimeInterval { self.timestamp - start }
 }

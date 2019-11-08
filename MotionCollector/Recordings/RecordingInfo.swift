@@ -49,14 +49,6 @@ public final class RecordingInfo: NSManagedObject {
     /// The amount of the file that has been uploaded (0.0 - 1.0)
     @NSManaged public private(set) var uploadProgress: Float
 
-    /// The CSV strings from the recording
-    public var values: [String] {
-        get {
-            let obj = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(valuesBlob)
-            return obj as! [String]
-        }
-    }
-
     /// The duration of the recording formatted as HH:MM:SS
     public var formattedDuration: String {
         let duration = isRecording ? Date().timeIntervalSince(beginTimestamp) : TimeInterval(self.duration)
@@ -80,7 +72,6 @@ public final class RecordingInfo: NSManagedObject {
     public var status: String { Formatters.formatted(recordingStatus: self.state) }
 
     @NSManaged private var rawState: Int64
-    @NSManaged private var valuesBlob: Data
     private var beginTimestamp: Date = Date()
 
     /// Class method that creates a new RecordingInfo entry in CoreData and returns a reference to it
@@ -94,7 +85,6 @@ public final class RecordingInfo: NSManagedObject {
         recording.count = 0
         recording.uploadProgress = 0.0
         recording.uploaded = false
-        recording.valuesBlob = Data()
         return recording
     }
 
@@ -129,11 +119,11 @@ public final class RecordingInfo: NSManagedObject {
     /**
      Stop recording into the file held by this instance.
      */
-    public func finishRecording(rows: [String]) {
+    public func finishRecording(rows: [Datum]) {
         os_log(.info, log: log, "finishedRecording")
 
         DispatchQueue.global(qos: .background).async {
-            let contents = rows.joined(separator: "\n") + "\n"
+            let contents = rows.text
             os_log(.info, log: self.log, "contents: %s", contents)
             os_log(.info, log: self.log, "path: %s", self.localUrl.path)
             let ok = FileManager.default.createFile(atPath: self.localUrl.path,
@@ -145,7 +135,6 @@ public final class RecordingInfo: NSManagedObject {
                 self.state = ok ? .done : .failed
                 self.uploaded = false
                 self.count = Int64(rows.count)
-                self.valuesBlob = try! NSKeyedArchiver.archivedData(withRootObject: rows, requiringSecureCoding: false)
                 self.duration = Int64(Date().timeIntervalSince(self.beginTimestamp).rounded())
             }
         }

@@ -77,12 +77,12 @@ final class CoreMotionController {
 
      - parameter block: closure which accepts an array of CSV rows built from the sensor data.
      */
-    public func stop(_ block: ([String])->Void) {
+    public func stop(_ block: ([Datum])->Void) {
         os_log(.info, log: log, "stop")
         precondition(running)
         pause()
         running = false
-        block([Datum.header] + data.map { $0.csv })
+        block(data)
     }
 
     /**
