@@ -16,6 +16,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var log = Logging.logger("app")
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        os_log(.info, log: log, "starting %d", CloudUploader.shared.enabled)
         return true
     }
 
