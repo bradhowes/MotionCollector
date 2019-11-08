@@ -19,7 +19,7 @@ public final class CoreDataStack<T: NSPersistentContainer> {
     private let persistentContainer: T
 
     /**
-     Construct a new CoreData stack that will provide values from a given persistent container
+     Construct a new Core Data stack that will provide values from a given persistent container
 
      - parameter container: the container to provide
      */
