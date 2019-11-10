@@ -38,7 +38,10 @@ final class RecordingViewController: UIViewController {
         startStop.isEnabled = false
 
         // Allow new recordings once there is a managed context available.
-        kvo = tabBarItem.observe(\.isEnabled) { _, _ in self.startStop.isEnabled = self.tabBarItem.isEnabled }
+        kvo = tabBarController?.tabBar.observe(\.isUserInteractionEnabled) { _, _ in
+            self.startStop.isEnabled = self.tabBarController?.tabBar.isUserInteractionEnabled ?? false
+            self.kvo = nil
+        }
 
         showRecordCount(0)
         turning.isEnabled = false
