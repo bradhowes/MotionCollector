@@ -7,16 +7,26 @@ import UIKit
  A source and destination of state for the OptionsViewController.
  */
 public protocol OptionsViewState {
+    /// True if device has an accelerometer
     var hasAccelerometer: Bool {get}
+    /// True if device has device motion reports
     var hasDeviceMotion: Bool {get}
+    /// True if device has gyroscope
     var hasGyro: Bool {get}
+    /// True if device has magnetometer (compass)
     var hasMagnetometer: Bool {get}
 
+    /// Requested number of samples per second from CMCoreMotion controller.
     var samplesPerSecond: Int {get set}
+    /// True if user wants accelerometer reports
     var useAccelerometer: Bool {get set}
+    /// True if user wants device motion reports
     var useDeviceMotion: Bool {get set}
+    /// True if user wants gyroscope reports
     var useGyro: Bool {get set}
+    /// True if user wants magnetometer reports
     var useMagnetometer: Bool {get set}
+    /// True if user wants automatic uploading of recordings to iCloud
     var uploadToCloud: Bool {get set}
 }
 
@@ -38,6 +48,7 @@ final class OptionsViewController: UIViewController {
     @IBOutlet weak var uploadToCloudLabel: UILabel!
     @IBOutlet weak var uploadToCloud: UISwitch!
 
+    /// Values to use for the controls
     public var state: OptionsViewState!
 
     override func viewDidLoad() {
@@ -70,12 +81,13 @@ final class OptionsViewController: UIViewController {
     }
 }
 
-extension OptionsViewController: UITextFieldDelegate {
+// MARK: - UITextFieldDelegate protocol
 
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        return textField.endEditing(false)
-    }
+extension OptionsViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool { textField.endEditing(false) }
 }
+
+// MARK: - Keyboard control
 
 extension OptionsViewController {
 
@@ -104,6 +116,8 @@ extension OptionsViewController {
         self.dismiss(animated: true, completion: nil)
     }
 }
+
+// MARK: - Private methods
 
 private extension OptionsViewController {
 
