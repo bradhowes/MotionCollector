@@ -11,28 +11,16 @@ import UIKit
 final class RootViewController: UITabBarController {
 
     private var observer: NotificationObserver?
-    private var ready: Bool = false
 
-    /**
-     Initially, recording and recording manipulation are disabled. Enable these features when there is a valid
-     managed context available.
-     */
     public override func viewDidLoad() {
-        self.delegate = self // !!! Yuck! But it is the root so...
         super.viewDidLoad()
+
+        // Disable tab switching until Core Data context is available.
+        self.tabBar.isUserInteractionEnabled = false
         observer = RecordingInfoManagedContext.shared.availableNotification.registerOnMain { _ in
-            self.tabBar.items?.forEach { $0.isEnabled = true }
-            self.selectedIndex = 0
-            self.ready = true
+            self.tabBar.isUserInteractionEnabled = true
+            self.observer = nil
         }
-    }
-}
-
-extension RootViewController: UITabBarControllerDelegate {
-
-    public func tabBarController(_ tabBarController: UITabBarController,
-                                 shouldSelect viewController: UIViewController) -> Bool {
-        return ready
     }
 }
 
