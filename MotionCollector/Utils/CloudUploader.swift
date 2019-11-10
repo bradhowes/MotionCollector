@@ -32,21 +32,23 @@ public final class CloudUploader {
 
     private var _enabled: Bool = FileManager.default.hasCloudDirectory
     private var uploading: Bool = false
-    private var availableObserver: NotificationObserver? = nil
-    private var contextSavedObserver: NSObjectProtocol? = nil
+    private var availableObserver: NotificationObserver?
+    private var contextSavedObserver: NSObjectProtocol?
 
     /**
      Construct new uploader to iCloud.
      */
     private init() {
-        availableObserver = RecordingInfoManagedContext.shared.availableNotification.registerOnAny { self.contextAvailable($0) }
+        availableObserver = RecordingInfoManagedContext.shared.availableNotification.registerOnAny {
+            self.contextAvailable($0)
+        }
     }
 
     private func contextAvailable(_ context: NSManagedObjectContext) {
 
         // Monitor when the context has been saved. We restart the upload check in case there are any new uploads
         // to process.
-        contextSavedObserver = context.addContextDidSaveNotificationObserver { _ in self.startUploads() }
+        contextSavedObserver = context.addContextDidSaveNotification { _ in self.startUploads() }
         startUploads()
     }
 
@@ -134,7 +136,8 @@ public final class CloudUploader {
             // Build a query that will return periodic updates for the uploading progress.
             let query = NSMetadataQuery()
             query.predicate = NSPredicate(format: "(%K LIKE[CD] %@)", NSMetadataItemPathKey, item.destination.path)
-            query.valueListAttributes = [NSMetadataUbiquitousItemPercentUploadedKey, NSMetadataUbiquitousItemIsUploadedKey]
+            query.valueListAttributes = [NSMetadataUbiquitousItemPercentUploadedKey,
+                                         NSMetadataUbiquitousItemIsUploadedKey]
             query.searchScopes = [NSMetadataQueryUbiquitousDocumentsScope]
             self.query = query
 

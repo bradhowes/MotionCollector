@@ -30,10 +30,10 @@ public final class CoreDataStack<T: NSPersistentContainer> {
     }
 
     private func create() {
-        persistentContainer.loadPersistentStores { [weak self] _, err in
+        persistentContainer.loadPersistentStores { [weak self] _, _ in
             guard let self = self else { return }
-            let vc = self.persistentContainer.viewContext
-            self.availableNotification.post(value: vc)
+            let viewContext = self.persistentContainer.viewContext
+            self.availableNotification.post(value: viewContext)
         }
     }
 }

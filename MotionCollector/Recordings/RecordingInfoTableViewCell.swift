@@ -22,13 +22,13 @@ public final class RecordingInfoTableViewCell: UITableViewCell {
     @IBInspectable var recordingTextColor: UIColor?
 
     public func setProgress(_ percentage: Float) {
-        if let av = self.accessoryView as? CircularProgressBar {
-            av.setProgress(percentage, animated: true)
+        if let view = self.accessoryView as? CircularProgressBar {
+            view.setProgress(percentage, animated: true)
         }
         else {
-            let av = CircularProgressBar(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-            av.setProgress(percentage, animated: false)
-            self.accessoryView = av
+            let view = CircularProgressBar(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            view.setProgress(percentage, animated: false)
+            self.accessoryView = view
         }
     }
 

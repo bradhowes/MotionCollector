@@ -26,6 +26,7 @@ final class RecordingViewController: UIViewController {
     private var timer: Timer?
     private var recording: RecordingInfo?
     private var kvo: NSKeyValueObservation?
+    private var obs: NSObjectProtocol?
 
     /**
      Set view to known state.
@@ -43,7 +44,7 @@ final class RecordingViewController: UIViewController {
         turning.isEnabled = false
         turning.isHidden = true
 
-        NotificationCenter.default.addObserver(forName: stopRecordingRequest, object: nil, queue: nil) { _ in
+        obs = NotificationCenter.default.addObserver(forName: stopRecordingRequest, object: nil, queue: nil) { _ in
             self.stop()
         }
     }
@@ -104,9 +105,9 @@ extension RecordingViewController: UIAdaptivePresentationControllerDelegate, Seg
     public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .optionsView:
-            let vc = segue.destination as! OptionsViewController
-            vc.state = settings
-            vc.presentationController?.delegate = self
+            guard let controller = segue.destination as? OptionsViewController else { fatalError() }
+            controller.state = settings
+            controller.presentationController?.delegate = self
         }
     }
 
@@ -152,7 +153,7 @@ private extension RecordingViewController {
         timer.invalidate()
         self.timer = nil
 
-        coreMotionController.stop() { data in
+        coreMotionController.stop { data in
             self.recording?.finishRecording(rows: data)
             self.recording = nil
         }
@@ -169,7 +170,7 @@ private extension RecordingViewController {
     func updateView() {
         let duration = Date().timeIntervalSince(startTime!)
         setElapsed(duration)
-        coreMotionController.update() { count in DispatchQueue.main.async { self.showRecordCount(count) } }
+        coreMotionController.update { count in DispatchQueue.main.async { self.showRecordCount(count) } }
     }
 
     func showRecordCount(_ count: Int) {

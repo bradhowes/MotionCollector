@@ -3,6 +3,9 @@
 import UIKit
 import CoreMotion
 
+/**
+ Collection of settings that user may adjust.
+ */
 final class Settings: OptionsViewState {
 
     public enum Name: String {
@@ -65,7 +68,7 @@ final class Settings: OptionsViewState {
         ]
 
         let defaults = UserDefaults.standard
-        defaults.register(defaults: Dictionary<String,Any>(uniqueKeysWithValues: defaultSettings.map { ($0.0.rawValue, $0.1) }))
+        defaults.register(defaults: [String: Any](uniqueKeysWithValues: defaultSettings.map { ($0.0.rawValue, $0.1) }))
 
         hasAccelerometer = cmm.isAccelerometerAvailable
         hasDeviceMotion = cmm.isDeviceMotionAvailable
@@ -100,4 +103,3 @@ private extension UserDefaults {
         return self.integer(forKey: name.rawValue)
     }
 }
-

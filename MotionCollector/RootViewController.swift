@@ -45,13 +45,13 @@ extension RootViewController {
      - parameter actionFrom: the view where the share request originated from
      - parameter completion: closure to run when the presentation is done
      */
-    public func share(file: URL, actionFrom: UIView, completion: @escaping ()->Void) {
+    public func share(file: URL, actionFrom: UIView, completion: @escaping () -> Void) {
         let objectsToShare = [file]
         let controller = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
 
-        let vc = self.presentedViewController != nil ? self.presentedViewController! : self
+        let pvc = self.presentedViewController != nil ? self.presentedViewController! : self
         controller.modalPresentationStyle = .popover
-        vc.present(controller, animated: true, completion: completion)
+        pvc.present(controller, animated: true, completion: completion)
 
         if let presentationController = controller.popoverPresentationController {
             presentationController.sourceView = actionFrom

@@ -126,13 +126,13 @@ public final class RecordingInfo: NSManagedObject {
             let contents = rows.text
             os_log(.info, log: self.log, "contents: %s", contents)
             os_log(.info, log: self.log, "path: %s", self.localUrl.path)
-            let ok = FileManager.default.createFile(atPath: self.localUrl.path,
-                                                    contents: contents.data(using: .ascii),
-                                                    attributes: nil)
-            os_log(.info, log: self.log, "ok: %d", ok)
+            let valid = FileManager.default.createFile(atPath: self.localUrl.path,
+                                                       contents: contents.data(using: .ascii),
+                                                       attributes: nil)
+            os_log(.info, log: self.log, "ok: %d", valid)
 
             self.managedObjectContext?.performChanges {
-                self.state = ok ? .done : .failed
+                self.state = valid ? .done : .failed
                 self.uploaded = false
                 self.count = Int64(rows.count)
                 self.duration = Int64(Date().timeIntervalSince(self.beginTimestamp).rounded())

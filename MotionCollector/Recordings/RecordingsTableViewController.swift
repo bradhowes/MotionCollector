@@ -111,7 +111,8 @@ extension RecordingsTableViewController {
      - parameter indexPath: the row being queried
      - returns: the editing that can take place on the row
      */
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath)
+        -> UITableViewCell.EditingStyle {
         let recordingInfo = dataSource.object(at: indexPath)
         return !recordingInfo.isRecording && tableView.isEditing ? .delete : .none
     }
@@ -124,7 +125,8 @@ extension RecordingsTableViewController {
      - parameter indexPath: the row being queried
      - returns: the swipe actions for the row
      */
-    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
+        -> UISwipeActionsConfiguration? {
         let recordingInfo = dataSource.object(at: indexPath)
         guard !recordingInfo.isRecording else { return nil }
         return RecordingInfoCellConfigurator.makeLeadingSwipeActions(with: recordingInfo,
@@ -139,10 +141,11 @@ extension RecordingsTableViewController {
      - parameter indexPath: the row being queried
      - returns: the swipe actions for the row
      */
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
+        -> UISwipeActionsConfiguration? {
         let recordingInfo = dataSource.object(at: indexPath)
         guard !recordingInfo.isRecording else { return nil }
-        return RecordingInfoCellConfigurator.makeTrailingSwipeActions(vc: self) {
+        return RecordingInfoCellConfigurator.makeTrailingSwipeActions(controller: self) {
             recordingInfo.delete()
         }
     }
@@ -164,7 +167,7 @@ private extension RecordingsTableViewController {
         let request = RecordingInfo.sortedFetchRequest
         request.fetchBatchSize = 40
         request.returnsObjectsAsFaults = false
-        let frc = NSFetchedResultsController(fetchRequest: request,managedObjectContext: managedContext,
+        let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: managedContext,
                                              sectionNameKeyPath: nil, cacheName: nil)
         dataSource = TableViewDataSource(tableView: tableView, cellIdentifier: "RecordingInfo",
                                          fetchedResultsController: frc, delegate: self)

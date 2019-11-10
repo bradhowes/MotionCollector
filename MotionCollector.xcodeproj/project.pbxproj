@@ -41,6 +41,7 @@
 		BD96B4C9234E7C57009890A0 /* RecordingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4C8234E7C57009890A0 /* RecordingInfo.swift */; };
 		BD96B4CB234E7D82009890A0 /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4CA234E7D82009890A0 /* PersistentContainer.swift */; };
 		BD96B4CF234E825D009890A0 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD96B4CE234E825D009890A0 /* RootViewController.swift */; };
+		BDB6C22D2377717B00AF0885 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BDB6C22C2377717B00AF0885 /* Settings.bundle */; };
 		BDE29BC023755A5D00EC6500 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3164BC23599F5600A860AA /* Formatters.swift */; };
 		BDE29BC223755CE400EC6500 /* RecordingNameGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE29BC123755CE400EC6500 /* RecordingNameGenerator.swift */; };
 		BDE50CD82353240A0012AE85 /* RecordingInfoManagedContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE50CD72353240A0012AE85 /* RecordingInfoManagedContext.swift */; };
@@ -97,6 +98,7 @@
 		BD96B4C8234E7C57009890A0 /* RecordingInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordingInfo.swift; sourceTree = "<group>"; };
 		BD96B4CA234E7D82009890A0 /* PersistentContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
 		BD96B4CE234E825D009890A0 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		BDB6C22C2377717B00AF0885 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		BDE29BC123755CE400EC6500 /* RecordingNameGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingNameGenerator.swift; sourceTree = "<group>"; };
 		BDE50CD72353240A0012AE85 /* RecordingInfoManagedContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingInfoManagedContext.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,11 +142,12 @@
 		BD53215F234FED3B0016D0A9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BD7553CD234D252500A457A7 /* Assets.xcassets */,
 				BD7553D2234D252500A457A7 /* Info.plist */,
 				BD96B4A3234E73D6009890A0 /* MotionCollector.entitlements */,
-				BD7553CD234D252500A457A7 /* Assets.xcassets */,
 				BD0E370D2352669C0048FBC5 /* Localizable.stringsdict */,
 				BD3164BE2359AA5E00A860AA /* Localizable.strings */,
+				BDB6C22C2377717B00AF0885 /* Settings.bundle */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -327,6 +330,7 @@
 				BD7820742356729F00F23652 /* README.md in Resources */,
 				BD7553CE234D252500A457A7 /* Assets.xcassets in Resources */,
 				BD7553CC234D252400A457A7 /* Main.storyboard in Resources */,
+				BDB6C22D2377717B00AF0885 /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

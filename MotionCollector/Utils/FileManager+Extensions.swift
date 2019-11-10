@@ -36,11 +36,11 @@ public extension FileManager {
     /// it can take some time before it will return a value.
     var cloudDocumentsDirectory: URL? {
         precondition(Thread.current.isMainThread == false)
-        guard let uc = self.url(forUbiquityContainerIdentifier: nil) else {
+        guard let loc = self.url(forUbiquityContainerIdentifier: nil) else {
             os_log(.info, log: log, "cloudDocumentsDirectory - nil")
             return nil
         }
-        let dir = uc.appendingPathComponent("Documents")
+        let dir = loc.appendingPathComponent("Documents")
         if !self.fileExists(atPath: dir.path) {
             try? self.createDirectory(at: dir, withIntermediateDirectories: true, attributes: nil)
         }

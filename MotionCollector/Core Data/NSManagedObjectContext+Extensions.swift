@@ -40,7 +40,7 @@ public extension NSManagedObjectContext {
 
      - parameter block: block to execute
      */
-    func performChanges(block: @escaping () -> ()) {
+    func performChanges(block: @escaping () -> Void) {
         perform {
             block()
             _ = self.saveOrRollback()
@@ -53,11 +53,12 @@ public extension NSManagedObjectContext {
     /**
      Receive notifications when the context is saved.
 
-     - parameter handler: the block to execute after a save. It will receive a ContextDidSaveNotification that identifies
-     the objects that were added, updated, and/or deleted since the last save event.
+     - parameter handler: the block to execute after a save. It will receive a ContextDidSaveNotification that
+       identifies the objects that were added, updated, and/or deleted since the last save event.
      - returns: reference to the observation
      */
-    func addContextDidSaveNotificationObserver<T: NSManagedObject>(_ handler: @escaping (ContextDidSaveNotification<T>) -> ()) -> NSObjectProtocol {
+    func addContextDidSaveNotification<T: NSManagedObject>(_ handler: @escaping (ContextDidSaveNotification<T>) -> Void)
+        -> NSObjectProtocol {
         return NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave, object: self,
                                                       queue: nil) { notification in
             let wrapped = ContextDidSaveNotification<T>(notification: notification)

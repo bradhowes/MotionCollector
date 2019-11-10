@@ -4,7 +4,6 @@ import os
 import UIKit
 import CoreData
 
-
 /**
  Delegate protocol for a TableViewSource instance. Combines a NSFetchedResults object (`Object`) with a UITableViewCell
  instance (`Cell`).
@@ -47,7 +46,8 @@ public protocol TableViewDataSourceDelegate: class {
  A data source for a UITableView that relies on a NSFetchedResultsController for model values. This design was heavily
  based on code from obj.io Core Data book.
  */
-public class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
+public class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObject, UITableViewDataSource,
+NSFetchedResultsControllerDelegate {
     private lazy var log = Logging.logger("tvds")
 
     public typealias Object = Delegate.Object
@@ -105,7 +105,7 @@ public class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObjec
 
      - parameter configure: block to run to edit the request
      */
-    public func reconfigureFetchRequest(_ configure: (NSFetchRequest<Object>) -> ()) {
+    public func reconfigureFetchRequest(_ configure: (NSFetchRequest<Object>) -> Void) {
         NSFetchedResultsController<NSFetchRequestResult>.deleteCache(withName: fetchedResultsController.cacheName)
         configure(fetchedResultsController.fetchRequest)
         do { try fetchedResultsController.performFetch() } catch { fatalError("fetch request failed") }

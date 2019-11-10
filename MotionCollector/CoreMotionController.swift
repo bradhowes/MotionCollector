@@ -77,7 +77,7 @@ final class CoreMotionController {
 
      - parameter block: closure which accepts an array of CSV rows built from the sensor data.
      */
-    public func stop(_ block: ([Datum])->Void) {
+    public func stop(_ block: ([Datum]) -> Void) {
         os_log(.info, log: log, "stop")
         precondition(running)
         pause()
@@ -90,7 +90,7 @@ final class CoreMotionController {
 
      - parameter block: closure which accepts the number of rows
      */
-    public func update(_ block: @escaping (Int)->Void) {
+    public func update(_ block: @escaping (Int) -> Void) {
         precondition(running)
         self.dataQueue.async { block(self.data.count) }
     }

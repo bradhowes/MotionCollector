@@ -60,9 +60,9 @@ public extension Array where Element == Datum {
 }
 
 private extension Datum {
-    func fmt(_ d: Double) -> String { "\(d)" }
-    func fmt(_ tag: String, _ label: Label, _ ds: Double...) -> String {
-        ([tag, label.rawValue] + ds.map(fmt)).joined(separator: ",")
+    func fmt(_ value: Double) -> String { "\(value)" }
+    func fmt(_ tag: String, _ label: Label, _ doubles: Double...) -> String {
+        ([tag, label.rawValue] + doubles.map(fmt)).joined(separator: ",")
     }
 }
 

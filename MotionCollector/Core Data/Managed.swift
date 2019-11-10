@@ -70,7 +70,7 @@ public extension Managed where Self: NSManagedObject {
      - returns: found/created managed object
      */
     static func findOrCreate(in context: NSManagedObjectContext, matching predicate: NSPredicate,
-                             configure: (Self) -> ()) -> Self {
+                             configure: (Self) -> Void) -> Self {
         guard let object = findOrFetch(in: context, matching: predicate) else {
             let newObject: Self = context.insertObject()
             configure(newObject)

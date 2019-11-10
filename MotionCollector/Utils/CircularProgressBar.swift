@@ -27,7 +27,8 @@ public final class CircularProgressBar: UIView {
     /// The radius of the paths based on the available height/width of the view's frame
     private lazy var radius: CGFloat = (self.bounds.height - progressLineWidth) / 2.0
     private lazy var ctr: CGPoint = CGPoint(x: self.bounds.maxX - radius, y: self.bounds.minY + radius)
-    private lazy var square: CGRect = CGRect(x: ctr.x - radius, y: ctr.y - radius, width: radius * 2, height: radius * 2)
+    private lazy var square: CGRect = CGRect(x: ctr.x - radius, y: ctr.y - radius, width: radius * 2,
+                                             height: radius * 2)
 
     /// Obtain a new UIBezierPath which will render as a circle.
     private var path: CGPath { UIBezierPath(roundedRect: square, cornerRadius: radius).cgPath }
@@ -67,7 +68,7 @@ private extension CircularProgressBar {
         foregroundLayer.path = path.cgPath
     }
 
-    func makeBackgroundLayer(){
+    func makeBackgroundLayer() {
         backgroundLayer.path = path
         backgroundLayer.lineWidth = progressLineWidth
         backgroundLayer.strokeColor = progressChannelColor?.cgColor
@@ -76,7 +77,7 @@ private extension CircularProgressBar {
         layer.addSublayer(backgroundLayer)
     }
 
-    func makeForegroundLayer(){
+    func makeForegroundLayer() {
         foregroundLayer.path = nil
         foregroundLayer.lineWidth = 1.0
         foregroundLayer.strokeColor = progressTintColor?.cgColor

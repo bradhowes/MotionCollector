@@ -20,7 +20,7 @@ public struct RecordingInfoCellConfigurator {
 
         var bits = [
             recordingInfo.formattedDuration,
-            Formatters.formatted(recordCount: Int(recordingInfo.count)),
+            Formatters.formatted(recordCount: Int(recordingInfo.count))
         ]
 
         if !recordingInfo.status.isEmpty { bits.append(recordingInfo.status) }
@@ -76,8 +76,10 @@ public struct RecordingInfoCellConfigurator {
      - parameter recordingInfo: the RecordingInfo instance associated with the row
      - returns: optional collection of UIContextualAction instances that describe the actions for the row
      */
-    public static func makeTrailingSwipeActions(vc: UIViewController, deleteAction: @escaping ()->Void) -> UISwipeActionsConfiguration? {
-        let config = UISwipeActionsConfiguration(actions: [makeDeleteAction(vc: vc, deleteAction: deleteAction)])
+    public static func makeTrailingSwipeActions(controller: UIViewController, deleteAction: @escaping () -> Void)
+        -> UISwipeActionsConfiguration? {
+        let config = UISwipeActionsConfiguration(actions: [
+            makeDeleteAction(controller: controller, deleteAction: deleteAction)])
         config.performsFirstActionWithFullSwipe = true
         return config
     }
@@ -101,7 +103,7 @@ private extension RecordingInfoCellConfigurator {
 
         guard !recordingInfo.isRecording else { return nil }
 
-        let share = UIContextualAction(style: .normal, title: "Share") { action, view, completion in
+        let share = UIContextualAction(style: .normal, title: "Share") { _, _, completion in
             rvc.share(file: recordingInfo.localUrl, actionFrom: cell) {
                 completion(true)
             }
@@ -114,7 +116,7 @@ private extension RecordingInfoCellConfigurator {
     }
 
     static func makeUploadAction(with recordingInfo: RecordingInfo) -> UIContextualAction {
-        let upload = UIContextualAction(style: .normal, title: "Upload") { action, view, completion in
+        let upload = UIContextualAction(style: .normal, title: "Upload") { _, _, completion in
             recordingInfo.clearUploaded()
             completion(true)
         }
@@ -125,23 +127,24 @@ private extension RecordingInfoCellConfigurator {
         return upload
     }
 
-    static func makeDeleteAction(vc: UIViewController, deleteAction: @escaping ()->Void) -> UIContextualAction {
-        let delete = UIContextualAction(style: .destructive, title: "Delete") { action, view, completion in
+    static func makeDeleteAction(controller: UIViewController, deleteAction: @escaping () -> Void)
+        -> UIContextualAction {
+        let delete = UIContextualAction(style: .destructive, title: "Delete") { _, _, completion in
             let prompt = UIAlertController(title: "Delete Recording?",
                                            message: """
     Deleting the recording will permanently remove it from this device, but any copies stored in iCloud will
     still exist.
     """,
                                            preferredStyle: .alert)
-            prompt.addAction(UIAlertAction(title: "Delete", style: .destructive) { action in
+            prompt.addAction(UIAlertAction(title: "Delete", style: .destructive) { _ in
                 deleteAction()
                 completion(true)
             })
-            prompt.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
+            prompt.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
                 completion(false)
             })
 
-            vc.present(prompt, animated: true, completion: nil)
+            controller.present(prompt, animated: true, completion: nil)
         }
 
         delete.backgroundColor = UIColor.systemRed
