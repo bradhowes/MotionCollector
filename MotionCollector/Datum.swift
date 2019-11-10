@@ -26,6 +26,7 @@ public extension Datum {
     /// Obtain a header for the CSV file
     static let header = "Source, Label, When, X, Y, Z, UA_X, UA_Y, UA_Z, Pitch, Roll, Yaw"
 
+    /// Get the time interval from the payload
     var when: TimeInterval {
         switch self {
         case .acceleration(let data, _): return data.timestamp
@@ -35,6 +36,12 @@ public extension Datum {
         }
     }
 
+    /**
+     Transform a payload into a string with comma-separated values.
+
+     - parameter start: the base time value to use when calculating event delta time
+     - returns CSV value
+     */
     func csv(_ start: TimeInterval) -> String {
         switch self {
         case let .acceleration(data, label):
