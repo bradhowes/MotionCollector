@@ -1,10 +1,4 @@
-//
-//  AppDelegate.swift
-//  MotionCategorizer
-//
-//  Created by Brad Howes on 10/8/19.
-//  Copyright © 2019 Brad Howes. All rights reserved.
-//
+// Copyright © 2022 Brad Howes. All rights reserved.
 
 import os
 import UIKit
