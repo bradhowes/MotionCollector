@@ -70,3 +70,8 @@ fastlane/test_output
 
 # Ignore the *big* Fluid soundfont file
 FluidR3_GM.sf2
+
+WD
+WD.xcresult
+cov.txt
+percentage.txt
