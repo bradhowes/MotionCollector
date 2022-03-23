@@ -4,7 +4,7 @@ import os
 import UIKit
 import CoreData
 
-public protocol Uploadable: class {
+public protocol Uploadable: AnyObject {
     var source: URL { get }
     var destination: URL { get }
 
