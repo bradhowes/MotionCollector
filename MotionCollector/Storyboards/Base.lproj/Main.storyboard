@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="I9k-YW-uAC">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="I9k-YW-uAC">
     <device id="retina3_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -14,7 +12,7 @@
             <objects>
                 <viewController id="hef-sB-ivJ" customClass="OptionsViewController" customModule="MotionCollector" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kd8-Q5-XI9">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="aqd-oK-nvA">
@@ -134,8 +132,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="wpV-mN-MFf"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="wpV-mN-MFf" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="aqd-oK-nvA" secondAttribute="trailing" constant="20" id="6rL-hR-Phz"/>
                             <constraint firstItem="dTy-0H-IVs" firstAttribute="leading" secondItem="wpV-mN-MFf" secondAttribute="leading" constant="8" id="CJ0-uG-40m"/>
@@ -144,6 +141,7 @@
                             <constraint firstItem="aqd-oK-nvA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wpV-mN-MFf" secondAttribute="leading" constant="20" id="RpY-me-OjZ"/>
                             <constraint firstItem="aqd-oK-nvA" firstAttribute="centerX" secondItem="kd8-Q5-XI9" secondAttribute="centerX" id="kZQ-R6-UZG"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="wpV-mN-MFf"/>
                     </view>
                     <connections>
                         <outlet property="accelerometer" destination="t8Z-4P-Hfb" id="67T-t0-XTc"/>
@@ -185,7 +183,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OUE-8Z-H2C" userLabel="StartStop">
+                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OUE-8Z-H2C" userLabel="StartStop">
                                                 <rect key="frame" x="20.5" y="53" width="71" height="53"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                                 <state key="normal" title="Start"/>
@@ -232,8 +230,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="WYd-fl-s8B" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Fsl-2B-uSx"/>
                             <constraint firstItem="Q5k-3F-hmN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="IVq-O0-cgl"/>
@@ -244,6 +241,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="WYd-fl-s8B" secondAttribute="bottom" priority="250" id="rzd-1i-CRj"/>
                             <constraint firstItem="Q5k-3F-hmN" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="w7l-zF-RAH"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="arrow.swap" catalog="system" selectedImage="arrow.swap" id="4rI-Hg-W6i"/>
                     <connections>
@@ -266,7 +264,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" allowsSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="S8X-b9-Fvs">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecordingInfo" textLabel="f98-7i-tQe" detailTextLabel="Q3W-7l-sKc" style="IBUITableViewCellStyleSubtitle" id="fEd-Yc-Un9" customClass="RecordingInfoTableViewCell" customModule="MotionCollector" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="320" height="55.5"/>
@@ -334,6 +332,7 @@
                     <tabBarItem key="tabBarItem" title="" image="folder" catalog="system" id="tZu-ry-5Re"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="oOG-4h-Vdq">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -347,13 +346,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow.swap" catalog="system" width="32" height="32"/>
-        <image name="arrow.uturn.down" catalog="system" width="32" height="32"/>
-        <image name="folder" catalog="system" width="32" height="32"/>
-        <image name="gear" catalog="system" width="32" height="32"/>
-        <image name="xmark" catalog="system" width="32" height="32"/>
-        <systemColor name="systemBackgroundColor">
-            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
+        <image name="arrow.swap" catalog="system" width="64" height="50"/>
+        <image name="arrow.uturn.down" catalog="system" width="64" height="58"/>
+        <image name="folder" catalog="system" width="64" height="46"/>
+        <image name="gear" catalog="system" width="64" height="58"/>
+        <image name="xmark" catalog="system" width="64" height="56"/>
     </resources>
 </document>
