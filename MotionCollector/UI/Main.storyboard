@@ -31,8 +31,8 @@
             <objects>
                 <viewControllerPlaceholder storyboardName="Home" id="VU4-fG-b6M" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" id="g3B-k8-Cqw">
-                        <imageReference key="image" image="arrow.swap" catalog="system" symbolScale="large"/>
-                        <imageReference key="selectedImage" image="arrow.swap" catalog="system" symbolScale="large"/>
+                        <imageReference key="image" image="arrow.triangle.swap" catalog="system" symbolScale="large"/>
+                        <imageReference key="selectedImage" image="arrow.triangle.swap" catalog="system" symbolScale="large"/>
                     </tabBarItem>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H0D-98-DFi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -54,7 +54,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow.swap" catalog="system" width="32" height="32"/>
+        <image name="arrow.triangle.swap" catalog="system" width="32" height="32"/>
         <image name="folder" catalog="system" width="32" height="32"/>
     </resources>
 </document>
