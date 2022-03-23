@@ -10,7 +10,7 @@ public let RecordingStateChangeNotification = TypedNotification<Bool>(name: "Rec
 /**
  The first, primary view controller that shows the start/stop button and the motion type tap buttons.
  */
-final class RecordingViewController: UIViewController {
+final class HomeViewController: UIViewController {
     private lazy var log = Logging.logger("main")
     @IBOutlet weak var elapsed: UILabel!
     @IBOutlet weak var startStop: UIButton!
@@ -90,7 +90,7 @@ final class RecordingViewController: UIViewController {
 
 // MARK: - Option View Presentation
 
-extension RecordingViewController: UIAdaptivePresentationControllerDelegate, SegueHandler {
+extension HomeViewController: UIAdaptivePresentationControllerDelegate, SegueHandler {
 
     /**
      Enumeration of the segues that can come from this controller.
@@ -126,7 +126,7 @@ extension RecordingViewController: UIAdaptivePresentationControllerDelegate, Seg
 
 // MARK: - Private methods
 
-private extension RecordingViewController {
+private extension HomeViewController {
 
     func setElapsed(_ duration: TimeInterval) {
         self.elapsed.text = Formatters.formatted(duration: duration)

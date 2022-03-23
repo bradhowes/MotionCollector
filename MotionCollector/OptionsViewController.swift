@@ -35,8 +35,8 @@ public protocol OptionsViewState {
  are applied after it disappears.
  */
 final class OptionsViewController: UIViewController {
-    @IBOutlet weak var samplesPerSecond: UITextField!
     @IBOutlet weak var done: UIButton!
+    @IBOutlet weak var samplesPerSecond: UITextField!
     @IBOutlet weak var accelerometerLabel: UILabel!
     @IBOutlet weak var accelerometer: UISwitch!
     @IBOutlet weak var deviceMotionLabel: UILabel!
