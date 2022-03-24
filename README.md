@@ -1,5 +1,5 @@
 [![CI](https://github.com/bradhowes/MotionCollector/workflows/CI/badge.svg)](https://github.com/bradhowes/MotionCollector/actions/workflows/CI.yml)
-[![COV](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/bradhowes/dbe62f18182c82eb36dc1030819bc54b/raw/MotionCollector-coverage.json)](https://github.com/bradhowes/MotionCollector/blob/main/.github/workflows/CI.yml)
+[![COV](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/bradhowes/9133ad2d68de2dc6b70abdb4ced9232b/raw/MotionCollector-coverage.json)](https://github.com/bradhowes/MotionCollector/blob/main/.github/workflows/CI.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-A31F34.svg)](https://opensource.org/licenses/MIT)
 
 # About
