@@ -18,7 +18,7 @@ jobs:
       with:
         auth: ${{ secrets.GIST_UPDATE }}
         gistID: 61c608b414893498479c268f2a106292
-        filename: SoundFonts-coverage.json
+        filename: MotionCollector-coverage.json
         label: Coverage
         message: ${{ env.PERCENTAGE }}
         color: success
