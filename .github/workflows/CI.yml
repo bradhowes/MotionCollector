@@ -17,7 +17,7 @@ jobs:
       uses: schneegans/dynamic-badges-action@v1.1.0
       with:
         auth: ${{ secrets.GIST_UPDATE }}
-        gistID: 61c608b414893498479c268f2a106292
+        gistID: 9133ad2d68de2dc6b70abdb4ced9232b
         filename: MotionCollector-coverage.json
         label: Coverage
         message: ${{ env.PERCENTAGE }}
