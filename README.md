@@ -40,6 +40,9 @@ file to your _iCloud Drive_, in a folder called _MotionCollector_.
 Each recording fie is named with the date/time when the recording started. They all have the suffix _.csv_ so
 you should be able to open them in whatever editor or spreadsheet application you wish.
 
+Drag right on a recording to see controls for uploading and sharing the recorded values as a CSV file. Drag left to reveal a trash can to touch to
+remove the recording.
+
 ## Configuration
 
 You can control which components are samples for data capture, the rate of data capture, and if the files are stored in
