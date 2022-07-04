@@ -26,12 +26,26 @@ There are three views in this app:
    delete the recording.
 3. Settings view reachable from the main recording view via the _gear_ icon.
 
-Press _Start_ to begin a new recording of sensor data. Move around. When done, press _Stop_ to quit data
-collect. If _iCloud_ is enabled for the device, the app will attempt to copy the file to your _iCloud Drive_,
-in a folder called _MotionCollector_.
+![](images/Start.png?raw=true)
+
+Press _Start_ to begin a new recording of sensor data. Move around.
+
+![](images/Running.png?raw=true)
+
+When done, press _Stop_ to quit data collect. If _iCloud_ is enabled for the device, the app will attempt to copy the 
+file to your _iCloud Drive_, in a folder called _MotionCollector_.
+
+![](images/Recordings.png?raw=true)
 
 Each recording fie is named with the date/time when the recording started. They all have the suffix _.csv_ so
 you should be able to open them in whatever editor or spreadsheet application you wish.
+
+## Configuration
+
+You can control which components are samples for data capture, the rate of data capture, and if the files are stored in
+an iCloud folder.
+
+![](images/Settings.png?raw=true)
 
 ## Data File Format
 
