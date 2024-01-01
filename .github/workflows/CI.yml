@@ -10,9 +10,16 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Build, test, and code coverage
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+    - uses: actions/checkout@v3
+    - name: Build and test
       run: make
+    - name: Get Test Coverage
+      run: |
+        set -- $(< percentage.txt)
+        echo "PERCENTAGE=${1}" >> ${GITHUB_ENV}
     - name: Create Coverage Badge
       uses: schneegans/dynamic-badges-action@v1.1.0
       with:
