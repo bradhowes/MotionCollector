@@ -1,4 +1,4 @@
-// Copyright © 2019 Brad Howes. All rights reserved.
+// Copyright © 2019, 2024 Brad Howes. All rights reserved.
 
 import Foundation
 
@@ -8,41 +8,41 @@ import Foundation
  */
 open class CachedValueTypedNotification<A>: TypedNotification<A> {
 
-    /// The last value given in a `post` call.
-    public private(set) var cachedValue: A?
+  /// The last value given in a `post` call.
+  public private(set) var cachedValue: A?
 
-    /**
-     Post a notification containing the given value.
+  /**
+   Post a notification containing the given value.
 
-     - parameter value: the value to convey to registered observers
-     */
-    override open func post(value: A) {
-        cachedValue = value
-        super.post(value: value)
+   - parameter value: the value to convey to registered observers
+   */
+  override open func post(value: A) {
+    cachedValue = value
+    super.post(value: value)
+  }
+
+  public func clear() {
+    cachedValue = nil
+  }
+
+  /**
+   Register a closure to invoke when `post` is called. Note that if `cachedValue` is not nil, the
+   closure will be called immediately.
+
+   - parameter block: the closure to invoke
+   - returns: value that will unregister the block if it is no longer held
+   */
+  override open func registerOnAny(block: @escaping (A) -> Void) -> NotificationObserver {
+    if let cachedValue = self.cachedValue {
+      DispatchQueue.global(qos: .default).async { block(cachedValue) }
     }
+    return super.registerOnAny(block: block)
+  }
 
-    public func clear() {
-        cachedValue = nil
+  override open func registerOnMain(block: @escaping (A) -> Void) -> NotificationObserver {
+    if let cachedValue = self.cachedValue {
+      DispatchQueue.main.async { block(cachedValue) }
     }
-
-    /**
-     Register a closure to invoke when `post` is called. Note that if `cachedValue` is not nil, the
-     closure will be called immediately.
-
-     - parameter block: the closure to invoke
-     - returns: value that will unregister the block if it is no longer held
-     */
-    override open func registerOnAny(block: @escaping (A) -> Void) -> NotificationObserver {
-        if let cachedValue = self.cachedValue {
-            DispatchQueue.global(qos: .default).async { block(cachedValue) }
-        }
-        return super.registerOnAny(block: block)
-    }
-
-    override open func registerOnMain(block: @escaping (A) -> Void) -> NotificationObserver {
-        if let cachedValue = self.cachedValue {
-            DispatchQueue.main.async { block(cachedValue) }
-        }
-        return super.registerOnMain(block: block)
-    }
+    return super.registerOnMain(block: block)
+  }
 }

@@ -1,4 +1,4 @@
-// Copyright © 2019 Brad Howes. All rights reserved.
+// Copyright © 2019, 2024 Brad Howes. All rights reserved.
 
 import CoreData
 import Foundation
@@ -9,50 +9,50 @@ import Foundation
 
  NOTE: as Apple's documentation states:
 
-   You can only use the managed objects in this notification on the same thread on which it was posted.
+ You can only use the managed objects in this notification on the same thread on which it was posted.
 
  */
 public struct ContextDidSaveNotification<T> where T: NSManagedObject {
 
-    private let notification: Notification
+  private let notification: Notification
 
-    /// Obtain an interator over the objects that have been inserted.
-    public var insertedObjects: AnyIterator<T> { iterator(forKey: NSInsertedObjectsKey) }
+  /// Obtain an interator over the objects that have been inserted.
+  public var insertedObjects: AnyIterator<T> { iterator(forKey: NSInsertedObjectsKey) }
 
-    /// Obtain an interator over the objects that have been updated.
-    public var updatedObjects: AnyIterator<T> { iterator(forKey: NSUpdatedObjectsKey) }
+  /// Obtain an interator over the objects that have been updated.
+  public var updatedObjects: AnyIterator<T> { iterator(forKey: NSUpdatedObjectsKey) }
 
-    /// Obtain an interator over the objects that have been deleted.
-    public var deletedObjects: AnyIterator<T> { iterator(forKey: NSDeletedObjectsKey) }
+  /// Obtain an interator over the objects that have been deleted.
+  public var deletedObjects: AnyIterator<T> { iterator(forKey: NSDeletedObjectsKey) }
 
-    /// Get the managed object context from the notification payload.
-    public var managedObjectContext: NSManagedObjectContext { notification.object as! NSManagedObjectContext }
+  /// Get the managed object context from the notification payload.
+  public var managedObjectContext: NSManagedObjectContext { notification.object as! NSManagedObjectContext }
 
-    /**
-     Create wrapper for the given notification. The notification's name must be .NSManagedObjectContextDidSave.
+  /**
+   Create wrapper for the given notification. The notification's name must be .NSManagedObjectContextDidSave.
 
-     - parameter notification: the object to wrap
-     */
-    public init(notification: Notification) {
-        guard notification.name == .NSManagedObjectContextDidSave else { fatalError("incorrect notification") }
-        self.notification = notification
-    }
+   - parameter notification: the object to wrap
+   */
+  public init(notification: Notification) {
+    guard notification.name == .NSManagedObjectContextDidSave else { fatalError("incorrect notification") }
+    self.notification = notification
+  }
 
-    /// Get an interator to a collection of managed objects from the notification payload.
-    private func iterator(forKey key: String) -> AnyIterator<T> {
-        guard let collection = notification.userInfo?[key] as? NSSet else { return AnyIterator { nil } }
-        var innerIterator = collection.makeIterator()
-        return AnyIterator { return innerIterator.next() as? T }
-    }
+  /// Get an interator to a collection of managed objects from the notification payload.
+  private func iterator(forKey key: String) -> AnyIterator<T> {
+    guard let collection = notification.userInfo?[key] as? NSSet else { return AnyIterator { nil } }
+    var innerIterator = collection.makeIterator()
+    return AnyIterator { return innerIterator.next() as? T }
+  }
 }
 
 extension ContextDidSaveNotification: CustomDebugStringConvertible {
 
-    public var debugDescription: String {
-        ([notification.name.rawValue, managedObjectContext.description] +
-            [("inserted", insertedObjects), ("updated", updatedObjects), ("deleted", deletedObjects)]
-                .map { name, collection in
-                    name + ": {" + collection.map { $0.objectID.description }.joined(separator: ", ") + "}"
-            }).joined(separator: " ")
-    }
+  public var debugDescription: String {
+    ([notification.name.rawValue, managedObjectContext.description] +
+       [("inserted", insertedObjects), ("updated", updatedObjects), ("deleted", deletedObjects)]
+       .map { name, collection in
+         name + ": {" + collection.map { $0.objectID.description }.joined(separator: ", ") + "}"
+       }).joined(separator: " ")
+  }
 }

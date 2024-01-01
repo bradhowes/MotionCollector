@@ -1,17 +1,17 @@
-// Copyright © 2019 Brad Howes. All rights reserved.
+// Copyright © 2019, 2024 Brad Howes. All rights reserved.
 
 import os
 
 public struct Logging {
 
-    /// The top-level identifier for this app
-    static let subsystem = "com.braysoftware.MotionCategorizer"
+  /// The top-level identifier for this app
+  static let subsystem = "com.braysoftware.MotionCategorizer"
 
-    /**
-     Create a new logger for a subsystem
+  /**
+   Create a new logger for a subsystem
 
-     - parameter category: the subsystem to log under
-     - returns: OSLog instance to use for subsystem logging
-     */
-    public static func logger(_ category: String) -> OSLog { OSLog(subsystem: subsystem, category: category) }
+   - parameter category: the subsystem to log under
+   - returns: OSLog instance to use for subsystem logging
+   */
+  public static func logger(_ category: String) -> OSLog { OSLog(subsystem: subsystem, category: category) }
 }
